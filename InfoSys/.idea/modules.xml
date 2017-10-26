@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SAT.iml" filepath="$PROJECT_DIR$/SAT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InfoSys.iml" filepath="$PROJECT_DIR$/InfoSys.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sat_2d/sat_2d.iml" filepath="$PROJECT_DIR$/sat_2d/sat_2d.iml" />
     </modules>
