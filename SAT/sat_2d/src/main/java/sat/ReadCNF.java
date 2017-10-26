@@ -14,7 +14,12 @@ import sat.formula.NegLiteral;
 import sat.formula.PosLiteral;
 
 public class ReadCNF {
-    public static Formula readCNF(String fileName) throws FileNotFoundException {
+    public static Formula readCNF(String fileName)
+            throws FileNotFoundException, IllegalArgumentException {
+        if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
+            throw new IllegalArgumentException();
+        }
+
         Formula formula = new Formula();
         Character[] preamble = {'c', 'p'};
         String s;
@@ -30,6 +35,8 @@ public class ReadCNF {
                 reader.nextLine();
             } else if (!Arrays.asList(preamble).contains(s.charAt(0))) {
                 formula = addToFormula(s, formula);
+            } else if (s.charAt(0) == 'p') {
+                if (!s.substring(2, 5).equals("cnf")) throw new IllegalArgumentException();
             }
         }
 

@@ -38,6 +38,8 @@ public class SATSolverTest {
 
         } catch (FileNotFoundException ex) {
             System.out.println(readFile + " not found!");
+        } catch (IllegalArgumentException ex) {
+            System.out.println(readFile + " is not CNF format!");
         } catch (IOException ex) {
             System.out.println("Writing error!");
         }
