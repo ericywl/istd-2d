@@ -15,12 +15,6 @@ import sat.formula.PosLiteral;
  * A simple DPLL SAT solver. See http://en.wikipedia.org/wiki/DPLL_algorithm
  */
 public class SATSolver {
-    // for checking if problem is satisfiable before writing to BooleanAssignment.txt
-    private static boolean satisfiable;
-    public static boolean isSatisfiable() {
-        return satisfiable;
-    }
-
     /**
      * Solve the problem using a simple version of DPLL with backtracking and
      * unit propagation. The returned environment binds literals of class
@@ -48,20 +42,23 @@ public class SATSolver {
     private static Environment solve(ImList<Clause> clauses, Environment env) {
         // trivially satisfiable if clauses is empty
         if (clauses.isEmpty()) {
-            satisfiable = true;
             System.out.println("SATISFIABLE");
             return env;
         }
 
-        // get smallest clause
+        // get smallest clause or first unit clause
         Clause smallestClause = new Clause();
         int minClauseSize = Integer.MAX_VALUE;
         for (Clause clause : clauses) {
             // not satisfiable if clause is empty
             if (clause.isEmpty()) {
-                satisfiable = false;
                 System.out.println("NOT SATISFIABLE");
                 return null;
+            }
+
+            if (clause.isUnit()) {
+                smallestClause = clause;
+                break;
             }
 
             if (clause.size() < minClauseSize) {

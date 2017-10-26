@@ -29,7 +29,7 @@ public class SATSolverTest {
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken/1000000.0 + "ms\n");
 
-            if (SATSolver.isSatisfiable()) {
+            if (e != null) {
                 System.out.println("Writing to " + writeFile + "...");
                 WriteEnv.writeEnv(e, writeFile);
             }
