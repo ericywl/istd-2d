@@ -1,15 +1,26 @@
 package sat;
 
+
+import immutable.EmptyImList;
 import immutable.ImList;
 import sat.env.Environment;
+import sat.env.Variable;
 import sat.formula.Clause;
 import sat.formula.Formula;
 import sat.formula.Literal;
+import sat.formula.NegLiteral;
+import sat.formula.PosLiteral;
 
 /**
  * A simple DPLL SAT solver. See http://en.wikipedia.org/wiki/DPLL_algorithm
  */
 public class SATSolver {
+    // for checking if problem is satisfiable before writing to BooleanAssignment.txt
+    private static boolean satisfiable;
+    public static boolean isSatisfiable() {
+        return satisfiable;
+    }
+
     /**
      * Solve the problem using a simple version of DPLL with backtracking and
      * unit propagation. The returned environment binds literals of class
@@ -20,8 +31,8 @@ public class SATSolver {
      * null if no such environment exists.
      */
     public static Environment solve(Formula formula) {
-        // TODO: implement this.
-        throw new RuntimeException("not yet implemented.");
+        Environment newEnv = new Environment();
+        return solve(formula.getClauses(), newEnv);
     }
 
     /**
@@ -35,9 +46,56 @@ public class SATSolver {
      * or null if no such environment exists.
      */
     private static Environment solve(ImList<Clause> clauses, Environment env) {
-        if (clauses.isEmpty()) return env;
+        // trivially satisfiable if clauses is empty
+        if (clauses.isEmpty()) {
+            satisfiable = true;
+            System.out.println("SATISFIABLE");
+            return env;
+        }
 
-        throw new RuntimeException("not yet implemented.");
+        // get smallest clause
+        Clause smallestClause = new Clause();
+        int minClauseSize = Integer.MAX_VALUE;
+        for (Clause clause : clauses) {
+            // not satisfiable if clause is empty
+            if (clause.isEmpty()) {
+                satisfiable = false;
+                System.out.println("NOT SATISFIABLE");
+                return null;
+            }
+
+            if (clause.size() < minClauseSize) {
+                minClauseSize = clause.size();
+                smallestClause = clause;
+            }
+        }
+
+        Literal literal = smallestClause.chooseLiteral();
+        Variable variable = literal.getVariable();
+
+        ImList<Clause> newClauses = substitute(clauses, literal);
+        Literal newLiteral;
+        Environment newEnv;
+        Environment solutionEnv;
+
+        // if unit clause
+        if (smallestClause.isUnit()) {
+            newEnv = (literal instanceof PosLiteral) ?
+                    env.putFalse(variable) : env.putTrue(variable);
+            return solve(newClauses, newEnv);
+        }
+
+        // if not unit clause
+        newEnv = env.putTrue(variable);
+        solutionEnv = solve(newClauses, newEnv);
+        if (solutionEnv == null) {
+            newEnv = env.putFalse(variable);
+            newLiteral = NegLiteral.make(variable);
+            newClauses = substitute(newClauses, newLiteral);
+            return solve(newClauses, newEnv);
+        }
+
+        return solutionEnv;
     }
 
     /**
@@ -49,8 +107,15 @@ public class SATSolver {
      * @return a new list of clauses resulting from setting l to true
      */
     private static ImList<Clause> substitute(ImList<Clause> clauses, Literal l) {
-        // TODO: implement this.
-        throw new RuntimeException("not yet implemented.");
+        if (clauses.isEmpty()) return clauses;
+
+        ImList<Clause> subClauses = new EmptyImList<>();
+        for (Clause clause : clauses) {
+            Clause reducedClause = clause.reduce(l);
+            if (reducedClause != null) subClauses = subClauses.add(reducedClause);
+        }
+
+        return subClauses;
     }
 
 }

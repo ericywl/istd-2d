@@ -11,11 +11,11 @@ import sat.env.Variable;
 /**
  * A class to represent literals used in clausal form.
  * The main feature is a factory pattern that ensures
- * that literals are interned, so that they can be 
+ * that literals are interned, so that they can be
  * compared with == for efficiency.
  */
 public abstract class Literal {
-    
+
     protected Variable var;
 
     // not private, so it can be set in PosLiteral's factory method
@@ -33,43 +33,45 @@ public abstract class Literal {
      *    if this is an instance of NegLiteral, then represents the literal !var
      */
 
-    void checkRep () {
-        assert this.getNegation().getNegation() == this : "Variable, Rep invariant: negation of negation";
-        assert this.getNegation().var.getName().equals(var.getName()) : "Variable, Rep invariant: names match";
+    void checkRep() {
+        assert this.getNegation().getNegation() == this :
+                "Variable, Rep invariant: negation of negation";
+        assert this.getNegation().var.getName().equals(var.getName()) :
+                "Variable, Rep invariant: names match";
     }
 
-    Literal (String name) {
+    Literal(String name) {
         this(new Variable(name));
     }
-    
-    Literal (Variable var) {
+
+    Literal(Variable var) {
         this.var = var;
     }
 
     /**
      * @return the variable associated with this literal
      */
-    public Variable getVariable () {
+    public Variable getVariable() {
         return var;
     }
 
     /**
      * @return the literal that corresponds to the negation of this
      */
-    public Literal getNegation () {
+    public Literal getNegation() {
         return negation;
     }
 
     /**
      * @return true iff literal corresponds to the negation of this
      */
-    public boolean negates (Literal literal) {
+    public boolean negates(Literal literal) {
         return this.negation == literal;
     }
 
     // same as Object.equals, but must override bool.Variable.equals
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         return this == o;
     }
 }

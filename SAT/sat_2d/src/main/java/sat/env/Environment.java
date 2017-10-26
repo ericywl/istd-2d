@@ -69,6 +69,10 @@ public class Environment {
         else return b;
     }
 
+    public ImMap<Variable, Bool> getBindings() {
+        return bindings;
+    }
+
     @Override
     public String toString() {
         return "Environment:" + bindings;
