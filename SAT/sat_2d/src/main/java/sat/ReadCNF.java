@@ -26,7 +26,9 @@ public class ReadCNF {
         while (reader.hasNextLine()) {
             s = reader.nextLine();
 
-            if (!Arrays.asList(preamble).contains(s.charAt(0))) {
+            if (s.isEmpty()) {
+                reader.nextLine();
+            } else if (!Arrays.asList(preamble).contains(s.charAt(0))) {
                 formula = addToFormula(s, formula);
             }
         }
@@ -39,12 +41,12 @@ public class ReadCNF {
         Clause clause = new Clause();
         Literal literal;
 
-        for (String num : s.split(" ")) {
-            if (num.isEmpty()) {
+        for (String var : s.split(" ")) {
+            if (var.isEmpty()) {
                 // do nothing
-            } else if (!num.equals("0")) {
-                literal = num.charAt(0) == '-'
-                        ? NegLiteral.make(num.substring(1)) : PosLiteral.make(num);
+            } else if (!var.equals("0")) {
+                literal = var.charAt(0) == '-'
+                        ? NegLiteral.make(var.substring(1)) : PosLiteral.make(var);
 
                 clause = clause.add(literal);
             } else {
