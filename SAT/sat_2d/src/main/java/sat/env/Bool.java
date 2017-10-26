@@ -12,22 +12,22 @@ package sat.env;
  */
 public enum Bool {
     TRUE, FALSE, UNDEFINED;
-    
-    public Bool and (Bool b) {
-        if (this==FALSE || b==FALSE) return FALSE;
-        if (this==TRUE && b==TRUE) return TRUE;
+
+    public Bool and(Bool b) {
+        if (this == FALSE || b == FALSE) return FALSE;
+        if (this == TRUE && b == TRUE) return TRUE;
         return UNDEFINED;
     }
 
-    public Bool or (Bool b) {
-        if (this==FALSE && b==FALSE) return FALSE;
-        if (this==TRUE || b==TRUE) return TRUE;
+    public Bool or(Bool b) {
+        if (this == FALSE && b == FALSE) return FALSE;
+        if (this == TRUE || b == TRUE) return TRUE;
         return UNDEFINED;
     }
 
-    public Bool not () {
-        if (this==FALSE) return TRUE;
-        if (this==TRUE) return FALSE;
+    public Bool not() {
+        if (this == FALSE) return TRUE;
+        if (this == TRUE) return FALSE;
         return UNDEFINED;
     }
 }

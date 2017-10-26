@@ -31,9 +31,11 @@ public class ImListMap<K, V> implements ImMap<K, V> {
     void checkRep(ImList<Binding> bs) {
         if (!bs.isEmpty()) {
             Binding b = bs.first();
+
             assert b.key != null : "ListMap, Rep invariant: keys non-null";
             assert b.value != null : "ListMap, Rep invariant: values non-null";
             assert !new ImListMap<K, V>(bs.rest()).containsKey(b.key);
+
             checkRep(bs.rest());
         }
     }
@@ -70,6 +72,7 @@ public class ImListMap<K, V> implements ImMap<K, V> {
 
     public V get(Object k) {
         Binding b = get(bindings, k);
+
         if (b == null)
             return null;
         else
@@ -80,13 +83,11 @@ public class ImListMap<K, V> implements ImMap<K, V> {
      * search through list recursively to find binding with matching key
      */
     private Binding get(ImList<Binding> bindings, Object key) {
-        if (bindings.size() == 0)
-            return null;
+        if (bindings.size() == 0) return null;
+
         Binding b = bindings.first();
-        if (b.key.equals(key))
-            return b;
-        else
-            return get(bindings.rest(), key);
+        if (b.key.equals(key)) return b;
+        else return get(bindings.rest(), key);
     }
 
     public ImMap<K, V> put(K key, V value) {

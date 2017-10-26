@@ -1,7 +1,7 @@
 /**
  * An immutable list
  * Designed for illustrating reasoning about immutable types
- * 
+ * <p>
  * Copyright 2007 Daniel Jackson and MIT
  */
 package immutable;
@@ -11,7 +11,7 @@ import java.util.Iterator;
 public class EmptyImList<E> implements ImList<E> {
     /**
      * abstraction function A(this) = <>, the empty list
-     * 
+     *
      * rep invariant = true
      */
 
