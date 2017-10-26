@@ -67,29 +67,29 @@ public class SATSolver {
             }
         }
 
-        Literal literal = smallestClause.chooseLiteral();
-        Variable variable = literal.getVariable();
+        Literal lit = smallestClause.chooseLiteral();
+        Variable var = lit.getVariable();
 
-        ImList<Clause> newClauses = substitute(clauses, literal);
-        Literal newLiteral;
-        Environment newEnv;
+        ImList<Clause> tempClauses = substitute(clauses, lit);
+        Literal tempLiteral;
+        Environment tempEnv;
         Environment solutionEnv;
 
         // if unit clause
         if (smallestClause.isUnit()) {
-            newEnv = (literal instanceof PosLiteral) ?
-                    env.putFalse(variable) : env.putTrue(variable);
-            return solve(newClauses, newEnv);
+            tempEnv = (lit instanceof PosLiteral) ?
+                    env.putFalse(var) : env.putTrue(var);
+            return solve(tempClauses, tempEnv);
         }
 
         // if not unit clause
-        newEnv = env.putTrue(variable);
-        solutionEnv = solve(newClauses, newEnv);
+        tempEnv = env.putTrue(var);
+        solutionEnv = solve(tempClauses, tempEnv);
         if (solutionEnv == null) {
-            newEnv = env.putFalse(variable);
-            newLiteral = NegLiteral.make(variable);
-            newClauses = substitute(newClauses, newLiteral);
-            return solve(newClauses, newEnv);
+            tempEnv = env.putFalse(var);
+            tempLiteral = NegLiteral.make(var);
+            tempClauses = substitute(tempClauses, tempLiteral);
+            return solve(tempClauses, tempEnv);
         }
 
         return solutionEnv;
