@@ -25,8 +25,9 @@ public class SATSolver {
      * null if no such environment exists.
      */
     public static Environment solve(Formula formula) {
+        ImList<Clause> clauses = formula.getClauses();
         Environment newEnv = new Environment();
-        return solve(formula.getClauses(), newEnv);
+        return solve(clauses, newEnv);
     }
 
     /**
@@ -106,15 +107,15 @@ public class SATSolver {
      * setting that literal to true
      *
      * @param clauses , a list of clauses
-     * @param l       , a literal to set to true
+     * @param literal       , a literal to set to true
      * @return a new list of clauses resulting from setting l to true
      */
-    private static ImList<Clause> substitute(ImList<Clause> clauses, Literal l) {
+    private static ImList<Clause> substitute(ImList<Clause> clauses, Literal literal) {
         if (clauses.isEmpty()) return clauses;
 
         ImList<Clause> subClauses = new EmptyImList<>();
         for (Clause clause : clauses) {
-            Clause reducedClause = clause.reduce(l);
+            Clause reducedClause = clause.reduce(literal);
             if (reducedClause != null) subClauses = subClauses.add(reducedClause);
         }
 
