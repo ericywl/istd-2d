@@ -42,7 +42,6 @@ public class SATSolver {
     private static Environment solve(ImList<Clause> clauses, Environment env) {
         // trivially satisfiable if clauses is empty
         if (clauses.isEmpty()) {
-            System.out.println("SATISFIABLE");
             return env;
         }
 
@@ -52,15 +51,10 @@ public class SATSolver {
         for (Clause clause : clauses) {
             // not satisfiable if clause is empty
             if (clause.isEmpty()) {
-                System.out.println("NOT SATISFIABLE");
                 return null;
             }
 
-            if (clause.isUnit()) {
-                smallestClause = clause;
-                break;
-            }
-
+            // get the smaller clause of the two
             if (clause.size() < minClauseSize) {
                 minClauseSize = clause.size();
                 smallestClause = clause;
@@ -69,25 +63,30 @@ public class SATSolver {
 
         Literal lit = smallestClause.chooseLiteral();
         Variable var = lit.getVariable();
-
-        ImList<Clause> tempClauses = substitute(clauses, lit);
-        Literal tempLiteral;
+        ImList<Clause> tempClauses;
         Environment tempEnv;
-        Environment solutionEnv;
 
         // if unit clause
         if (smallestClause.isUnit()) {
+            tempClauses = substitute(clauses, lit);
             tempEnv = (lit instanceof PosLiteral) ?
-                    env.putFalse(var) : env.putTrue(var);
+                    env.putTrue(var) : env.putFalse(var);
             return solve(tempClauses, tempEnv);
         }
 
+        Literal tempLiteral = PosLiteral.make(var);
+        Environment solutionEnv;
+
         // if not unit clause
+        // try setting arbitary literal to True
         tempEnv = env.putTrue(var);
+        tempClauses = substitute(clauses, tempLiteral);
         solutionEnv = solve(tempClauses, tempEnv);
+
+        // if the above fails, set literal to False
         if (solutionEnv == null) {
             tempEnv = env.putFalse(var);
-            tempLiteral = NegLiteral.make(var);
+            tempLiteral = tempLiteral.getNegation();
             tempClauses = substitute(tempClauses, tempLiteral);
             return solve(tempClauses, tempEnv);
         }
