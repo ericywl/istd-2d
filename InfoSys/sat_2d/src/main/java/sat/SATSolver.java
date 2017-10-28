@@ -66,7 +66,7 @@ public class SATSolver {
         ImList<Clause> tempClauses;
         Environment tempEnv;
 
-        // if unit clause
+        // if unit clause, set the literal such that the clause is satisfied
         if (smallestClause.isUnit()) {
             tempClauses = substitute(clauses, lit);
             tempEnv = (lit instanceof PosLiteral) ?
@@ -78,7 +78,7 @@ public class SATSolver {
         Environment solutionEnv;
 
         // if not unit clause
-        // try setting arbitary literal to True
+        // try setting arbitrary literal to True
         tempEnv = env.putTrue(var);
         tempClauses = substitute(clauses, tempLiteral);
         solutionEnv = solve(tempClauses, tempEnv);
