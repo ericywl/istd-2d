@@ -49,15 +49,22 @@ public class SATSolver {
         Clause smallestClause = new Clause();
         int minClauseSize = Integer.MAX_VALUE;
         for (Clause clause : clauses) {
+            int clauseSize = clause.size();
+
             // not satisfiable if clause is empty
-            if (clause.isEmpty()) {
+            if (clauseSize == 0) {
                 return null;
             }
 
             // get the smaller clause of the two
-            if (clause.size() < minClauseSize) {
-                minClauseSize = clause.size();
+            if (clauseSize < minClauseSize) {
+                minClauseSize = clauseSize;
                 smallestClause = clause;
+            }
+
+            // if the current smallest clause is already unit, break out of loop
+            if (minClauseSize == 1) {
+                break;
             }
         }
 
@@ -67,7 +74,7 @@ public class SATSolver {
         Environment tempEnv;
 
         // if unit clause, set the literal such that the clause is satisfied
-        if (smallestClause.isUnit()) {
+        if (minClauseSize == 1) {
             tempClauses = substitute(clauses, lit);
             tempEnv = (lit instanceof PosLiteral) ?
                     env.putTrue(var) : env.putFalse(var);
@@ -78,12 +85,12 @@ public class SATSolver {
         Environment solutionEnv;
 
         // if not unit clause
-        // try setting arbitrary literal to True
+        // try setting first literal to True
         tempEnv = env.putTrue(var);
         tempClauses = substitute(clauses, tempLiteral);
         solutionEnv = solve(tempClauses, tempEnv);
 
-        // if the above fails, set literal to False
+        // if the above fails, set the literal to False
         if (solutionEnv == null) {
             tempEnv = env.putFalse(var);
             tempLiteral = tempLiteral.getNegation();
