@@ -1,4 +1,4 @@
 # ISTD-2D
 2D Pojek files
 
-Simple DPLL-Algorithm SAT Solver with recursion.
+InfoSys: Simple DPLL-Algorithm SAT Solver with recursion.
