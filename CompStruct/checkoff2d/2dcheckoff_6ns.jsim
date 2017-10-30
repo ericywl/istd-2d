@@ -1,0 +1,321 @@
+.checkoff "10.1.3.26/checkoff/50002project2d.doit" "2d" -1344158035
+
+
+.verify xs[31:0] periodic(17.9E-9,6.0000000000000001E-9)
++ 0x00000000 //17.9 ns
++ 0x00000001 //23.9 ns
++ 0x80000000 //29.9 ns
++ 0x55555555 //35.9 ns
++ 0x55555555 //41.9 ns
++ 0xAAAAAAAA //47.9 ns
++ 0xAAAAAAAA //53.9 ns
++ 0xAAAAAAAA //59.9 ns
++ 0x55555554 //65.9 ns
++ 0xFFFFFFFE //71.9 ns
++ 0x00000000 //77.9 ns
++ 0xFFFFFFFF //83.9 ns
++ 0x00000001 //89.9 ns
++ 0xFFFFFFE2 //95.9 ns
++ 0x00000004 //101.9 ns
++ 0x00000008 //107.9 ns
++ 0xFFFFFFEE //113.9 ns
++ 0x00000020 //119.9 ns
++ 0xFFFFFFC0 //125.9 ns
++ 0x0000007E //131.9 ns
++ 0x00000100 //137.9 ns
++ 0x00000200 //143.9 ns
++ 0x00000400 //149.9 ns
++ 0x00000800 //155.9 ns
++ 0x00001000 //161.9 ns
++ 0x00002000 //167.9 ns
++ 0x00004000 //173.9 ns
++ 0x00008000 //179.9 ns
++ 0x00010000 //185.9 ns
++ 0xFFFE2000 //191.9 ns
++ 0xFFFC2000 //197.9 ns
++ 0x00080000 //203.9 ns
++ 0x00100000 //209.9 ns
++ 0x00200000 //215.9 ns
++ 0x00400000 //221.9 ns
++ 0xFF800100 //227.9 ns
++ 0x01000000 //233.9 ns
++ 0x02000000 //239.9 ns
++ 0x04000000 //245.9 ns
++ 0x08000000 //251.9 ns
++ 0x10000000 //257.9 ns
++ 0x20000000 //263.9 ns
++ 0x40000000 //269.9 ns
++ 0x80000002 //275.9 ns
++ 0x00000000 //281.9 ns
++ 0x00000001 //287.9 ns
++ 0x80000000 //293.9 ns
++ 0x55555555 //299.9 ns
++ 0xAAAAAAAB //305.9 ns
++ 0x00000000 //311.9 ns
++ 0xAAAAAAAA //317.9 ns
++ 0x55555556 //323.9 ns
++ 0x00000000 //329.9 ns
++ 0x00000000 //335.9 ns
++ 0x00000002 //341.9 ns
++ 0xFFFFFFFF //347.9 ns
+
+
+.verify xz periodic(17.9E-9,6.0000000000000001E-9)
++ 0x1  // 17.9ns
++ 0x0  // 23.9ns
++ 0x0  // 29.9ns
++ 0x0  // 35.9ns
++ 0x0  // 41.9ns
++ 0x0  // 47.9ns
++ 0x0  // 53.9ns
++ 0x0  // 59.9ns
++ 0x0  // 65.9ns
++ 0x0  // 71.9ns
++ 0x1  // 77.9ns
++ 0x0  // 83.9ns
++ 0x0  // 89.9ns
++ 0x0  // 95.9ns
++ 0x0  // 101.9ns
++ 0x0  // 107.9ns
++ 0x0  // 113.9ns
++ 0x0  // 119.9ns
++ 0x0  // 125.9ns
++ 0x0  // 131.9ns
++ 0x0  // 137.9ns
++ 0x0  // 143.9ns
++ 0x0  // 149.9ns
++ 0x0  // 155.9ns
++ 0x0  // 161.9ns
++ 0x0  // 167.9ns
++ 0x0  // 173.9ns
++ 0x0  // 179.9ns
++ 0x0  // 185.9ns
++ 0x0  // 191.9ns
++ 0x0  // 197.9ns
++ 0x0  // 203.9ns
++ 0x0  // 209.9ns
++ 0x0  // 215.9ns
++ 0x0  // 221.9ns
++ 0x0  // 227.9ns
++ 0x0  // 233.9ns
++ 0x0  // 239.9ns
++ 0x0  // 245.9ns
++ 0x0  // 251.9ns
++ 0x0  // 257.9ns
++ 0x0  // 263.9ns
++ 0x0  // 269.9ns
++ 0x0  // 275.9ns
++ 0x1  // 281.9 ns
++ 0x0  // 287.9 ns
++ 0x0  // 293.9 ns
++ 0x0  // 299.9 ns
++ 0x0  // 305.9 ns
++ 0x1  // 311.9 ns
++ 0x0  // 317.9 ns
++ 0x0  // 323.9 ns
++ 0x1  // 329.9 ns
++ 0x1  // 335.9 ns
++ 0x0  // 341.9 ns
++ 0x0  // 347.9 ns
+
+
+.verify xv periodic(17.9E-9,6.0000000000000001E-9)
++ 0x0  // 17.9ns
++ 0x0  // 23.9ns
++ 0x1  // 29.9ns
++ 0x0  // 35.9ns
++ 0x0  // 41.9ns
++ 0x1  // 47.9ns
++ 0x0  // 53.9ns
++ 0x0  // 59.9ns
++ 0x1  // 65.9ns
++ 0x0  // 71.9ns
++ 0x0  // 77.9ns
++ 0x0  // 83.9ns
++ 0x0  // 89.9ns
++ 0x0  // 95.9ns
++ 0x0  // 101.9ns
++ 0x0  // 107.9ns
++ 0x0  // 113.9ns
++ 0x0  // 119.9ns
++ 0x0  // 125.9ns
++ 0x0  // 131.9ns
++ 0x0  // 137.9ns
++ 0x0  // 143.9ns
++ 0x0  // 149.9ns
++ 0x0  // 155.9ns
++ 0x0  // 161.9ns
++ 0x0  // 167.9ns
++ 0x0  // 173.9ns
++ 0x0  // 179.9ns
++ 0x0  // 185.9ns
++ 0x0  // 191.9ns
++ 0x0  // 197.9ns
++ 0x0  // 203.9ns
++ 0x0  // 209.9ns
++ 0x0  // 215.9ns
++ 0x0  // 221.9ns
++ 0x0  // 227.9ns
++ 0x0  // 233.9ns
++ 0x0  // 239.9ns
++ 0x0  // 245.9ns
++ 0x0  // 251.9ns
++ 0x0  // 257.9ns
++ 0x0  // 263.9ns
++ 0x0  // 269.9ns
++ 0x0  // 275.9ns
++ 0x0  // 281.9 ns
++ 0x0  // 287.9 ns
++ 0x1  // 293.9 ns
++ 0x0  // 299.9 ns
++ 0x0  // 305.9 ns
++ 0x0  // 311.9 ns
++ 0x0  // 317.9 ns
++ 0x0  // 323.9 ns
++ 0x0  // 329.9 ns
++ 0x0  // 335.9 ns
++ 0x0  // 341.9 ns
++ 0x0  // 347.9 ns
+
+
+.verify xn periodic(17.9E-9,6.0000000000000001E-9)
++ 0x0  // 17.9ns
++ 0x0  // 23.9ns
++ 0x1  // 29.9ns
++ 0x0  // 35.9ns
++ 0x0  // 41.9ns
++ 0x1  // 47.9ns
++ 0x1  // 53.9ns
++ 0x1  // 59.9ns
++ 0x0  // 65.9ns
++ 0x1  // 71.9ns
++ 0x0  // 77.9ns
++ 0x1  // 83.9ns
++ 0x0  // 89.9ns
++ 0x1  // 95.9ns
++ 0x0  // 101.9ns
++ 0x0  // 107.9ns
++ 0x1  // 113.9ns
++ 0x0  // 119.9ns
++ 0x1  // 125.9ns
++ 0x0  // 131.9ns
++ 0x0  // 137.9ns
++ 0x0  // 143.9ns
++ 0x0  // 149.9ns
++ 0x0  // 155.9ns
++ 0x0  // 161.9ns
++ 0x0  // 167.9ns
++ 0x0  // 173.9ns
++ 0x0  // 179.9ns
++ 0x0  // 185.9ns
++ 0x1  // 191.9ns
++ 0x1  // 197.9ns
++ 0x0  // 203.9ns
++ 0x0  // 209.9ns
++ 0x0  // 215.9ns
++ 0x0  // 221.9ns
++ 0x1  // 227.9ns
++ 0x0  // 233.9ns
++ 0x0  // 239.9ns
++ 0x0  // 245.9ns
++ 0x0  // 251.9ns
++ 0x0  // 257.9ns
++ 0x0  // 263.9ns
++ 0x0  // 269.9ns
++ 0x1  // 275.9ns
++ 0x0  // 281.9 ns
++ 0x0  // 287.9 ns
++ 0x1  // 293.9 ns
++ 0x0  // 299.9 ns
++ 0x1  // 305.9 ns
++ 0x0  // 311.9 ns
++ 0x1  // 317.9 ns
++ 0x0  // 323.9 ns
++ 0x0  // 329.9 ns
++ 0x0  // 335.9 ns
++ 0x0  // 341.9 ns
++ 0x1  // 347.9 ns
+
+
+
+.subckt TestAdder32 xa[31:0] xb[31:0] xop0 clk xs[31:0] xz xv xn
+Xreginxa xa[31:0] clk#32 xaq[31:0] dreg
+Xreginxb xb[31:0] clk#32 xbq[31:0] dreg
+Xreginxop xop0 clk op0 dreg
+Xadder op0 xaq[31:0] xbq[31:0] s[31:0] z v n adder32
+Xregoutxs s[31:0] clk#32 xs[31:0] dreg
+Xregoutxz z clk xz dreg
+Xregoutxv v clk xv dreg
+Xregoutxn n clk xn dreg
+.ends
+
+Xtestadder xa[31:0] xb[31:0] xop0 clk xs[31:0] xz xv xn TestAdder32
+
+Wa xa[31:0] nrz(0,3.3,6n,0n,.1n,.1n)
+// test all combinations of 3 inputs to each bit of the adder.  Also tests
+// N and both ways of producing V
++ 0x00000000 0x00000001 0x7FFFFFFF 0x55555555 
++ 0x00000000 0x55555555 0xAAAAAAAA 0x00000000 
++ 0xAAAAAAAA 0xFFFFFFFF 0x00000001 0xFFFFFFFF
+// test each input to Z logic
++ 0x00000001 0xFFFFFFF2 0x00000001 0xAAAAAAAC 
++ 0xFFFFFFFF 0x00000002 0x00000000 0x0000007F
++ 0x00000080 0x00000180 0x00000380 0x00000780 
++ 0x00001000 0x00001000 0x00003000 0x00007000
++ 0x0000F000 0x00001000 0x00001000 0x0007F800 
++ 0x000FFC00 0x001FFE00 0x003FFF00 0x00000080
++ 0xFF000000 0x04000000 0x03000FFF 0x070007FF 
++ 0x0F0003FF 0x1F0001FF 0x3F0000FF 0x80000001
+// check subtract
++ 0x00000000 0x00000001 0x7FFFFFFF 0x55555555 
++ 0x00000000 0x55555555 0xAAAAAAAA 0x00000000 
++ 0xAAAAAAAA 0xFFFFFFFF 0x00000001 0xFFFFFFFF
+
+Wb xb[31:0] nrz(0,3.3,6n,0n,.1n,.1n)
+// test all combinations of 3 inputs to each bit of the adder.  Also tests
+// N and both ways of producing V
++ 0x00000000 0x00000000 0x00000001 0x00000000 
++ 0x55555555 0x55555555 0x00000000 0xAAAAAAAA 
++ 0xAAAAAAAA 0xFFFFFFFF 0xFFFFFFFF 0x00000000
+// test each input to Z logic
++ 0x00000000 0xFFFFFFF0 0x00000003 0x5555555C
++ 0xFFFFFFEF 0x0000001E 0xFFFFFFC0 0xFFFFFFFF
++ 0x00000080 0x00000080 0x00000080 0x00000080
++ 0x00000000 0x00001000 0x00001000 0x00001000
++ 0x00001000 0xFFFE1000 0xFFFC1000 0x00000800
++ 0x00000400 0x00000200 0x00000100 0xFF800080
++ 0x02000000 0xFE000000 0x00FFF001 0x00FFF801
++ 0x00FFFC01 0x00FFFE01 0x00FFFF01 0x00000001
+// check subtract
++ 0x00000000 0x00000000 0xFFFFFFFF 0x00000000 
++ 0x55555555 0x55555555 0x00000000 0xAAAAAAAA 
++ 0xAAAAAAAA 0xFFFFFFFF 0xFFFFFFFF 0x00000000
+
+
+Wo xop0 nrz(0,3.3,6n,0n,.1n,.1n)
++ 0 0 0 0 
++ 0 0 0 0
++ 0 0 0 0
++ 0 0 0 0 
++ 0 0 0 0
++ 0 0 0 0
++ 0 0 0 0 
++ 0 0 0 0
++ 0 0 0 0
++ 0 0 0 0 
++ 0 0 0 0
++ 1 1 1 1 
++ 1 1 1 1
++ 1 1 1 1
+
+Vclk clk 0 pulse(3.3,0,2.9ns,.1ns,.1ns,2.9ns)
+
+.tran 348n
+
+.plot L(xa[31:0])
+.plot L(xb[31:0])
+.plot L(xs[31:0])
+.plot L(xz)
+.plot L(xv)
+.plot L(xn)
+.plot clk
