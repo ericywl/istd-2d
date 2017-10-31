@@ -14,8 +14,6 @@ import sat.formula.NegLiteral;
 import sat.formula.PosLiteral;
 
 public class ReadCNF {
-    private static Clause clause = new Clause();
-
     public static Formula readCNF(String fileName)
             throws FileNotFoundException, IllegalArgumentException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
@@ -47,6 +45,7 @@ public class ReadCNF {
     }
 
     private static Formula addToFormula(String s, Formula formula) {
+        Clause clause = new Clause();
         Literal literal;
 
         for (String var : s.split(" ")) {

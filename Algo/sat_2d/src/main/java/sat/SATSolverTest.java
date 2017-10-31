@@ -13,41 +13,26 @@ import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        // String readFile = "/sat_2d/sampleCNF/randomKSat.cnf";
-        // String writeFile = "/sat_2d/sampleCNF/randomKSatBooleanAssignment.txt";
-        String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
-        String writeFile = "/sat_2d/sampleCNF/largeSatBooleanAssignment.txt";
-        // String readFile = "/sat_2d/sampleCNF/s8Sat.cnf";
-        // String writeFile = "/sat_2d/sampleCNF/s8SatBooleanAssignment.txt";
+        String readFile = "/sat_2d/sampleCNF/2Sat.cnf";
 
         try {
             System.out.println("Reading " + readFile + "...\n");
             Formula formula = ReadCNF.readCNF(readFile);
-            System.out.println(formula);
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            Environment e = SATSolver.solve(formula);
+            // Environment e = SATSolver.solve(formula);
+            System.out.println(SATSolver.isSatisfiable(formula.getClauses()));
             long time = System.nanoTime();
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken/1000000.0 + "ms");
-
-            if (e != null) {
-                System.out.println("SATISFIABLE\n");
-                System.out.println("Writing to " + writeFile + "...");
-                WriteEnv.writeEnv(e, writeFile);
-            } else {
-                System.out.println("NOT SATISFIABLE\n");
-            }
-
-            System.out.println("DONE");
 
         } catch (FileNotFoundException ex) {
             System.out.println(readFile + " not found!");
         } catch (IllegalArgumentException ex) {
             System.out.println(readFile + " is not CNF format!");
-        } catch (IOException ex) {
-            System.out.println("Writing error!");
+        } catch (DirectedGraph.NoSuchElement ex) {
+            System.out.println(ex);
         }
     }
 
