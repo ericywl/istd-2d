@@ -1,8 +1,11 @@
-# ISTD-2D
-2D Pojek files
+InfoSys
+========
+Simple DPLL-Algorithm SAT Solver (recursive)
 
-InfoSys: Simple DPLL-Algorithm SAT Solver with recursion
+CompStruct
+===========
+Adder Optimization
 
-CompStruct: Adder optimization
-
-Algo: 2SAT Solver algorithm
+Algo
+======
+2SAT Solver Algorithm
