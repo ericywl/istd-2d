@@ -23,7 +23,6 @@ public class SATSolverTest {
         try {
             System.out.println("Reading " + readFile + "...\n");
             Formula formula = ReadCNF.readCNF(readFile);
-            System.out.println(formula);
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();

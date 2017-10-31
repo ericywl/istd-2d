@@ -13,7 +13,7 @@ import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        String readFile = "/sat_2d/sampleCNF/2Sat.cnf";
+        String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
 
         try {
             System.out.println("Reading " + readFile + "...\n");
@@ -31,8 +31,6 @@ public class SATSolverTest {
             System.out.println(readFile + " not found!");
         } catch (IllegalArgumentException ex) {
             System.out.println(readFile + " is not CNF format!");
-        } catch (DirectedGraph.NoSuchElement ex) {
-            System.out.println(ex);
         }
     }
 
