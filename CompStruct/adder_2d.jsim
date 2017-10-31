@@ -1,0 +1,8 @@
+.include "checkoff2d/nominal.jsim"
+.include "checkoff2d/stdcell.jsim"
+.include "checkoff2d/2dcheckoff_100ns.jsim"
+
+.subckt entry Ai Bi Pi Gi
+Xxor2 Ai Bi Pi xor2
+Xand2 Ai Bi Gi and2
+.ends
