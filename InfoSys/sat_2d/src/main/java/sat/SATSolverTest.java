@@ -13,10 +13,10 @@ import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        // String readFile = "/sat_2d/sampleCNF/randomKSat.cnf";
-        // String writeFile = "/sat_2d/sampleCNF/randomKSatBooleanAssignment.txt";
-        String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
-        String writeFile = "/sat_2d/sampleCNF/largeSatBooleanAssignment.txt";
+        String readFile = "/sat_2d/sampleCNF/randomKSat.cnf";
+        String writeFile = "/sat_2d/sampleCNF/randomKSatBooleanAssignment.txt";
+        // String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
+        // String writeFile = "/sat_2d/sampleCNF/largeSatBooleanAssignment.txt";
         // String readFile = "/sat_2d/sampleCNF/s8Sat.cnf";
         // String writeFile = "/sat_2d/sampleCNF/s8SatBooleanAssignment.txt";
 
