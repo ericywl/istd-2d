@@ -1,4 +1,4 @@
-package sat.prototype;
+package sat;
 
 import java.util.ArrayList;
 import java.util.HashMap;

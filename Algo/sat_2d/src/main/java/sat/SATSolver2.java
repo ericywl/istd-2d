@@ -1,8 +1,7 @@
-package sat.prototype;
+package sat;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ public class SATSolver2 {
     private int numOfVars;
 
     private int[] clauseSize;
-    private int[][] origClauses;
     private int[][] tempClauses;
 
     private boolean[] clauseRemoved;
@@ -20,7 +18,6 @@ public class SATSolver2 {
     private Map<Integer, List<Integer>> literalClauses;
 
     public SATSolver2(int[][] clauses, int numOfVars) {
-        this.origClauses = clauses;
         this.tempClauses = clauses;
         this.numOfVars = numOfVars;
         this.literalClauses = findLiteralClauses(this.tempClauses, this.numOfVars);
@@ -39,12 +36,6 @@ public class SATSolver2 {
     }
 
     private void preProcess() {
-        while (eliminateUnitClauses() || eliminatePureLiterals()) {
-            // keep looping till its all done
-        }
-    }
-
-    private boolean eliminateUnitClauses() {
         boolean unitClauseFound = true;
         while (unitClauseFound) {
             unitClauseFound = false;
@@ -58,24 +49,6 @@ public class SATSolver2 {
                 }
             }
         }
-
-        return unitClauseFound;
-    }
-
-    private boolean eliminatePureLiterals() {
-        for (int lit = 1; lit <= numOfVars; lit++) {
-            int positiveOccurrences = getOccurrenceOfLiteral(lit);
-            int negativeOccurrences = getOccurrenceOfLiteral(-lit);
-            if (positiveOccurrences == 0 && negativeOccurrences != 0) {
-                reduceLiteral(-lit);
-                return true;
-            } else if (positiveOccurrences != 0 && negativeOccurrences == 0) {
-                reduceLiteral(lit);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private int getLiteral(int[] clause) {
@@ -86,11 +59,6 @@ public class SATSolver2 {
         }
 
         return 0;
-    }
-
-    private int getOccurrenceOfLiteral(int literal) {
-        int index = literal;
-        return this.literalOccurrences.getOrDefault(index, 0);
     }
 
     private int getClauseSize(int[] clause) {

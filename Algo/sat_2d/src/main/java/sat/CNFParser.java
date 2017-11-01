@@ -1,4 +1,4 @@
-package sat.prototype;
+package sat;
 
 
 import java.io.File;

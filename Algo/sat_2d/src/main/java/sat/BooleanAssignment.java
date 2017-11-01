@@ -1,10 +1,10 @@
-package sat.prototype;
+package sat;
 
 
 import java.util.Map;
 
 public class BooleanAssignment {
-    public static String convert(Map<Integer, Integer> env) {
+    private static String convert(Map<Integer, Integer> env) {
         StringBuilder output = new StringBuilder();
         String current;
 
@@ -21,5 +21,9 @@ public class BooleanAssignment {
         }
 
         return output.toString();
+    }
+
+    public static void writeAssignments(String fileName) {
+
     }
 }
