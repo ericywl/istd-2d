@@ -124,7 +124,7 @@ public class SATSolver2 {
 
         for (int clause : falseClauses) {
             for (int j = 0, len = tempClauses[clause].length; j < len; j++) {
-                if (tempClauses[clause][j] == -index) {
+                if (tempClauses[clause][j] == -literal) {
                     tempClauses[clause][j] = 0;
                     clauseSize[clause]--;
                     int negLitIndex = -index;

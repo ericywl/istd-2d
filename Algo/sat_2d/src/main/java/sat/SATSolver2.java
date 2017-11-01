@@ -2,7 +2,6 @@ package sat;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,12 +97,6 @@ public class SATSolver2 {
     }
 
     private void reduceLiteral(int literal) {
-        System.out.println(assignments);
-
-        for (int[] clause : tempClauses) {
-            System.out.println(Arrays.toString(clause));
-        }
-
         int index = Math.abs(literal);
         int assignment = literal < 0 ? -1 : 1;
         int trueMapPosition = literal < 0 ? -index : index;
@@ -165,7 +158,6 @@ public class SATSolver2 {
             clauseSize[i] = getClauseSize(clauses[i]);
         }
 
-        System.out.println(output);
         return output;
     }
 }

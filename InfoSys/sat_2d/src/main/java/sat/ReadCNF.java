@@ -19,7 +19,7 @@ public class ReadCNF {
     private static int maxClauseSize = 0;
 
     public static Object[] readCNF(String fileName)
-            throws FileNotFoundException, IllegalArgumentException, IOException {
+            throws IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
             throw new IllegalArgumentException();
         }
