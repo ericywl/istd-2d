@@ -7,28 +7,35 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 
 import sat.env.*;
 import sat.formula.*;
+import sat.twoSat.BooleanAssignment;
+import sat.twoSat.CNFParser;
+import sat.twoSat.SATSolver2;
 
 public class SATSolverTest {
-    public static void main(String[] args) {
-        // String readFile = "testcase.cnf";
-        // String readFile = "randomKSat.cnf";
-        String readFile = "testcase.cnf";
-        // String readFile = "s8Sat.cnf";
-        String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
+    private static String readFile = "largeUnsat.cnf";
+    private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
+    public static void main(String[] args) {
         try {
             System.out.println("Reading " + readFile + "...\n");
-            Formula formula = ReadCNF.readCNF(readFile);
+            Object[] parsed = ReadCNF.readCNF(readFile);
+            Formula formula = (Formula) parsed[0];
+            int maxClauseSize = (int) parsed[1];
+            if (maxClauseSize < 3) {
+                run2SAT();
+                return;
+            }
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
             Environment e = SATSolver.solve(formula);
             long time = System.nanoTime();
             long timeTaken = time - started;
-            System.out.println("Time: " + timeTaken/1000000.0 + "ms");
+            System.out.println("Time: " + timeTaken / 1000000.0 + "ms");
 
             if (e != null) {
                 System.out.println("SATISFIABLE\n");
@@ -43,10 +50,32 @@ public class SATSolverTest {
         } catch (FileNotFoundException ex) {
             System.out.println(readFile + " not found!");
         } catch (IllegalArgumentException ex) {
-            System.out.println(readFile + " is not CNF format!");
+            System.out.println(ex);
         } catch (IOException ex) {
-            System.out.println("Write Error!");
+            System.out.println("IO Error!");
         }
+    }
+
+    private static void run2SAT() throws IOException {
+        Object[] parsed = CNFParser.readCNF(readFile);
+        int[][] clauses = (int[][]) parsed[0];
+        int numOfVars = (int) parsed[1];
+
+        System.out.println("SAT solver starts!!!");
+        long started = System.nanoTime();
+        SATSolver2 sat2 = new SATSolver2(clauses, numOfVars);
+        Map<Integer, Integer> env = sat2.solve();
+        long time = System.nanoTime();
+        long timeTaken = time - started;
+        System.out.println("Time: " + timeTaken/1000000.0 + "ms\n");
+
+        if (env != null) {
+            System.out.println("SATISFIABLE\n");
+            System.out.println("Writing to " + writeFile + "...");
+            BooleanAssignment.writeAssignments(env, writeFile);
+        } else System.out.println("NOT SATISFIABLE\n");
+
+        System.out.println("DONE");
     }
 
 

@@ -106,9 +106,9 @@ public class SATSolver2 {
         this.literalOccurrences.put(literal, 0);
 
         List<Integer> trueClauses =
-                literalClauses.getOrDefault(trueMapPosition, new ArrayList<>());
+                literalClauses.getOrDefault(trueMapPosition, new ArrayList<Integer>());
         List<Integer> falseClauses =
-                literalClauses.getOrDefault(falseMapPosition, new ArrayList<>());
+                literalClauses.getOrDefault(falseMapPosition, new ArrayList<Integer>());
 
         for (int clause : trueClauses) {
             this.clauseRemoved[clause] = true;
@@ -147,7 +147,7 @@ public class SATSolver2 {
                 if (literal == 0) continue;
 
                 if (!output.containsKey(literal)) {
-                    output.put(literal, new ArrayList<>());
+                    output.put(literal, new ArrayList<Integer>());
                 }
 
                 output.get(literal).add(i);
