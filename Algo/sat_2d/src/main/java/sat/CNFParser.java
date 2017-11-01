@@ -4,11 +4,12 @@ package sat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CNFParser {
     public static Object[] readCNF(String fileName)
-            throws FileNotFoundException, IllegalArgumentException {
+            throws FileNotFoundException, IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
             throw new IllegalArgumentException("Invalid file format.");
         }
@@ -59,6 +60,8 @@ public class CNFParser {
         if (counter != numOfClauses)
             throw new IllegalArgumentException("Wrong number of clauses.");
 
+        reader.close();
+        readFile.close();
         return new Object[]{clauses, numOfVars};
     }
 }

@@ -2,12 +2,16 @@ package sat;
 
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 public class SATSolver2Test {
     public static void main(String[] args) {
         try {
-            System.out.println("Reading file...");
+            String readFile = "testcase.cnf";
+            String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
+
+            System.out.println("Reading " + readFile + "...\n");
             Object[] parsed = CNFParser.readCNF("testcase.cnf");
             int[][] clauses = (int[][]) parsed[0];
             int numOfVars = (int) parsed[1];
@@ -22,11 +26,16 @@ public class SATSolver2Test {
 
             if (env != null) {
                 System.out.println("SATISFIABLE");
-                System.out.println(BooleanAssignment.convert(env));
+                System.out.println("Writing to " + writeFile + "...");
+                BooleanAssignment.writeAssignments(env, writeFile);
             } else System.out.println("NOT SATISFIABLE");
+
+            System.out.println("DONE");
 
         } catch (FileNotFoundException | IllegalArgumentException ex) {
             System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println("IO Error!");
         }
     }
 }
