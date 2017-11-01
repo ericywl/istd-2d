@@ -3,6 +3,7 @@ package sat;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -13,18 +14,18 @@ public class Kosaraju {
     public static Map<Literal, Integer> scc(DirectedGraph graph) {
         Stack<Literal> visitOrder = dfsVisit(reverse(graph));
 
-        Map<Literal, Integer> result = new HashMap<>();
+        Map<Literal, Integer> output = new HashMap<>();
         int i = 0;
 
         while (!visitOrder.isEmpty()) {
             Literal startPoint = visitOrder.pop();
-            if (result.containsKey(startPoint)) continue;
+            if (output.containsKey(startPoint)) continue;
 
-            markReachable(startPoint, graph, result, i);
+            markReachable(startPoint, graph, output,  i);
             ++i;
         }
 
-        return result;
+        return output;
     }
 
     private static DirectedGraph reverse(DirectedGraph graph) {
@@ -65,12 +66,12 @@ public class Kosaraju {
     }
 
     private static void markReachable(Literal node, DirectedGraph graph,
-                                          Map<Literal, Integer> result, int label) {
-        if (result.containsKey(node)) return;
+                                      Map<Literal, Integer> sccMap, int label) {
+        if (sccMap.containsKey(node)) return;
 
-        result.put(node, label);
+        sccMap.put(node, label);
         for (Literal endPoint : graph.edgesFrom(node)) {
-            markReachable(endPoint, graph, result, label);
+            markReachable(endPoint, graph, sccMap, label);
         }
     }
 }

@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import sat.env.*;
 import sat.formula.*;
@@ -21,11 +20,17 @@ public class SATSolverTest {
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            // Environment e = SATSolver.solve(formula);
-            System.out.println(SATSolver.isSatisfiable(formula.getClauses()));
+            Environment e = SATSolver.solve(formula);
             long time = System.nanoTime();
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken/1000000.0 + "ms");
+
+            if (e == null) {
+                System.out.println("NOT SATISFIABLE");
+            } else {
+                System.out.println("SATISFIABLE");
+                System.out.println(e.toString());
+            }
 
         } catch (FileNotFoundException ex) {
             System.out.println(readFile + " not found!");
