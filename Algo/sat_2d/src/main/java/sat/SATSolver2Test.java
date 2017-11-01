@@ -1,20 +1,24 @@
 package sat;
 
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 public class SATSolver2Test {
     public static void main(String[] args) {
         try {
-            String readFile = "largeUnsat.cnf";
+            String readFile = "2Sat.cnf";
             String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
             System.out.println("Reading " + readFile + "...\n");
-            Object[] parsed = CNFParser.readCNF("testcase.cnf");
+            Object[] parsed = CNFParser.readCNF(readFile);
             int[][] clauses = (int[][]) parsed[0];
             int numOfVars = (int) parsed[1];
+
+            for (int[] clause : clauses) {
+                System.out.println(Arrays.toString(clause));
+            }
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
@@ -32,7 +36,7 @@ public class SATSolver2Test {
 
             System.out.println("DONE");
 
-        } catch (FileNotFoundException | IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             System.out.println(ex);
         } catch (IOException ex) {
             System.out.println("IO Error!");
