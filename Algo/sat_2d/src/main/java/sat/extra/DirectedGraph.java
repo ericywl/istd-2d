@@ -1,4 +1,4 @@
-package sat;
+package sat.extra;
 
 
 import java.util.Collections;

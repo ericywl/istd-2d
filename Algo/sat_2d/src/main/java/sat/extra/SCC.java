@@ -1,4 +1,4 @@
-package sat;
+package sat.extra;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -21,8 +21,8 @@ public class SCC {
         for (Clause clause : clauses) {
             if (!clause.isUnit()) {
                 literals.add(clause.chooseLiteral());
-                literals.add(clause.chooseLiteral2());
                 variables.add(clause.chooseLiteral().getVariable());
+                literals.add(clause.chooseLiteral2());
                 variables.add(clause.chooseLiteral2().getVariable());
             }
         }

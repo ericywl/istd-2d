@@ -1,9 +1,8 @@
-package sat;
+package sat.extra;
 
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -25,6 +24,7 @@ public class Kosaraju {
             ++i;
         }
 
+        System.out.println(i);
         return output;
     }
 

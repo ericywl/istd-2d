@@ -13,12 +13,11 @@ import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        String readFile = "/sat_2d/sampleCNF/randomKSat.cnf";
-        String writeFile = "/sat_2d/sampleCNF/randomKSatBooleanAssignment.txt";
-        // String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
-        // String writeFile = "/sat_2d/sampleCNF/largeSatBooleanAssignment.txt";
-        // String readFile = "/sat_2d/sampleCNF/s8Sat.cnf";
-        // String writeFile = "/sat_2d/sampleCNF/s8SatBooleanAssignment.txt";
+        // String readFile = "testcase.cnf";
+        // String readFile = "randomKSat.cnf";
+        String readFile = "largeSat.cnf";
+        // String readFile = "s8Sat.cnf";
+        String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
         try {
             System.out.println("Reading " + readFile + "...\n");
@@ -46,7 +45,7 @@ public class SATSolverTest {
         } catch (IllegalArgumentException ex) {
             System.out.println(readFile + " is not CNF format!");
         } catch (IOException ex) {
-            System.out.println("Writing error!");
+            System.out.println("Write Error!");
         }
     }
 

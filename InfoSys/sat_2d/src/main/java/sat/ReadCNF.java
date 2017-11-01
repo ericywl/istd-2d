@@ -27,7 +27,7 @@ public class ReadCNF {
         String s;
 
         String currPath = new File("").getAbsolutePath();
-        FileReader readFile = new FileReader(currPath + fileName);
+        FileReader readFile = new FileReader(currPath + "/sat_2d/sampleCNF/" + fileName);
         Scanner reader = new Scanner(readFile);
 
         while (reader.hasNextLine()) {

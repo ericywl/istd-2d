@@ -6,13 +6,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import sat.env.*;
 import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        String readFile = "/sat_2d/sampleCNF/largeSat.cnf";
+        String readFile = "testcase.cnf";
+        String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
         try {
             System.out.println("Reading " + readFile + "...\n");
@@ -25,17 +27,22 @@ public class SATSolverTest {
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken/1000000.0 + "ms");
 
-            if (e == null) {
-                System.out.println("NOT SATISFIABLE");
+            if (e != null) {
+                System.out.println("SATISFIABLE\n");
+                System.out.println("Writing to " + writeFile + "...");
+                WriteEnv.writeEnv(e, writeFile);
             } else {
-                System.out.println("SATISFIABLE");
-                System.out.println(e.toString());
+                System.out.println("NOT SATISFIABLE\n");
             }
+
+            System.out.println("DONE");
 
         } catch (FileNotFoundException ex) {
             System.out.println(readFile + " not found!");
         } catch (IllegalArgumentException ex) {
             System.out.println(readFile + " is not CNF format!");
+        } catch (IOException ex) {
+            System.out.println("Write Error!");
         }
     }
 

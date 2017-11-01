@@ -15,7 +15,7 @@ public class WriteEnv {
         envString = envString.replace(", ", "\n");
 
         String currPath = new File("").getAbsolutePath();
-        FileWriter writeFile = new FileWriter(currPath + fileName);
+        FileWriter writeFile = new FileWriter(currPath + "/sat_2d/sampleCNF/" + fileName);
         writeFile.write(envString);
         writeFile.close();
     }
