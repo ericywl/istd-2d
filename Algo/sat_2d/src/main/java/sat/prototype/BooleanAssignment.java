@@ -9,6 +9,7 @@ public class BooleanAssignment {
         String current;
 
         for (int literal : env.keySet()) {
+            if (literal < 0) {
                  current = "" + (-literal) + "=";
             } else {
                 current = "" + literal + "=";

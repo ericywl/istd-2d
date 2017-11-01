@@ -20,7 +20,7 @@ public class CNFParser {
         String[] params;
 
         String line = reader.nextLine().trim();
-        while (line.startsWith("c") || line.matches("\\s+"))
+        while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty())
             line = reader.nextLine().trim();
 
         headers = line.split(" ");
@@ -36,8 +36,8 @@ public class CNFParser {
         while (reader.hasNextLine()) {
             line = reader.nextLine().trim();
 
-            if (line.startsWith("c") || line.matches("\\s+")) {
-                // do nothing
+            if (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
+                line = reader.nextLine();
             }
 
             params = line.split(" ");

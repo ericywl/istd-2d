@@ -8,7 +8,7 @@ public class SATSolver2Test {
     public static void main(String[] args) {
         try {
             System.out.println("Reading file...");
-            Object[] parsed = CNFParser.readCNF("testcase.cnf");
+            Object[] parsed = CNFParser.readCNF("testcase0.cnf");
             int[][] clauses = (int[][]) parsed[0];
             int numOfVars = (int) parsed[1];
 

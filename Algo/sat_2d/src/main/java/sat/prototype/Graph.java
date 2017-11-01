@@ -147,7 +147,7 @@ public class Graph {
         for (int component : components) {
             int assignment = -1;
             int k = Math.abs(component) - 1;
-            if (assignments.get(k) == 0) {
+            if (assignments.getOrDefault(k, 0) == 0) {
                 int value = component < 0 ? -assignment : assignment;
                 assignments.put(k, value);
             }
