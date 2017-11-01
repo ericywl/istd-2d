@@ -13,7 +13,7 @@ import sat.formula.*;
 
 public class SATSolverTest {
     public static void main(String[] args) {
-        String readFile = "testcase.cnf";
+        String readFile = "largeSat.cnf";
         String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
         try {

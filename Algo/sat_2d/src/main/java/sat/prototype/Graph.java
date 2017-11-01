@@ -1,6 +1,7 @@
-package sat;
+package sat.prototype;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -17,15 +18,12 @@ public class Graph {
 
     // SCC graph
     private List<Integer>[] scc;
-    private List<Integer>[] sccEdges;
+    private Map<Integer, List<Integer>> sccEdges = new HashMap<>();
     private int[] sccSearches;
-    private int sccIndex = 0;
-
-    private Map<Integer, Integer> assignments;
+    private int sccSize = 0;
 
     @SuppressWarnings("unchecked")
-    public Graph(int numOfVars, int[][] clauses, Map<Integer, Integer> assignments,
-                 boolean[] clauseRemoved) {
+    public Graph(int numOfVars, int[][] clauses, boolean[] clauseRemoved) {
         this.numOfVars = numOfVars;
         this.numOfVertices = numOfVars * 2 + 1;
 
@@ -38,9 +36,6 @@ public class Graph {
         this.scc = (ArrayList<Integer>[]) new ArrayList[numOfVertices];
         this.sccSearches = new int[numOfVertices];
 
-        // boolean assignments
-        this.assignments = assignments;
-
         for (int i = 0; i < this.numOfVertices; i++) {
             this.edges[i] = new ArrayList<>();
         }
@@ -49,6 +44,8 @@ public class Graph {
             if (!clauseRemoved[j])
                 addClause(clauses[j]);
         }
+
+        generateSCC();
     }
 
     private void addClause(int[] clause) {
@@ -66,6 +63,12 @@ public class Graph {
     private int negateLiteral(int literal) {
         if (literal < 0) return -literal;
         else return literal + this.numOfVars;
+    }
+
+    private int convert(int i) {
+        if (i < 0) return this.numOfVars - i;
+        else if (i > this.numOfVars) return -(i - this.numOfVars);
+        else return i;
     }
 
     private void generateSCC() {
@@ -103,20 +106,20 @@ public class Graph {
 
             do {
                 poppedNode = this.stack.pop();
-                this.sccSearches[poppedNode] = this.sccIndex;
+                this.sccSearches[poppedNode] = this.sccSize;
                 currentSCC.add(convert(poppedNode));
             } while (poppedNode != node);
 
             if (currentSCC.size() != 0) {
-                this.scc[sccIndex] = currentSCC;
-                sccIndex++;
+                this.scc[sccSize] = currentSCC;
+                sccSize++;
             }
         }
     }
 
     // evaluate satisfiability using SCC
-    public boolean evalSat() {
-        for (int i = 0; i < this.sccIndex; i++) {
+    private boolean evalSat() {
+        for (int i = 0; i < this.sccSize; i++) {
             for (Integer component : this.scc[i]) {
                 if (this.scc[i].contains(-component))
                     return false;
@@ -126,25 +129,52 @@ public class Graph {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
+    public Map<Integer, Integer> solve(Map<Integer, Integer> assignments) {
+        if (!evalSat()) return null;
+
+        Map<Integer, Integer> result = new HashMap<>();
+
+        for (int i = this.sccSize - 1; i >= 0; i--) {
+            List<Integer> components = this.scc[i];
+            result = assignVar(i, components, assignments);
+        }
+
+        return result;
+    }
+
+    private Map<Integer, Integer> assignVar(int sccCompIndex, List<Integer> components,
+                           Map<Integer, Integer> assignments) {
+        for (int component : components) {
+            int assignment = -1;
+            int k = Math.abs(component) - 1;
+            if (assignments.get(k) == 0) {
+                int value = component < 0 ? -assignment : assignment;
+                assignments.put(k, value);
+            }
+        }
+
+        List<Integer> edgeList = this.sccEdges.get(sccCompIndex);
+        if (edgeList.size() != 0) {
+            for (int edge : edgeList) {
+                assignVar(edge, this.scc[edge], assignments);
+            }
+        }
+
+        return assignments;
+    }
+
     // calculate edges in SCC graph
     private void getSCCEdges() {
-        this.sccEdges = (ArrayList<Integer>[]) new ArrayList[this.sccIndex];
-        for (int i = 0; i < this.sccIndex; i++) {
-            this.sccEdges[i] = new ArrayList<>();
+        for (int i = 0; i < this.sccSize; i++) {
+            List<Integer> edgeList = new ArrayList<>();
             for (int j : this.scc[i])
                 for (int k : this.edges[convert(j)])
-                    if (!this.sccEdges[i].contains(this.sccSearches[convert(k)])
+                    if (!edgeList.contains(this.sccSearches[convert(k)])
                             && this.sccSearches[convert(k)] != i) {
-                        this.sccEdges[i].add(this.sccSearches[convert(k)]);
+                        edgeList.add(this.sccSearches[convert(k)]);
                     }
+
+            sccEdges.put(i, edgeList);
         }
     }
-
-    private int convert(int i) {
-        if (i < 0) return this.numOfVars - i;
-        else if (i > this.numOfVars) return -(i - this.numOfVars);
-        else return i;
-    }
-
 }

@@ -1,5 +1,6 @@
 package sat.extra;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +18,20 @@ import sat.formula.PosLiteral;
 public class SCC {
     public static Environment solve2Sat(ImList<Clause> clauses, Environment assignment) {
         Set<Variable> variables = new HashSet<>();
-        Stack<Literal> literals = new Stack<>();
+        HashMap<Integer, Literal> literals = new HashMap<>();
+        int numOfLiterals = 0;
         for (Clause clause : clauses) {
+            Literal firstLit = clause.chooseLiteral();
+            literals.put(numOfLiterals, firstLit);
+            variables.add(firstLit.getVariable());
+
+            numOfLiterals++;
             if (!clause.isUnit()) {
-                literals.add(clause.chooseLiteral());
-                variables.add(clause.chooseLiteral().getVariable());
-                literals.add(clause.chooseLiteral2());
-                variables.add(clause.chooseLiteral2().getVariable());
+                Literal secondLit = clause.chooseLiteral2();
+                literals.put(numOfLiterals, secondLit);
+                variables.add(secondLit.getVariable());
+
+                numOfLiterals++;
             }
         }
 
@@ -39,6 +47,9 @@ public class SCC {
                         clause.chooseLiteral2());
                 implicationGraph.addEdge(clause.chooseLiteral2().getNegation(),
                         clause.chooseLiteral());
+            } else {
+                implicationGraph.addEdge(clause.chooseLiteral().getNegation(),
+                        clause.chooseLiteral());
             }
         }
 
@@ -47,20 +58,22 @@ public class SCC {
 
         for (Variable var : variables) {
             Literal posLiteral = PosLiteral.make(var);
-            Literal negLiteral = NegLiteral.make(var);
 
-            if (scc.get(posLiteral).equals(scc.get(negLiteral)))
+            if (scc.get(posLiteral).equals(scc.get(posLiteral.getNegation())))
                 return null;
         }
 
-        while (!literals.isEmpty()) {
-            Literal lit = literals.pop();
+        long start = System.nanoTime();
+        for (int i = 0; i < numOfLiterals; i++) {
+            Literal lit = literals.get(i);
             Variable var = lit.getVariable();
             if (assignment.get(var) == Bool.UNDEFINED) {
                 assignment = (lit instanceof PosLiteral) ?
                         assignment.putTrue(var) : assignment.putFalse(var);
             }
         }
+        long timeTaken = System.nanoTime() - start;
+        System.out.println(timeTaken/1000000.0 + "ms");
 
         return assignment;
     }

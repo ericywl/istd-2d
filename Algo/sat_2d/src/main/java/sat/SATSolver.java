@@ -19,11 +19,11 @@ public class SATSolver {
 
     public static Environment solve(Formula formula) {
         ImList<Clause> clauses = formula.getClauses();
-        Environment newEnv = new Environment();
-        Environment assignment = preSolve(clauses, newEnv);
-
-        if (assignment == null) return null;
-        if (solved) return assignment;
+        Environment assignment = new Environment();
+//        Environment assignment = preSolve(clauses, newEnv);
+//
+//        if (assignment == null) return null;
+//        if (solved) return assignment;
 
         return SCC.solve2Sat(clauses, assignment);
     }

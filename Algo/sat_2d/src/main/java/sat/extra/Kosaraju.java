@@ -12,7 +12,6 @@ import sat.formula.Literal;
 public class Kosaraju {
     public static Map<Literal, Integer> scc(DirectedGraph graph) {
         Stack<Literal> visitOrder = dfsVisit(reverse(graph));
-
         Map<Literal, Integer> output = new HashMap<>();
         int i = 0;
 
@@ -31,22 +30,22 @@ public class Kosaraju {
     private static DirectedGraph reverse(DirectedGraph graph) {
         DirectedGraph revGraph = new DirectedGraph();
 
-        for (sat.formula.Literal node : graph)
+        for (Literal node : graph)
             revGraph.addNode(node);
 
-        for (sat.formula.Literal node : graph) {
-            for (sat.formula.Literal endPoint : graph.edgesFrom(node))
+        for (Literal node : graph) {
+            for (Literal endPoint : graph.edgesFrom(node))
                 revGraph.addEdge(endPoint, node);
         }
 
         return revGraph;
     }
 
-    private static Stack<sat.formula.Literal> dfsVisit(DirectedGraph graph) {
-        Stack<sat.formula.Literal> result = new Stack<>();
-        Set<sat.formula.Literal> visited = new HashSet<>();
+    private static Stack<Literal> dfsVisit(DirectedGraph graph) {
+        Stack<Literal> result = new Stack<>();
+        Set<Literal> visited = new HashSet<>();
 
-        for (sat.formula.Literal node : graph) {
+        for (Literal node : graph) {
             explore(node, graph, result, visited);
         }
 

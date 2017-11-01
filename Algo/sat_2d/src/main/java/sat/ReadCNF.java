@@ -22,21 +22,21 @@ public class ReadCNF {
 
         Formula formula = new Formula();
         Character[] preamble = {'c', 'p'};
-        String problemLine;
+        String line;
 
         String currPath = new File("").getAbsolutePath();
         FileReader readFile = new FileReader(currPath + "/sat_2d/sampleCNF/" + fileName);
         Scanner reader = new Scanner(readFile);
 
         while (reader.hasNextLine()) {
-            problemLine = reader.nextLine();
+            line = reader.nextLine();
 
-            if (problemLine.isEmpty()) {
+            if (line.isEmpty()) {
                 reader.nextLine();
-            } else if (!Arrays.asList(preamble).contains(problemLine.charAt(0))) {
-                formula = addToFormula(problemLine, formula);
-            } else if (problemLine.charAt(0) == 'p') {
-                if (!problemLine.substring(2, 5).equals("cnf")) throw new IllegalArgumentException();
+            } else if (!Arrays.asList(preamble).contains(line.charAt(0))) {
+                formula = addToFormula(line, formula);
+            } else if (line.charAt(0) == 'p') {
+                if (!line.substring(2, 5).equals("cnf")) throw new IllegalArgumentException();
             }
         }
 
@@ -44,13 +44,13 @@ public class ReadCNF {
         return formula;
     }
 
-    private static Formula addToFormula(String problemLine, Formula formula) {
+    private static Formula addToFormula(String line, Formula formula) {
         Clause clause = new Clause();
         Literal literal;
 
-        for (String param : problemLine.split(" ")) {
+        for (String param : line.split(" ")) {
             if (param.isEmpty()) {
-                continue;
+                // do nothing
             }
 
             if (!param.equals("0")) {
