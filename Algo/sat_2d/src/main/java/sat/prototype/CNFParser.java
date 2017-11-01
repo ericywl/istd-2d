@@ -4,7 +4,6 @@ package sat.prototype;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CNFParser {
@@ -21,7 +20,7 @@ public class CNFParser {
         String[] params;
 
         String line = reader.nextLine().trim();
-        while (line.startsWith("c") || line.isEmpty())
+        while (line.startsWith("c") || line.matches("\\s+"))
             line = reader.nextLine().trim();
 
         headers = line.split(" ");
@@ -37,7 +36,7 @@ public class CNFParser {
         while (reader.hasNextLine()) {
             line = reader.nextLine().trim();
 
-            if (line.startsWith("c") || line.isEmpty()) {
+            if (line.startsWith("c") || line.matches("\\s+")) {
                 // do nothing
             }
 
@@ -50,7 +49,6 @@ public class CNFParser {
                     innerCounter++;
                     if (innerCounter > 2)
                         throw new IllegalArgumentException("File contains more than 2 literals per clause.");
-
                 } else {
                     innerCounter = 0;
                     counter++;
