@@ -22,21 +22,21 @@ public class ReadCNF {
 
         Formula formula = new Formula();
         Character[] preamble = {'c', 'p'};
-        String s;
+        String problemLine;
 
         String currPath = new File("").getAbsolutePath();
         FileReader readFile = new FileReader(currPath + fileName);
         Scanner reader = new Scanner(readFile);
 
         while (reader.hasNextLine()) {
-            s = reader.nextLine();
+            problemLine = reader.nextLine();
 
-            if (s.isEmpty()) {
+            if (problemLine.isEmpty()) {
                 reader.nextLine();
-            } else if (!Arrays.asList(preamble).contains(s.charAt(0))) {
-                formula = addToFormula(s, formula);
-            } else if (s.charAt(0) == 'p') {
-                if (!s.substring(2, 5).equals("cnf")) throw new IllegalArgumentException();
+            } else if (!Arrays.asList(preamble).contains(problemLine.charAt(0))) {
+                formula = addToFormula(problemLine, formula);
+            } else if (problemLine.charAt(0) == 'p') {
+                if (!problemLine.substring(2, 5).equals("cnf")) throw new IllegalArgumentException();
             }
         }
 
@@ -44,16 +44,18 @@ public class ReadCNF {
         return formula;
     }
 
-    private static Formula addToFormula(String s, Formula formula) {
+    private static Formula addToFormula(String problemLine, Formula formula) {
         Clause clause = new Clause();
         Literal literal;
 
-        for (String var : s.split(" ")) {
-            if (var.isEmpty()) {
-                // do nothing
-            } else if (!var.equals("0")) {
-                literal = var.charAt(0) == '-'
-                        ? NegLiteral.make(var.substring(1)) : PosLiteral.make(var);
+        for (String param : problemLine.split(" ")) {
+            if (param.isEmpty()) {
+                continue;
+            }
+
+            if (!param.equals("0")) {
+                literal = param.charAt(0) == '-'
+                        ? NegLiteral.make(param.substring(1)) : PosLiteral.make(param);
 
                 clause = clause.add(literal);
             } else {

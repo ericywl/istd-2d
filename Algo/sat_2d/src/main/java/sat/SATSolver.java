@@ -51,13 +51,13 @@ public class SATSolver {
     public static boolean isSatisfiable(ImList<Clause> clauses) {
         Set<Variable> variables = new HashSet<>();
         for (Clause clause : clauses) {
-            variables.add(clause.chooseLiteral().getVariable());
             if (!clause.isUnit()) {
+                variables.add(clause.chooseLiteral().getVariable());
                 variables.add(clause.chooseLiteral2().getVariable());
             }
         }
 
-        DirectedGraph<Literal> implications = new DirectedGraph<>();
+        DirectedGraph implications = new DirectedGraph();
         for (Variable var : variables) {
             implications.addNode(PosLiteral.make(var));
             implications.addNode(NegLiteral.make(var));

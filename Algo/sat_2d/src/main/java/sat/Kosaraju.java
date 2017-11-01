@@ -7,15 +7,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-public class Kosaraju {
-    public static <E> Map<E, Integer> scc(DirectedGraph<E> graph) {
-        Stack<E> visitOrder = dfsVisit(reverse(graph));
+import sat.formula.Literal;
 
-        Map<E, Integer> result = new HashMap<>();
+public class Kosaraju {
+    public static Map<Literal, Integer> scc(DirectedGraph graph) {
+        Stack<Literal> visitOrder = dfsVisit(reverse(graph));
+
+        Map<Literal, Integer> result = new HashMap<>();
         int i = 0;
 
         while (!visitOrder.isEmpty()) {
-            E startPoint = visitOrder.pop();
+            Literal startPoint = visitOrder.pop();
             if (result.containsKey(startPoint)) continue;
 
             markReachable(startPoint, graph, result, i);
@@ -25,49 +27,49 @@ public class Kosaraju {
         return result;
     }
 
-    private static <E> DirectedGraph<E> reverse(DirectedGraph<E> graph) {
-        DirectedGraph<E> revGraph = new DirectedGraph<>();
+    private static DirectedGraph reverse(DirectedGraph graph) {
+        DirectedGraph revGraph = new DirectedGraph();
 
-        for (E node : graph)
+        for (sat.formula.Literal node : graph)
             revGraph.addNode(node);
 
-        for (E node : graph) {
-            for (E endPoint : graph.edgesFrom(node))
+        for (sat.formula.Literal node : graph) {
+            for (sat.formula.Literal endPoint : graph.edgesFrom(node))
                 revGraph.addEdge(endPoint, node);
         }
 
         return revGraph;
     }
 
-    private static <E> Stack<E> dfsVisit(DirectedGraph<E> graph) {
-        Stack<E> result = new Stack<>();
-        Set<E> visited = new HashSet<>();
+    private static Stack<sat.formula.Literal> dfsVisit(DirectedGraph graph) {
+        Stack<sat.formula.Literal> result = new Stack<>();
+        Set<sat.formula.Literal> visited = new HashSet<>();
 
-        for (E node : graph) {
+        for (sat.formula.Literal node : graph) {
             explore(node, graph, result, visited);
         }
 
         return result;
     }
 
-    private static <E> void explore(E node, DirectedGraph<E> graph,
-                                    Stack<E> result, Set<E> visited) {
+    private static void explore(Literal node, DirectedGraph graph,
+                                          Stack<Literal> result, Set<Literal> visited) {
         if (visited.contains(node)) return;
 
         visited.add(node);
-        for (E endPoint : graph.edgesFrom(node)) {
+        for (Literal endPoint : graph.edgesFrom(node)) {
             explore(endPoint, graph, result, visited);
         }
 
         result.push(node);
     }
 
-    private static <E> void markReachable(E node, DirectedGraph<E> graph,
-                                          Map<E, Integer> result, int label) {
+    private static void markReachable(Literal node, DirectedGraph graph,
+                                          Map<Literal, Integer> result, int label) {
         if (result.containsKey(node)) return;
 
         result.put(node, label);
-        for (E endPoint : graph.edgesFrom(node)) {
+        for (Literal endPoint : graph.edgesFrom(node)) {
             markReachable(endPoint, graph, result, label);
         }
     }
