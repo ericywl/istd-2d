@@ -1,9 +1,9 @@
 package sat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 public class Graph {
@@ -11,41 +11,154 @@ public class Graph {
     private int numOfVertices;
 
     // implication graph
-    private List<Integer>[] edges;
+    private Set<Integer>[] adj;
     private Stack<Integer> stack = new Stack<>();
     private Integer[] indices, lowlink;
     private int index = 0;
 
     // SCC graph
-    private List<Integer>[] scc;
-    private Map<Integer, List<Integer>> sccEdges = new HashMap<>();
-    private int[] sccSearches;
+    private int[] sccSearchSpace;
     private int sccSize = 0;
 
     @SuppressWarnings("unchecked")
     public Graph(int numOfVars, int[][] clauses, boolean[] clauseRemoved) {
         this.numOfVars = numOfVars;
-        this.numOfVertices = numOfVars * 2 + 1;
+        this.numOfVertices = 2 * numOfVars + 1;
 
         // implication graph components
-        this.edges = (ArrayList<Integer>[]) new ArrayList[numOfVertices];
+        this.adj = (Set<Integer>[]) new HashSet[numOfVertices];
         this.indices = new Integer[numOfVertices];
         this.lowlink = new Integer[numOfVertices];
 
         // SCC graph components
-        this.scc = (ArrayList<Integer>[]) new ArrayList[numOfVertices];
-        this.sccSearches = new int[numOfVertices];
+        this.sccSearchSpace = new int[numOfVertices];
 
         for (int i = 0; i < this.numOfVertices; i++) {
-            this.edges[i] = new ArrayList<>();
+            this.adj[i] = new HashSet<>();
         }
 
         for (int j = 0; j < clauses.length; j++) {
             if (!clauseRemoved[j])
                 addClause(clauses[j]);
         }
+    }
 
-        generateSCC();
+    // solve by assigning truth values after SCC
+    public Map<Integer, Integer> solve(Map<Integer, Integer> assignments, Set<Integer>[] scc) {
+        if (!evalSat(scc)) return null;
+
+        Map<Integer, Integer> result = new HashMap<>();
+        Map<Integer, Set<Integer>> sccEdges = executeTarjan(scc);
+
+        for (int i = 0; i < this.sccSize; i++) {
+            Set<Integer> components = scc[i];
+            result = assignVar(i, components, assignments, sccEdges, scc);
+        }
+
+        return result;
+    }
+
+    // evaluate satisfiability using SCC
+    private boolean evalSat(Set<Integer>[] scc) {
+        for (int i = 0; i < this.sccSize; i++) {
+            for (Integer component : scc[i]) {
+                if (scc[i].contains(-component))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private Map<Integer, Set<Integer>> executeTarjan(Set<Integer>[] scc) {
+        for (int i = 1; i < this.numOfVertices; i++) {
+            if (this.indices[i] == null)
+                tarjanAlgo(i, scc);
+        }
+
+        return getSCCEdges(scc);
+    }
+
+    // Tarjan's SCC algorithm
+    // https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
+    // https://www.programming-algorithms.net/article/44220/Tarjan%27s-algorithm
+    private void tarjanAlgo(int node, Set<Integer>[] scc) {
+        this.indices[node] = this.index;
+        this.lowlink[node] = this.index;
+        this.index++;
+        this.stack.push(node);
+
+        for (int neighbor : this.adj[node]) {
+            neighbor = simpleHash(neighbor);
+
+            // if node not yet discovered
+            if (this.indices[neighbor] == null) {
+                tarjanAlgo(neighbor, scc);
+                this.lowlink[node] = Math.min(lowlink[node], lowlink[neighbor]);
+            // if component not closed
+            } else if (this.stack.contains(neighbor)) {
+                this.lowlink[node] = Math.min(lowlink[node], indices[neighbor]);
+            }
+        }
+
+        // inside root of the component
+        if (this.lowlink[node].equals(this.indices[node])) {
+            Set<Integer> component = new HashSet<>();
+            int poppedNode;
+
+            do {
+                // add node to component
+                poppedNode = this.stack.pop();
+                this.sccSearchSpace[poppedNode] = this.sccSize;
+                component.add(simpleHash(poppedNode));
+            } while (poppedNode != node);
+
+            if (component.size() != 0) {
+                scc[sccSize] = component;
+                sccSize++;
+            }
+        }
+    }
+
+    private Map<Integer, Integer> assignVar(int sccCompIndex, Set<Integer> components,
+                                            Map<Integer, Integer> assignments,
+                                            Map<Integer, Set<Integer>> sccEdges,
+                                            Set<Integer>[] scc) {
+        for (int component : components) {
+            int k = Math.abs(component);
+            if (assignments.getOrDefault(k, 0) == 0) {
+                int value = component < 0 ? 1 : -1;
+                assignments.put(k, value);
+            }
+        }
+
+        Set<Integer> edgeList = sccEdges.get(sccCompIndex);
+        if (edgeList.size() != 0) {
+            for (int edge : edgeList) {
+                assignVar(edge, scc[edge], assignments, sccEdges, scc);
+            }
+        }
+
+        return assignments;
+    }
+
+    // calculate adj in SCC graph
+    private Map<Integer, Set<Integer>> getSCCEdges(Set<Integer>[] scc) {
+        Map<Integer, Set<Integer>> output = new HashMap<>();
+
+        for (int i = 0; i < this.sccSize; i++) {
+            Set<Integer> edgeList = new HashSet<>();
+            for (int j : scc[i])
+                for (int k : this.adj[simpleHash(j)])
+                    if (!edgeList.contains(this.sccSearchSpace[simpleHash(k)])
+                            && this.sccSearchSpace[simpleHash(k)] != i) {
+                        edgeList.add(this.sccSearchSpace[simpleHash(k)]);
+                    }
+
+            output.put(i, edgeList);
+        }
+
+        return output;
     }
 
     private void addClause(int[] clause) {
@@ -56,8 +169,8 @@ public class Graph {
     }
 
     private void addEdge(int start, int end) {
-        if (!edges[start].contains(end))
-            edges[start].add(end);
+        if (!this.adj[start].contains(end))
+            this.adj[start].add(end);
     }
 
     private int negateLiteral(int literal) {
@@ -65,115 +178,10 @@ public class Graph {
         else return literal + this.numOfVars;
     }
 
-    private int convert(int i) {
+    // simple hashing
+    private int simpleHash(int i) {
         if (i < 0) return this.numOfVars - i;
         else if (i > this.numOfVars) return -(i - this.numOfVars);
         else return i;
-    }
-
-    private void generateSCC() {
-        for (int v = 1; v < this.numOfVertices; v++) {
-            if (this.indices[v] == null)
-                tarjanVisit(v);
-        }
-
-        getSCCEdges();
-    }
-
-    // Tarjan's SCC algorithm
-    // https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
-    private void tarjanVisit(int node) {
-        this.indices[node] = this.index;
-        this.lowlink[node] = this.index;
-        this.index++;
-        this.stack.add(node);
-
-        // depth first search
-        for (int successor : this.edges[node]) {
-            successor = convert(successor);
-            if (this.indices[successor] == null) {
-                tarjanVisit(successor);
-                this.lowlink[node] = Math.min(lowlink[node], lowlink[successor]);
-            } else if (this.stack.contains(successor)) {
-                this.lowlink[node] = Math.min(lowlink[node], indices[successor]);
-            }
-        }
-
-        // node is root
-        if (this.lowlink[node].equals(this.indices[node])) {
-            List<Integer> currentSCC = new ArrayList<>();
-            int poppedNode;
-
-            do {
-                poppedNode = this.stack.pop();
-                this.sccSearches[poppedNode] = this.sccSize;
-                currentSCC.add(convert(poppedNode));
-            } while (poppedNode != node);
-
-            if (currentSCC.size() != 0) {
-                this.scc[sccSize] = currentSCC;
-                sccSize++;
-            }
-        }
-    }
-
-    // evaluate satisfiability using SCC
-    private boolean evalSat() {
-        for (int i = 0; i < this.sccSize; i++) {
-            for (Integer component : this.scc[i]) {
-                if (this.scc[i].contains(-component))
-                    return false;
-            }
-        }
-
-        return true;
-    }
-
-    public Map<Integer, Integer> solve(Map<Integer, Integer> assignments) {
-        if (!evalSat()) return null;
-
-        Map<Integer, Integer> result = new HashMap<>();
-
-        for (int i = this.sccSize - 1; i >= 0; i--) {
-            List<Integer> components = this.scc[i];
-            result = assignVar(i, components, assignments);
-        }
-
-        return result;
-    }
-
-    private Map<Integer, Integer> assignVar(int sccCompIndex, List<Integer> components,
-                           Map<Integer, Integer> assignments) {
-        for (int component : components) {
-            int k = Math.abs(component);
-            if (assignments.getOrDefault(k, 0) == 0) {
-                int value = component < 0 ? 1 : -1;
-                assignments.put(k, value);
-            }
-        }
-
-        List<Integer> edgeList = this.sccEdges.get(sccCompIndex);
-        if (edgeList.size() != 0) {
-            for (int edge : edgeList) {
-                assignVar(edge, this.scc[edge], assignments);
-            }
-        }
-
-        return assignments;
-    }
-
-    // calculate edges in SCC graph
-    private void getSCCEdges() {
-        for (int i = 0; i < this.sccSize; i++) {
-            List<Integer> edgeList = new ArrayList<>();
-            for (int j : this.scc[i])
-                for (int k : this.edges[convert(j)])
-                    if (!edgeList.contains(this.sccSearches[convert(k)])
-                            && this.sccSearches[convert(k)] != i) {
-                        edgeList.add(this.sccSearches[convert(k)]);
-                    }
-
-            sccEdges.put(i, edgeList);
-        }
     }
 }
