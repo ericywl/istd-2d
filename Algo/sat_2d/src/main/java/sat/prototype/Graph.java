@@ -145,10 +145,9 @@ public class Graph {
     private Map<Integer, Integer> assignVar(int sccCompIndex, List<Integer> components,
                            Map<Integer, Integer> assignments) {
         for (int component : components) {
-            int assignment = -1;
-            int k = Math.abs(component) - 1;
+            int k = Math.abs(component);
             if (assignments.getOrDefault(k, 0) == 0) {
-                int value = component < 0 ? -assignment : assignment;
+                int value = component < 0 ? 1 : -1;
                 assignments.put(k, value);
             }
         }

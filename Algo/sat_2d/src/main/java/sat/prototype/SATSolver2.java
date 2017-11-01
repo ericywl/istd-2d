@@ -2,6 +2,7 @@ package sat.prototype;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +28,11 @@ public class SATSolver2 {
     }
 
     public Map<Integer, Integer> solve() {
-        if (this.hasEmptyClause(tempClauses)) return null;
-        else if (this.noClauses(clauseRemoved)) return assignments;
-        else {
+        if (this.hasEmptyClause(tempClauses)) {
+            return null;
+        } else if (this.noClauses(clauseRemoved)) {
+            return assignments;
+        } else {
             Graph graph = new Graph(numOfVars, tempClauses, clauseRemoved);
             return graph.solve(assignments);
         }
@@ -37,20 +40,19 @@ public class SATSolver2 {
 
     private void preProcess() {
         while (eliminateUnitClauses() || eliminatePureLiterals()) {
-
+            // keep looping till its all done
         }
     }
 
     private boolean eliminateUnitClauses() {
         boolean unitClauseFound = true;
-        while (unitClauseFound)
-        {
+        while (unitClauseFound) {
             unitClauseFound = false;
             for (int i = 0; i < tempClauses.length; i++) {
                 if (clauseSize[i] == 1) {
-                    int var = getLiteral(tempClauses[i]);
-                    if (var != 0 && !clauseRemoved[i]) {
-                        reduceLiteral(var);
+                    int literal = getLiteral(tempClauses[i]);
+                    if (literal != 0 && !clauseRemoved[i]) {
+                        reduceLiteral(literal);
                         unitClauseFound = true;
                     }
                 }
@@ -87,7 +89,7 @@ public class SATSolver2 {
     }
 
     private int getOccurrenceOfLiteral(int literal) {
-        int index = literal < 0 ? Math.abs(literal) + numOfVars - 1 : literal - 1;
+        int index = literal;
         return this.literalOccurrences.getOrDefault(index, 0);
     }
 
@@ -120,72 +122,47 @@ public class SATSolver2 {
 
     private boolean noClauses(boolean[] cRem) {
         for (boolean removed : cRem) {
-            if (!removed) {
-                return false;
-            }
+            if (!removed) return false;
         }
 
         return true;
     }
 
     private void reduceLiteral(int literal) {
-        int index;
-        int assignment;
-        int literalOccIndex;
-        int posMapPosition;
-        int negMapPosition;
-
-        if (literal < 0) {
-            index = -literal - 1;
-            assignment = -1;
-            literalOccIndex = Math.abs(literal) + numOfVars - 1;
-            posMapPosition = Math.abs(literal) + numOfVars - 1;
-            negMapPosition = index;
-        } else {
-            index = literal - 1;
-            assignment = 1;
-            literalOccIndex = index;
-            posMapPosition = index;
-            negMapPosition = Math.abs(literal) + numOfVars - 1;
-        }
+        int index = Math.abs(literal);
+        int assignment = literal < 0 ? -1 : 1;
+        int trueMapPosition = literal < 0 ? -index : index;
+        int falseMapPosition = literal < 0 ? index : -index;
 
         this.assignments.put(index, assignment);
-        this.literalOccurrences.put(literalOccIndex, 0);
+        this.literalOccurrences.put(literal, 0);
 
-        List<Integer> posLiteralClauses = literalClauses.get(posMapPosition);
-        List<Integer> negLiteralClauses = literalClauses.get(negMapPosition);
+        List<Integer> trueClauses =
+                literalClauses.getOrDefault(trueMapPosition, new ArrayList<>());
+        List<Integer> falseClauses =
+                literalClauses.getOrDefault(falseMapPosition, new ArrayList<>());
 
-        if (posLiteralClauses != null) {
-            for (int clause : posLiteralClauses) {
-                this.clauseRemoved[clause] = true;
-                for (int currLit : tempClauses[clause]) {
-                    int currLitIndex;
-                    if (currLit == 0) continue;
+        for (int clause : trueClauses) {
+            this.clauseRemoved[clause] = true;
+            for (int currLit : tempClauses[clause]) {
+                if (currLit == 0) continue;
 
-                    if (currLit < 0) {
-                        currLitIndex = Math.abs(currLit) + numOfVars - 1;
-                    } else {
-                        currLitIndex = currLit - 1;
-                    }
-
-                    int currLitOccur = this.literalOccurrences.get(currLitIndex);
-                    if (currLitOccur != 0) {
-                        this.literalOccurrences.put(currLitIndex, currLitOccur - 1);
-                    }
+                int currLitOccur = this.literalOccurrences.get(currLit);
+                if (currLitOccur != 0) {
+                    this.literalOccurrences.put(currLit, currLitOccur - 1);
                 }
             }
         }
 
-        if (negLiteralClauses != null) {
-            for (int clause : negLiteralClauses) {
-                for (int j = 0, len = tempClauses[clause].length; j < len; j++) {
-                    if (tempClauses[clause][j] == -literal) {
-                        tempClauses[clause][j] = 0;
-                        clauseSize[clause]--;
-                        int negLitIndex = -literal < 0 ? literal - 1 : -literal - 1;
-                        int negLitOccur = this.literalOccurrences.get(negLitIndex);
+        for (int clause : falseClauses) {
+            for (int j = 0, len = tempClauses[clause].length; j < len; j++) {
+                if (tempClauses[clause][j] == -index) {
+                    tempClauses[clause][j] = 0;
+                    clauseSize[clause]--;
+                    int negLitIndex = -index;
+                    int negLitOccur = this.literalOccurrences.get(negLitIndex);
+                    if (negLitOccur != 0)
                         this.literalOccurrences.put(negLitIndex, negLitOccur - 1);
-                    }
                 }
             }
         }
@@ -199,15 +176,15 @@ public class SATSolver2 {
 
         for (int i = 0; i < len; i++) {
             for (int literal : clauses[i]) {
-                int position = literal > 0 ? literal - 1 : Math.abs(literal) + num - 1;
+                if (literal == 0) continue;
 
-                if (!output.containsKey(position)) {
-                    output.put(position, new ArrayList<>());
+                if (!output.containsKey(literal)) {
+                    output.put(literal, new ArrayList<>());
                 }
 
-                output.get(position).add(i);
-                int occurrence = this.literalOccurrences.getOrDefault(position, 0);
-                this.literalOccurrences.put(position, occurrence + 1);
+                output.get(literal).add(i);
+                int occurrence = this.literalOccurrences.getOrDefault(literal, 0);
+                this.literalOccurrences.put(literal, occurrence + 1);
             }
 
             clauseSize[i] = getClauseSize(clauses[i]);

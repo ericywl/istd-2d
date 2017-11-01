@@ -8,7 +8,7 @@ public class SATSolver2Test {
     public static void main(String[] args) {
         try {
             System.out.println("Reading file...");
-            Object[] parsed = CNFParser.readCNF("testcase0.cnf");
+            Object[] parsed = CNFParser.readCNF("largeSat.cnf");
             int[][] clauses = (int[][]) parsed[0];
             int numOfVars = (int) parsed[1];
 
@@ -20,8 +20,10 @@ public class SATSolver2Test {
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken/1000000.0 + "ms\n");
 
-            if (env != null)
+            if (env != null) {
+                System.out.println("SATISFIABLE");
                 System.out.println(BooleanAssignment.convert(env));
+            } else System.out.println("NOT SATISFIABLE");
 
         } catch (FileNotFoundException | IllegalArgumentException ex) {
             System.out.println(ex);
