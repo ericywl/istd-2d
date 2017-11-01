@@ -36,23 +36,28 @@ public class SATSolver2 {
     }
 
     private void preProcess() {
-        boolean unitClauseFound = true;
-        boolean pureLiteralFound = true;
+        while (eliminateUnitClauses() || eliminatePureLiterals()) {
 
-        while (unitClauseFound) {
+        }
+    }
+
+    private boolean eliminateUnitClauses() {
+        boolean unitClauseFound = true;
+        while (unitClauseFound)
+        {
             unitClauseFound = false;
             for (int i = 0; i < tempClauses.length; i++) {
-                int literal = getLiteral(tempClauses[i]);
-                if (literal != 0 && !clauseRemoved[i]) {
-                    reduceLiteral(literal);
-                    unitClauseFound = true;
+                if (clauseSize[i] == 1) {
+                    int var = getLiteral(tempClauses[i]);
+                    if (var != 0 && !clauseRemoved[i]) {
+                        reduceLiteral(var);
+                        unitClauseFound = true;
+                    }
                 }
             }
         }
 
-        while (pureLiteralFound) {
-            pureLiteralFound = eliminatePureLiterals();
-        }
+        return unitClauseFound;
     }
 
     private boolean eliminatePureLiterals() {
