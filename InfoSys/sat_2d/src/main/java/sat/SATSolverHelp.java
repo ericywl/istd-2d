@@ -36,7 +36,7 @@ public class SATSolverHelp {
 
         // unit clause
         if (minClauseSize == 1) {
-            int[][] reducedClauses = sat.reduceLiteral(literal, clauses);
+            List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
             boolean solvable = isSolvable(reducedClauses);
             if (solvable) sat.assignTrue(literal);
 
@@ -44,7 +44,7 @@ public class SATSolverHelp {
         }
 
         // if not unit clause, try assigning true then false
-        int[][] reducedClauses = sat.reduceLiteral(literal, clauses);
+        List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
         boolean solvable = isSolvable(reducedClauses);
         if (solvable) {
             sat.assignTrue(literal);

@@ -26,30 +26,32 @@ public class SATClass {
     }
 
     @SuppressWarnings("unchecked")
-    public int[][] reduceLiteral(int literal, List<Integer>[] clauses) {
+    public List<Integer>[] reduceLiteral(int literal, List<Integer>[] clauses) {
         Set<Integer> literalClauses = findLiteralClauses(clauses, literal);
         int len = clauses.length;
 
         List<Integer> helper = new ArrayList<>();
         List<Integer>[] firstPass = (List<Integer>[]) new ArrayList[len];
-        for (List<Integer> clause : clauses) {
+        for (int i = 0; i < len; i++) {
+            List<Integer> clause = clauses[i];
             for (int lit : clause) {
                 if (lit != -literal) helper.add(lit);
             }
+
+            firstPass[i] = helper;
+            helper = new ArrayList<>();
         }
 
-        int[][] reducedClauses = new int[len - literalClauses.size()][3];
-        for (int i = 0, x = 0; i < helper.length; i++) {
+        List<Integer>[] secondPass = (List<Integer>[]) new ArrayList[len - literalClauses.size()];
+        for (int i = 0, x = 0; i < len; i++) {
             if (!literalClauses.contains(i)) {
-                for (int j = 0; j < 3; j++) {
-                    reducedClauses[x][j] = helper[i][j];
-                }
+                secondPass[x] = firstPass[i];
 
                 x++;
             }
         }
 
-        return reducedClauses;
+        return secondPass;
     }
 
     // find index of clauses that the literal is in

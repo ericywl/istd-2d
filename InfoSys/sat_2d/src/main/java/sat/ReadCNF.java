@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -16,21 +18,19 @@ import sat.formula.NegLiteral;
 import sat.formula.PosLiteral;
 
 public class ReadCNF {
-    private static Clause clause = new Clause();
-    private static int maxClauseSize = 0;
-
-    public static Object[] readCNF(String fileName)
+    @SuppressWarnings("unchecked")
+    public static List<Integer>[] readCNF(String fileName)
             throws IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid file format.");
         }
-
-        Formula formula = new Formula();
-        String[] headers;
 
         String currPath = new File("").getAbsolutePath();
         FileReader readFile = new FileReader(currPath + "/sat_2d/sampleCNF/" + fileName);
         Scanner reader = new Scanner(readFile);
+        List<Integer> helper = new ArrayList<>();
+        String[] headers;
+        String[] params;
 
         String line = reader.nextLine().trim();
         while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty())
@@ -40,6 +40,11 @@ public class ReadCNF {
         if (!headers[0].equals("p")) throw new IllegalArgumentException("Missing problem line.");
         if (!headers[1].equals("cnf"))
             throw new IllegalArgumentException("Missing file format declaration.");
+
+        int numOfVars = Integer.parseInt(headers[2]);
+        int numOfClauses = Integer.parseInt(headers[3]);
+        List<Integer>[] clauses = (List<Integer>[]) new ArrayList[numOfClauses];
+        int counter = 0;
 
         outerloop:
         while (reader.hasNextLine()) {
@@ -53,35 +58,28 @@ public class ReadCNF {
                 }
             }
 
-            formula = addToFormula(line, formula);
+            params = line.split(" ");
+            for (String param : params) {
+                if (!param.equals("0")) {
+                    int literal = Integer.parseInt(param);
+                    helper.add(literal);
+                } else {
+                    clauses[counter] = helper;
+                    counter++;
+                    helper = new ArrayList<>();
+                }
+            }
+
+
+
         }
+
+        if (counter != numOfClauses)
+            throw new IllegalArgumentException("Wrong number of clauses.");
 
         reader.close();
         readFile.close();
-        return new Object[]{formula, maxClauseSize};
-    }
-
-    private static Formula addToFormula(String s, Formula formula) {
-        Literal literal;
-        int counter = 0;
-
-        for (String var : s.split(" ")) {
-            if (var.isEmpty()) {
-                // do nothing
-            } else if (!var.equals("0")) {
-                literal = var.charAt(0) == '-'
-                        ? NegLiteral.make(var.substring(1)) : PosLiteral.make(var);
-
-                clause = clause.add(literal);
-                counter++;
-            } else {
-                formula = formula.addClause(clause);
-                clause = new Clause();
-                if (counter > maxClauseSize) maxClauseSize = counter;
-                counter = 0;
-            }
-        }
-
-        return formula;
+        return clauses;
     }
 }
+

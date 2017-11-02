@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import sat.CNFParser;
-
 public class SATSolver2Test {
     public static void main(String[] args) {
         try {

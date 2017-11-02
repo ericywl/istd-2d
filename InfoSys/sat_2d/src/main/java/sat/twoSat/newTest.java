@@ -1,14 +1,19 @@
+package sat.twoSat;
+
+import java.util.List;
 import java.util.Map;
 
+import sat.ReadCNF;
 import sat.SATSolverHelp;
-import sat.CNFParser;
 
 public class newTest {
     public static void main(String[] args) {
         try {
             String readFile = "randomKSat.cnf";
             String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
-            int[][] clauses = CNFParser.readCNF(readFile);
+            List<Integer>[] clauses = ReadCNF.readCNF(readFile);
+
+            for (List<Integer> clause : clauses) System.out.println(clause);
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
