@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import sat.list.ReadCNF;
+import sat.ReadCNF;
 import sat.twoSat.BooleanAssignment;
 import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
