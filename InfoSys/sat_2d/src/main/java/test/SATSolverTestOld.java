@@ -1,4 +1,4 @@
-package sat;
+package test;
 
 
 import static org.junit.Assert.*;
@@ -9,13 +9,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
+import sat.ReadCNF;
 import sat.env.*;
 import sat.formula.*;
 import sat.twoSat.BooleanAssignment;
 import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
 
-public class SATSolverTest {
+public class SATSolverTestOld {
     private static String readFile = "testcase.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
@@ -32,7 +33,7 @@ public class SATSolverTest {
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            Environment e = SATSolver.solve(formula);
+            Environment e = SatSolverOld.solve(formula);
             long time = System.nanoTime();
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken / 1000000.0 + "ms");
@@ -87,7 +88,7 @@ public class SATSolverTest {
     @Test
     public void testSATSolver1() {
         // (a v b v c)
-        Environment e = sat.SATSolver.solve(makeFm(makeCl(a, nb, c)));
+        Environment e = SatSolverOld.solve(makeFm(makeCl(a, nb, c)));
         assertTrue("WRONG! A or C has to be true, or B has to be false.",
                 Bool.TRUE == e.get(a.getVariable())
                         || Bool.FALSE == e.get(nb.getVariable())
@@ -97,7 +98,7 @@ public class SATSolverTest {
     @Test
     public void testSATSolver2() {
         // (~a)
-        Environment e = sat.SATSolver.solve(makeFm(makeCl(na)));
+        Environment e = SatSolverOld.solve(makeFm(makeCl(na)));
         System.out.println("A = " + e.get(na.getVariable()));
 
         assertEquals(Bool.FALSE, e.get(na.getVariable()));
@@ -107,7 +108,7 @@ public class SATSolverTest {
     public void testSATSolver3() {
         // (~a v b)
         Clause c1 = makeCl(na, b);
-        Environment e = sat.SATSolver.solve(makeFm(c1));
+        Environment e = SatSolverOld.solve(makeFm(c1));
         System.out.println("A = " + e.get(na.getVariable()) + ", B = " + e.get(b.getVariable()));
 
         assertTrue("WRONG! A has to be false or B has to be true.",
@@ -120,7 +121,7 @@ public class SATSolverTest {
         // (a) ^ (~c)
         Clause c1 = makeCl(a);
         Clause c2 = makeCl(nc);
-        Environment e = sat.SATSolver.solve(makeFm(c1, c2));
+        Environment e = SatSolverOld.solve(makeFm(c1, c2));
         System.out.println("A = " + e.get(na.getVariable()) + ", C = " + e.get(c.getVariable()));
 
         assertTrue("WRONG! A has to be false and C has to be true.",

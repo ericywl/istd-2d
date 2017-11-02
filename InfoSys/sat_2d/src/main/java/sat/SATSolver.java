@@ -1,61 +1,29 @@
 package sat;
 
 
-import immutable.EmptyImList;
-import immutable.ImList;
-import sat.env.Environment;
-import sat.env.Variable;
-import sat.formula.Clause;
-import sat.formula.Formula;
-import sat.formula.Literal;
-import sat.formula.NegLiteral;
-import sat.formula.PosLiteral;
+import java.util.List;
+import java.util.Map;
 
-/**
- * A simple DPLL SAT solver. See http://en.wikipedia.org/wiki/DPLL_algorithm
- */
 public class SATSolver {
-    /**
-     * Solve the problem using a simple version of DPLL with backtracking and
-     * unit propagation. The returned environment binds literals of class
-     * bool.Variable rather than the special literals used in clausification of
-     * class clausal.Literal, so that clients can more readily use it.
-     *
-     * @return an environment for which the problem evaluates to Bool.TRUE, or
-     * null if no such environment exists.
-     */
-    public static Environment solve(Formula formula) {
-        ImList<Clause> clauses = formula.getClauses();
-        Environment newEnv = new Environment();
-        return solve(clauses, newEnv);
+    private SATClass sat = new SATClass();
+
+    public Map<Integer, Boolean> solve(List<Integer>[] clauses) {
+        if (!isSolvable(clauses)) return null;
+
+        return sat.getAssignments();
     }
 
-    /**
-     * Takes a partial assignment of variables to values, and recursively
-     * searches for a complete satisfying assignment.
-     *
-     * @param clauses formula in conjunctive normal form
-     * @param env     assignment of some or all variables in clauses to true or
-     *                false values.
-     * @return an environment for which all the clauses evaluate to Bool.TRUE,
-     * or null if no such environment exists.
-     */
-    private static Environment solve(ImList<Clause> clauses, Environment env) {
+    public boolean isSolvable(List<Integer>[] clauses) {
         // trivially satisfiable if clauses is empty
-        if (clauses.isEmpty()) {
-            return env;
-        }
+        if (clauses.length == 0) return true;
 
-        // get smallest clause or first unit clause
-        Clause smallestClause = new Clause();
+        List<Integer> smallestClause = null;
         int minClauseSize = Integer.MAX_VALUE;
-        for (Clause clause : clauses) {
-            int clauseSize = clause.size();
+        for (List<Integer> clause : clauses) {
+            int clauseSize = getClauseSize(clause);
 
             // not satisfiable if clause is empty
-            if (clauseSize == 0) {
-                return null;
-            }
+            if (clauseSize == 0) return false;
 
             // get the smaller clause of the two
             if (clauseSize < minClauseSize) {
@@ -64,57 +32,50 @@ public class SATSolver {
             }
         }
 
-        Literal lit = smallestClause.chooseLiteral();
-        Variable var = lit.getVariable();
-        ImList<Clause> tempClauses;
-        Environment tempEnv;
+        int literal = getLiteral(smallestClause);
 
-        // if unit clause, set the literal such that the clause is satisfied
+        // unit clause
         if (minClauseSize == 1) {
-            tempClauses = substitute(clauses, lit);
-            tempEnv = (lit instanceof PosLiteral) ?
-                    env.putTrue(var) : env.putFalse(var);
-            return solve(tempClauses, tempEnv);
+            List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
+            boolean solvable = isSolvable(reducedClauses);
+            if (solvable) sat.assignTrue(literal);
+
+            return solvable;
         }
 
-        Literal tempLiteral = PosLiteral.make(var);
-        Environment solutionEnv;
+        // if not unit clause, try assigning true then false
+        List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
+        boolean solvable = isSolvable(reducedClauses);
+        if (solvable) {
+            sat.assignTrue(literal);
+            return true;
+        } else {
+            reducedClauses = sat.reduceLiteral(-literal, clauses);
+            solvable = isSolvable(reducedClauses);
+            if (solvable) {
+                sat.assignFalse(literal);
+                return true;
+            }
 
-        // if not unit clause
-        // try setting first literal to True
-        tempEnv = env.putTrue(var);
-        tempClauses = substitute(clauses, tempLiteral);
-        solutionEnv = solve(tempClauses, tempEnv);
-
-        // if the above fails, set the literal to False
-        if (solutionEnv == null) {
-            tempEnv = env.putFalse(var);
-            tempLiteral = tempLiteral.getNegation();
-            tempClauses = substitute(clauses, tempLiteral);
-            return solve(tempClauses, tempEnv);
+            return false;
         }
-
-        return solutionEnv;
     }
 
-    /**
-     * given a clause list and literal, produce a new list resulting from
-     * setting that literal to true
-     *
-     * @param clauses , a list of clauses
-     * @param literal       , a literal to set to true
-     * @return a new list of clauses resulting from setting l to true
-     */
-    private static ImList<Clause> substitute(ImList<Clause> clauses, Literal literal) {
-        if (clauses.isEmpty()) return clauses;
+    private int getClauseSize(List<Integer> clause) {
+        int size = 0;
+        for (int lit : clause)
+            if (lit != 0)
+                size++;
 
-        ImList<Clause> subClauses = new EmptyImList<>();
-        for (Clause clause : clauses) {
-            Clause reducedClause = clause.reduce(literal);
-            if (reducedClause != null) subClauses = subClauses.add(reducedClause);
-        }
-
-        return subClauses;
+        return size;
     }
 
+    private int getLiteral(List<Integer> clause) {
+        for (int lit : clause)
+            if (lit != 0)
+                return lit;
+
+        // empty clause
+        return 0;
+    }
 }

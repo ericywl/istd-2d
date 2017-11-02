@@ -5,7 +5,7 @@
  * 6.005 Elements of Software Construction, Fall 2007
  * Copyright 2007 Daniel Jackson
  */
-package immutable;
+package test.immutable;
 
 import java.util.Iterator;
 

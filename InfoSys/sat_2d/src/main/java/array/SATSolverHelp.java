@@ -1,4 +1,4 @@
-package sat;
+package array;
 
 
 import java.util.List;

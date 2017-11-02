@@ -1,10 +1,7 @@
-package sat.twoSat;
+package array;
 
 import java.util.List;
 import java.util.Map;
-
-import sat.ReadCNF;
-import sat.SATSolverHelp;
 
 public class newTest {
     public static void main(String[] args) {

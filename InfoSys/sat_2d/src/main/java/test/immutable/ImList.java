@@ -4,7 +4,7 @@
  * <p>
  * Copyright 2007 Daniel Jackson and MIT
  */
-package immutable;
+package test.immutable;
 
 import java.util.Iterator;
 

@@ -7,8 +7,8 @@
 package sat.formula;
 
 import sat.env.Variable;
-import immutable.ImListMap;
-import immutable.ImMap;
+import test.immutable.ImListMap;
+import test.immutable.ImMap;
 
 /**
  * Class representing positive literals.

@@ -6,8 +6,8 @@
  */
 package sat.env;
 
-import immutable.ImListMap;
-import immutable.ImMap;
+import test.immutable.ImListMap;
+import test.immutable.ImMap;
 
 /**
  * An environment is an immutable mapping from variables to boolean values.

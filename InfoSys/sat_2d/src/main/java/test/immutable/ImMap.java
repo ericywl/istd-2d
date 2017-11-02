@@ -4,7 +4,7 @@
  * 6.005 Elements of Software Construction
  * (c) 2008, MIT and Daniel Jackson
  */
-package immutable;
+package test.immutable;
 
 /**
  * Interface for immutable generic map from keys to values.

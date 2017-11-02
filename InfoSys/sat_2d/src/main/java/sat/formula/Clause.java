@@ -6,9 +6,9 @@
  */
 package sat.formula;
 
-import immutable.EmptyImList;
-import immutable.ImList;
-import immutable.NonEmptyImList;
+import test.immutable.EmptyImList;
+import test.immutable.ImList;
+import test.immutable.NonEmptyImList;
 
 import java.util.Iterator;
 
