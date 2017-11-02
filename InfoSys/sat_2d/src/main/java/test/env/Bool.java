@@ -4,7 +4,7 @@
  * Time: 3:16:01 PM
  * (c) 2008, Daniel Jackson and MIT
  */
-package sat.env;
+package test.env;
 
 /**
  * Boolean type for use in evaluating formulas.

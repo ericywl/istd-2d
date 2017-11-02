@@ -4,10 +4,10 @@
  * 6.005 Elements of Software Construction
  * (c) 2008, MIT and Daniel Jackson
  */
-package sat.formula;
-import sat.env.Bool;
-import sat.env.Environment;
-import sat.env.Variable;
+package test.formula;
+import test.env.Bool;
+import test.env.Environment;
+import test.env.Variable;
 
 /**
  * Class representing negative literals.

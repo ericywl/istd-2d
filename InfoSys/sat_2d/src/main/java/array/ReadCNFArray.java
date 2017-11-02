@@ -4,14 +4,11 @@ package array;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class ReadCNF {
-    @SuppressWarnings("unchecked")
-    public static List<Integer>[] readCNF(String fileName)
+public class ReadCNFArray {
+    public static int[][] readCNF(String fileName)
             throws IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
             throw new IllegalArgumentException("Invalid file format.");
@@ -20,7 +17,6 @@ public class ReadCNF {
         String currPath = new File("").getAbsolutePath();
         FileReader readFile = new FileReader(currPath + "/sat_2d/sampleCNF/" + fileName);
         Scanner reader = new Scanner(readFile);
-        List<Integer> helper = new ArrayList<>();
         String[] headers;
         String[] params;
 
@@ -35,7 +31,7 @@ public class ReadCNF {
 
         int numOfVars = Integer.parseInt(headers[2]);
         int numOfClauses = Integer.parseInt(headers[3]);
-        List<Integer>[] clauses = (List<Integer>[]) new ArrayList[numOfClauses];
+        int[][] clauses = new int[numOfClauses][3];
         int counter = 0;
 
         outerloop:
@@ -51,19 +47,19 @@ public class ReadCNF {
             }
 
             params = line.split(" ");
+            int innerCounter = 0;
             for (String param : params) {
                 if (!param.equals("0")) {
                     int literal = Integer.parseInt(param);
-                    helper.add(literal);
+                    clauses[counter][innerCounter] = literal;
+                    innerCounter++;
+                    if (innerCounter > 3)
+                        throw new IllegalArgumentException("File contains more than 2 literals per clause.");
                 } else {
-                    clauses[counter] = helper;
+                    innerCounter = 0;
                     counter++;
-                    helper = new ArrayList<>();
                 }
             }
-
-
-
         }
 
         if (counter != numOfClauses)

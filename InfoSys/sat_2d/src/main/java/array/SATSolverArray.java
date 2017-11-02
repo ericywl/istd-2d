@@ -4,22 +4,22 @@ package array;
 import java.util.List;
 import java.util.Map;
 
-public class SATSolverHelp {
-    private SATClass sat = new SATClass();
+public class SATSolverArray {
+    private SATClassArray sat = new SATClassArray();
 
-    public Map<Integer, Boolean> solve(List<Integer>[] clauses) {
+    public Map<Integer, Boolean> solve(int[][] clauses) {
         if (!isSolvable(clauses)) return null;
 
         return sat.getAssignments();
     }
 
-    public boolean isSolvable(List<Integer>[] clauses) {
+    public boolean isSolvable(int[][] clauses) {
         // trivially satisfiable if clauses is empty
         if (clauses.length == 0) return true;
 
-        List<Integer> smallestClause = null;
+        int[] smallestClause = null;
         int minClauseSize = Integer.MAX_VALUE;
-        for (List<Integer> clause : clauses) {
+        for (int[] clause : clauses) {
             int clauseSize = getClauseSize(clause);
 
             // not satisfiable if clause is empty
@@ -36,7 +36,7 @@ public class SATSolverHelp {
 
         // unit clause
         if (minClauseSize == 1) {
-            List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
+            int[][] reducedClauses = sat.reduceLiteral(literal, clauses);
             boolean solvable = isSolvable(reducedClauses);
             if (solvable) sat.assignTrue(literal);
 
@@ -44,7 +44,7 @@ public class SATSolverHelp {
         }
 
         // if not unit clause, try assigning true then false
-        List<Integer>[] reducedClauses = sat.reduceLiteral(literal, clauses);
+        int[][] reducedClauses = sat.reduceLiteral(literal, clauses);
         boolean solvable = isSolvable(reducedClauses);
         if (solvable) {
             sat.assignTrue(literal);
@@ -61,7 +61,7 @@ public class SATSolverHelp {
         }
     }
 
-    private int getClauseSize(List<Integer> clause) {
+    private int getClauseSize(int[] clause) {
         int size = 0;
         for (int lit : clause)
             if (lit != 0)
@@ -70,7 +70,7 @@ public class SATSolverHelp {
         return size;
     }
 
-    private int getLiteral(List<Integer> clause) {
+    private int getLiteral(int[] clause) {
         for (int lit : clause)
             if (lit != 0)
                 return lit;

@@ -4,7 +4,7 @@
  * 6.005 Elements of Software Construction
  * (c) 2008, MIT and Daniel Jackson
  */
-package sat.formula;
+package test.formula;
 
 import test.immutable.EmptyImList;
 import test.immutable.ImList;

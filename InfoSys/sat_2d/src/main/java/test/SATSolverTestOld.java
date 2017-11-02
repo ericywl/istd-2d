@@ -15,6 +15,12 @@ import sat.formula.*;
 import sat.twoSat.BooleanAssignment;
 import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
+import test.env.Bool;
+import test.env.Environment;
+import test.formula.Clause;
+import test.formula.Formula;
+import test.formula.Literal;
+import test.formula.PosLiteral;
 
 public class SATSolverTestOld {
     private static String readFile = "testcase.cnf";

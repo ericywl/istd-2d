@@ -1,20 +1,18 @@
-package array;
+package sat;
 
 import java.util.List;
 import java.util.Map;
 
-public class newTest {
+public class SATSolverTest {
     public static void main(String[] args) {
         try {
             String readFile = "randomKSat.cnf";
             String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
             List<Integer>[] clauses = ReadCNF.readCNF(readFile);
-
-            for (List<Integer> clause : clauses) System.out.println(clause);
+            SATSolver sat2 = new SATSolver();
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            SATSolverHelp sat2 = new SATSolverHelp();
             Map<Integer, Boolean> env = sat2.solve(clauses);
             long time = System.nanoTime();
             long timeTaken = time - started;

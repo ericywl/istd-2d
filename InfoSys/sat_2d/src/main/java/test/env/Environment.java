@@ -4,7 +4,7 @@
  * 6.005 Elements of Software Construction
  * (c) 2008, MIT and Daniel Jackson
  */
-package sat.env;
+package test.env;
 
 import test.immutable.ImListMap;
 import test.immutable.ImMap;

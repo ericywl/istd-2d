@@ -13,14 +13,14 @@ public class SATSolver {
         return sat.getAssignments();
     }
 
-    public boolean isSolvable(List<Integer>[] clauses) {
+    private boolean isSolvable(List<Integer>[] clauses) {
         // trivially satisfiable if clauses is empty
         if (clauses.length == 0) return true;
 
         List<Integer> smallestClause = null;
         int minClauseSize = Integer.MAX_VALUE;
         for (List<Integer> clause : clauses) {
-            int clauseSize = getClauseSize(clause);
+            int clauseSize = clause.size();
 
             // not satisfiable if clause is empty
             if (clauseSize == 0) return false;
@@ -61,15 +61,7 @@ public class SATSolver {
         }
     }
 
-    private int getClauseSize(List<Integer> clause) {
-        int size = 0;
-        for (int lit : clause)
-            if (lit != 0)
-                size++;
-
-        return size;
-    }
-
+    // get first literal in clause
     private int getLiteral(List<Integer> clause) {
         for (int lit : clause)
             if (lit != 0)

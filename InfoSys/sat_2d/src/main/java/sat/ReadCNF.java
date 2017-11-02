@@ -2,20 +2,12 @@ package sat;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
-import sat.formula.Clause;
-import sat.formula.Formula;
-import sat.formula.Literal;
-import sat.formula.NegLiteral;
-import sat.formula.PosLiteral;
 
 public class ReadCNF {
     @SuppressWarnings("unchecked")

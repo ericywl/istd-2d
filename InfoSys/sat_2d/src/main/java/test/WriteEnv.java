@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import sat.env.Environment;
+import test.env.Environment;
 
 public class WriteEnv {
     public static void writeEnv(Environment env, String fileName) throws IOException {

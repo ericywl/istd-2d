@@ -4,9 +4,9 @@
  * 6.005 Elements of Software Construction
  * (c) 2008, MIT and Daniel Jackson
  */
-package sat.formula;
+package test.formula;
 
-import sat.env.Variable;
+import test.env.Variable;
 import test.immutable.ImListMap;
 import test.immutable.ImMap;
 

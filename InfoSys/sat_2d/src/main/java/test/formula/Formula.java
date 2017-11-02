@@ -4,7 +4,7 @@
  * 6.005 Elements of Software Construction
  * (c) 2007-2009, MIT 6.005 Staff
  */
-package sat.formula;
+package test.formula;
 
 import test.immutable.EmptyImList;
 import test.immutable.ImList;
@@ -13,7 +13,7 @@ import test.immutable.NonEmptyImList;
 
 import java.util.Iterator;
 
-import sat.env.Variable;
+import test.env.Variable;
 
 /**
  * Formula represents an immutable boolean formula in conjunctive normal form,

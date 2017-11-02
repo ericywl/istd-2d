@@ -3,12 +3,12 @@ package test;
 
 import test.immutable.EmptyImList;
 import test.immutable.ImList;
-import sat.env.Environment;
-import sat.env.Variable;
-import sat.formula.Clause;
-import sat.formula.Formula;
-import sat.formula.Literal;
-import sat.formula.PosLiteral;
+import test.env.Environment;
+import test.env.Variable;
+import test.formula.Clause;
+import test.formula.Formula;
+import test.formula.Literal;
+import test.formula.PosLiteral;
 
 /**
  * A simple DPLL SAT solver. See http://en.wikipedia.org/wiki/DPLL_algorithm
