@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SATSolver2Test {
     public static void main(String[] args) {
-        String readFile = "2Sat.cnf";
+        String readFile = "testcase.cnf";
         String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
         try {

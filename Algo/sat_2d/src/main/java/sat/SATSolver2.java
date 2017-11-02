@@ -37,8 +37,7 @@ public class SATSolver2 {
         // proceed to use SCC to solve
         else {
             Graph graph = new Graph(numOfVars, tempClauses, trueClause);
-            Set<Integer>[] scc = (Set<Integer>[]) new HashSet[2 * numOfVars + 1];
-            return graph.solve(this.assignments, scc);
+            return graph.solve(this.assignments);
         }
     }
 
@@ -71,14 +70,14 @@ public class SATSolver2 {
 
     // remove pure literals
     private boolean removePureLiterals(Map<Integer, Set<Integer>> literalClausesMap) {
-        for (int literal = 1; literal <= numOfVars; literal++) {
-            int numPosOccurr = this.literalOccurrences.getOrDefault(literal, 0);
-            int numNegOccurr = this.literalOccurrences.getOrDefault(-literal, 0);
+        for (int variable = 1; variable <= numOfVars; variable++) {
+            int numPosOccurr = this.literalOccurrences.getOrDefault(variable, 0);
+            int numNegOccurr = this.literalOccurrences.getOrDefault(-variable, 0);
             if (numPosOccurr == 0 && numNegOccurr != 0) {
-                reduceLiteral(-literal, literalClausesMap);
+                reduceLiteral(-variable, literalClausesMap);
                 return true;
             } else if (numPosOccurr != 0 && numNegOccurr == 0) {
-                reduceLiteral(literal, literalClausesMap);
+                reduceLiteral(variable, literalClausesMap);
                 return true;
             }
         }
@@ -155,9 +154,9 @@ public class SATSolver2 {
                     tempClauses[clauseIndex][j] = 0;
                     clauseSize[clauseIndex]--;
 
-                    int negLitOccur = this.literalOccurrences.getOrDefault(-index, 0);
+                    int negLitOccur = this.literalOccurrences.getOrDefault(-literal, 0);
                     if (negLitOccur != 0)
-                        this.literalOccurrences.put(-index, negLitOccur - 1);
+                        this.literalOccurrences.put(-literal, negLitOccur - 1);
                 }
             }
         }
