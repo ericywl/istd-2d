@@ -30,11 +30,11 @@ public class SATSolver2 {
         // empty clause -> not satisfiable
         if (this.hasEmptyClause(tempClauses)) return null;
 
-        // empty list of clauses -> trivially satisfiable
+            // empty list of clauses -> trivially satisfiable
         else if (this.noClauses(trueClause))
             return this.assignments;
 
-        // proceed to use SCC to solve
+            // proceed to use SCC to solve
         else {
             Graph graph = new Graph(numOfVars, tempClauses, trueClause);
             return graph.solve(this.assignments);
@@ -43,12 +43,12 @@ public class SATSolver2 {
 
     // combination of unit propagation and pure literal removal
     private void preProcess(Map<Integer, Set<Integer>> literalClausesMap) {
-        // boolean found = removePureLiterals(literalClausesMap);
+        boolean found = removePureLiterals(literalClausesMap);
 
-        // while (found) {
-            // found = removePureLiterals(literalClausesMap);
+        while (found) {
+            found = removePureLiterals(literalClausesMap);
             unitPropagation(literalClausesMap);
-       // }
+        }
     }
 
     // apply unit propagation

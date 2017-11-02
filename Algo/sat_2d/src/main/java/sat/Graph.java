@@ -102,13 +102,13 @@ public class Graph {
         // node is root
         if (this.lowlink[node].equals(this.indices[node])) {
             List<Integer> currentSCC = new ArrayList<>();
-            int poppedNode;
+            int successor;
 
             do {
-                poppedNode = this.stack.pop();
-                this.sccSearches[poppedNode] = this.sccSize;
-                currentSCC.add(convert(poppedNode));
-            } while (poppedNode != node);
+                successor = this.stack.pop();
+                this.sccSearches[successor] = this.sccSize;
+                currentSCC.add(convert(successor));
+            } while (successor != node);
 
             if (currentSCC.size() != 0) {
                 this.scc[sccSize] = currentSCC;
@@ -134,7 +134,7 @@ public class Graph {
 
         Map<Integer, Integer> result = new HashMap<>();
 
-        for (int i = this.sccSize - 1; i >= 0; i--) {
+        for (int i = 0; i < this.sccSize; i++) {
             List<Integer> components = this.scc[i];
             result = assignVar(i, components, assignments);
         }
@@ -142,7 +142,7 @@ public class Graph {
         return result;
     }
 
-    private Map<Integer, Integer> assignVar(int sccCompIndex, List<Integer> components,
+    private Map<Integer, Integer> assignVar(int i, List<Integer> components,
                                             Map<Integer, Integer> assignments) {
         for (int component : components) {
             int k = Math.abs(component);
@@ -152,7 +152,7 @@ public class Graph {
             }
         }
 
-        List<Integer> edgeList = this.sccEdges.get(sccCompIndex);
+        List<Integer> edgeList = this.sccEdges.get(i);
         if (edgeList.size() != 0) {
             for (int edge : edgeList) {
                 assignVar(edge, this.scc[edge], assignments);
@@ -175,5 +175,7 @@ public class Graph {
 
             sccEdges.put(i, edgeList);
         }
+
+        System.out.println(sccEdges);
     }
 }

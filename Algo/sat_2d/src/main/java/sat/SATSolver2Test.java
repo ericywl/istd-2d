@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SATSolver2Test {
     public static void main(String[] args) {
-        String readFile = "testcase.cnf";
+        String readFile = "test.cnf";
         String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
         try {
@@ -16,6 +16,9 @@ public class SATSolver2Test {
             int[][] clauses = (int[][]) parsed[0];
             int numOfVars = (int) parsed[1];
 
+            GraphTest g = new GraphTest(clauses);
+
+            /*
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
             SATSolver2 sat2 = new SATSolver2(clauses, numOfVars);
@@ -31,6 +34,7 @@ public class SATSolver2Test {
                 System.out.println("Writing to " + writeFile + "...");
                 BooleanAssignment.writeAssignments(env, writeFile);
             } else System.out.println("NOT SATISFIABLE");
+            */
 
             System.out.println("DONE");
 
