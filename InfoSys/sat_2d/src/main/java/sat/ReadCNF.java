@@ -1,4 +1,4 @@
-package sat.list;
+package sat;
 
 
 import java.io.File;

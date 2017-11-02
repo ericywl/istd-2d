@@ -33,6 +33,7 @@ public class ReadCNFArray {
         int numOfClauses = Integer.parseInt(headers[3]);
         int[][] clauses = new int[numOfClauses][3];
         int counter = 0;
+        int maxClauseSize = 0;
 
         outerloop:
         while (reader.hasNextLine()) {
@@ -56,6 +57,7 @@ public class ReadCNFArray {
                     if (innerCounter > 3)
                         throw new IllegalArgumentException("File contains more than 2 literals per clause.");
                 } else {
+                    maxClauseSize = Math.max(maxClauseSize, innerCounter);
                     innerCounter = 0;
                     counter++;
                 }
