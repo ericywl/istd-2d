@@ -65,12 +65,13 @@ public class ReadCNF {
             }
         }
 
-        if (counter != numOfClauses)
+        if (counter != numOfClauses) {
             throw new IllegalArgumentException("Wrong number of clauses.");
+        }
 
         reader.close();
         readFile.close();
-        return new Object[]{clauses, maxClauseSize};
+        return new Object[]{clauses, maxClauseSize, numOfVars};
     }
 }
 

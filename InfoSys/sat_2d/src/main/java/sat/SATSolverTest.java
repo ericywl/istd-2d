@@ -12,7 +12,7 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
-    private static String readFile = "largeSat.cnf";
+    private static String readFile = "s8Sat.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
@@ -20,6 +20,7 @@ public class SATSolverTest {
             Object[] parsed = ReadCNF.readCNF(readFile);
             List<Integer>[] clauses = (List<Integer>[]) parsed[0];
             int maxClauseSize = (int) parsed[1];
+            int numOfVars = (int) parsed[2];
 
             if (maxClauseSize < 3) {
                 run2SAT();
@@ -27,22 +28,23 @@ public class SATSolverTest {
             }
 
             if (maxClauseSize == 3) {
-                run3SAT();
+                run3SAT(numOfVars);
                 return;
             }
 
-            SATSolver sat2 = new SATSolver();
+            SATSolver sat = new SATSolver();
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            Map<Integer, Boolean> env = sat2.solve(clauses);
+            Map<Integer, Boolean> env = sat.solve(clauses);
             long time = System.nanoTime();
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
 
             if (env != null) {
                 System.out.println("SATISFIABLE\n");
-                System.out.println(env);
+                System.out.println("Writing to " + writeFile + "...");
+                WriteENV.writeENV(env, writeFile);
             } else System.out.println("NOT SATISFIABLE\n");
 
             System.out.println("DONE");
@@ -53,11 +55,11 @@ public class SATSolverTest {
 
     private static void run2SAT() throws IOException {
         int[][] clauses = CNFParser.readCNF(readFile);
+        SATSolver2 sat2 = new SATSolver2(clauses);
 
         System.out.println("SAT solver starts!!!");
         long started = System.nanoTime();
-        SATSolver2 sat = new SATSolver2(clauses);
-        Map<Integer, Integer> env = sat.solve();
+        Map<Integer, Integer> env = sat2.solve();
         long time = System.nanoTime();
         long timeTaken = time - started;
         System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
@@ -71,21 +73,22 @@ public class SATSolverTest {
         System.out.println("DONE");
     }
 
-    private static void run3SAT() throws IOException {
+    private static void run3SAT(int numOfVars) throws IOException {
         int[][] clauses = ReadCNFArray.readCNF(readFile);
 
-        SATSolverArray sat = new SATSolverArray();
+        SATSolverArray sat3 = new SATSolverArray();
 
         System.out.println("SAT solver starts!!!");
         long started = System.nanoTime();
-        Map<Integer, Boolean> env = sat.solve(clauses);
+        Map<Integer, Boolean> env = sat3.solve(clauses);
         long time = System.nanoTime();
         long timeTaken = time - started;
         System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
 
         if (env != null) {
             System.out.println("SATISFIABLE\n");
-            System.out.println(env);
+            System.out.println("Writing to " + writeFile + "...");
+            WriteENV.writeENV(env, writeFile);
         } else System.out.println("NOT SATISFIABLE\n");
 
         System.out.println("DONE");

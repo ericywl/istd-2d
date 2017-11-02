@@ -11,6 +11,7 @@ public class SATSolver {
         if (!isSolvable(clauses))
             return null;
 
+
         return sat.getAssignments();
     }
 

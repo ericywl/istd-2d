@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import sat.ReadCNF;
+import sat.WriteENV;
 import sat.twoSat.BooleanAssignment;
 import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
@@ -42,13 +43,15 @@ public class SATSolverTestOld {
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken / 1000000.0 + "ms");
 
+            /*
             if (e != null) {
                 System.out.println("SATISFIABLE\n");
                 System.out.println("Writing to " + writeFile + "...");
-                WriteEnv.writeEnv(e, writeFile);
+                WriteENV.writeENV(e, writeFile);
             } else {
                 System.out.println("NOT SATISFIABLE\n");
             }
+            */
 
             System.out.println("DONE");
 
