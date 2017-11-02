@@ -62,11 +62,6 @@ public class SATSolver {
                 minClauseSize = clauseSize;
                 smallestClause = clause;
             }
-
-            // if the current smallest clause is already unit, break out of loop
-            if (minClauseSize == 1) {
-                break;
-            }
         }
 
         Literal lit = smallestClause.chooseLiteral();

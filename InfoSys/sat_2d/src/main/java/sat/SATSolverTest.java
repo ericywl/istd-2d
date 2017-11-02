@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import sat.*;
 import sat.env.*;
 import sat.formula.*;
 import sat.twoSat.BooleanAssignment;
@@ -17,7 +16,7 @@ import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
 
 public class SATSolverTest {
-    private static String readFile = "largeSat.cnf";
+    private static String readFile = "largeUnsat.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
@@ -26,14 +25,14 @@ public class SATSolverTest {
             Object[] parsed = ReadCNF.readCNF(readFile);
             Formula formula = (Formula) parsed[0];
             int maxClauseSize = (int) parsed[1];
-            if (maxClauseSize < 3) {
+            if (maxClauseSize < 2) {
                 run2SAT();
                 return;
             }
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            Environment e = sat.SATSolver.solve(formula);
+            Environment e = SATSolver.solve(formula);
             long time = System.nanoTime();
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken / 1000000.0 + "ms");
