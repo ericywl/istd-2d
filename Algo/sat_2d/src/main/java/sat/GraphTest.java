@@ -1,6 +1,7 @@
 package sat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,17 +11,26 @@ import java.util.Stack;
 
 public class GraphTest {
     private Map<Integer, Integer> indices, lowlinks;
-    private Stack<Integer> stack = new Stack<>();
-    private int index = 0;
     private Map<Integer, Set<Integer>> graph;
+    private Map<Integer, Integer> assignments;
+    private Stack<Integer> stack = new Stack<>();
     private List<Set<Integer>> scComponents = new ArrayList<>();
+    private int index = 0;
+    private int[][] clauses;
 
-    public GraphTest(int[][] clauses) {
+    public GraphTest(int[][] clauses, Map<Integer, Integer> assignments) {
         indices = new HashMap<>();
         lowlinks = new HashMap<>();
         graph = new HashMap<>();
 
+        this.assignments = assignments;
+        this.clauses = clauses;
+
         for (int[] clause : clauses) {
+            System.out.println(Arrays.toString(clause));
+        }
+
+        for (int[] clause : this.clauses) {
             addClause(clause);
         }
 
@@ -29,8 +39,6 @@ public class GraphTest {
                 tarjanAlgorithm(node);
             }
         }
-
-        System.out.println(scComponents);
     }
 
     private void addClause(int[] clause) {
@@ -79,5 +87,26 @@ public class GraphTest {
         }
     }
 
+    public boolean solve() {
+        System.out.println(scComponents);
+        for (Set<Integer> component : scComponents) {
+            System.out.println(component);
+            for (int literal : component) {
+                System.out.println(literal);
+                if (component.contains(-literal))
+                    return false;
+
+                int ass = literal < 0 ? -1 : 1;
+                if (!assignments.containsKey(Math.abs(literal)))
+                    assignments.put(Math.abs(literal), ass);
+            }
+        }
+
+        return true;
+    }
+
+    public Map<Integer, Integer> getAssignments() {
+        return this.assignments;
+    }
 }
 

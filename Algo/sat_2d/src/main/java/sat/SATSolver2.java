@@ -22,7 +22,7 @@ public class SATSolver2 {
         Map<Integer, Set<Integer>> literalClausesMap
                 = findLiteralClauses(clauses);
 
-        preProcess(literalClausesMap);
+        unitPropagation(literalClausesMap);
     }
 
     @SuppressWarnings("unchecked")
@@ -30,24 +30,16 @@ public class SATSolver2 {
         // empty clause -> not satisfiable
         if (this.hasEmptyClause(tempClauses)) return null;
 
-            // empty list of clauses -> trivially satisfiable
+        // empty list of clauses -> trivially satisfiable
         else if (this.noClauses(trueClause))
             return this.assignments;
 
-            // proceed to use SCC to solve
+        // proceed to use SCC to solve
         else {
-            Graph graph = new Graph(numOfVars, tempClauses, trueClause);
-            return graph.solve(this.assignments);
-        }
-    }
+            GraphTest g = new GraphTest(tempClauses, this.assignments);
+            g.solve();
 
-    // combination of unit propagation and pure literal removal
-    private void preProcess(Map<Integer, Set<Integer>> literalClausesMap) {
-        boolean found = removePureLiterals(literalClausesMap);
-
-        while (found) {
-            found = removePureLiterals(literalClausesMap);
-            unitPropagation(literalClausesMap);
+            return g.getAssignments();
         }
     }
 
@@ -66,23 +58,6 @@ public class SATSolver2 {
                 }
             }
         }
-    }
-
-    // remove pure literals
-    private boolean removePureLiterals(Map<Integer, Set<Integer>> literalClausesMap) {
-        for (int variable = 1; variable <= numOfVars; variable++) {
-            int numPosOccurr = this.literalOccurrences.getOrDefault(variable, 0);
-            int numNegOccurr = this.literalOccurrences.getOrDefault(-variable, 0);
-            if (numPosOccurr == 0 && numNegOccurr != 0) {
-                reduceLiteral(-variable, literalClausesMap);
-                return true;
-            } else if (numPosOccurr != 0 && numNegOccurr == 0) {
-                reduceLiteral(variable, literalClausesMap);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     // get non-zero literal
