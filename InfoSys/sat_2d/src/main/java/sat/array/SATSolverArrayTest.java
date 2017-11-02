@@ -1,15 +1,14 @@
-package sat;
+package sat.array;
 
-import java.util.List;
 import java.util.Map;
 
-public class SATSolverTest {
+public class SATSolverArrayTest {
     public static void main(String[] args) {
         try {
             String readFile = "randomKSat.cnf";
             String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
-            List<Integer>[] clauses = ReadCNF.readCNF(readFile);
-            SATSolver sat2 = new SATSolver();
+            int[][] clauses = ReadCNFArray.readCNF(readFile);
+            SATSolverArray sat2 = new SATSolverArray();
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();

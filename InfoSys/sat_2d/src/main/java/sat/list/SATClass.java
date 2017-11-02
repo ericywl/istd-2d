@@ -1,12 +1,14 @@
-package array;
+package sat.list;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SATClassArray {
+public class SATClass {
     private Map<Integer, Boolean> assignments = new HashMap<>();
 
     public void assignTrue(int literal) {
@@ -24,27 +26,26 @@ public class SATClassArray {
     }
 
     @SuppressWarnings("unchecked")
-    public int[][] reduceLiteral(int literal, int[][] clauses) {
+    public List<Integer>[] reduceLiteral(int literal, List<Integer>[] clauses) {
         Set<Integer> literalClauses = findLiteralClauses(clauses, literal);
         int len = clauses.length;
 
-        int[][] firstPass = new int[len][3];
+        List<Integer> helper = new ArrayList<>();
+        List<Integer>[] firstPass = (List<Integer>[]) new ArrayList[len];
         for (int i = 0; i < len; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (clauses[i][j] == -literal) {
-                    firstPass[i][j] = 0;
-                } else {
-                    firstPass[i][j] = clauses[i][j];
-                }
+            List<Integer> clause = clauses[i];
+            for (int lit : clause) {
+                if (lit != -literal) helper.add(lit);
             }
+
+            firstPass[i] = helper;
+            helper = new ArrayList<>();
         }
 
-        int[][] secondPass = new int[len - literalClauses.size()][3];
+        List<Integer>[] secondPass = (List<Integer>[]) new ArrayList[len - literalClauses.size()];
         for (int i = 0, x = 0; i < len; i++) {
             if (!literalClauses.contains(i)) {
-                for (int j = 0; j < 3; j++) {
-                    secondPass[x][j] = firstPass[i][j];
-                }
+                secondPass[x] = firstPass[i];
 
                 x++;
             }
@@ -54,7 +55,7 @@ public class SATClassArray {
     }
 
     // find index of clauses that the literal is in
-    private Set<Integer> findLiteralClauses(int[][] clauses, int target) {
+    private Set<Integer> findLiteralClauses(List<Integer>[] clauses, int target) {
         int len = clauses.length;
         Set<Integer> output = new HashSet<>();
 

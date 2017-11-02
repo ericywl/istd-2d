@@ -1,4 +1,4 @@
-package sat;
+package sat.list;
 
 
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ReadCNF {
     @SuppressWarnings("unchecked")
-    public static List<Integer>[] readCNF(String fileName)
+    public static Object[] readCNF(String fileName)
             throws IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
             throw new IllegalArgumentException("Invalid file format.");
@@ -37,6 +37,7 @@ public class ReadCNF {
         int numOfClauses = Integer.parseInt(headers[3]);
         List<Integer>[] clauses = (List<Integer>[]) new ArrayList[numOfClauses];
         int counter = 0;
+        int maxClauseSize = 0;
 
         outerloop:
         while (reader.hasNextLine()) {
@@ -57,13 +58,11 @@ public class ReadCNF {
                     helper.add(literal);
                 } else {
                     clauses[counter] = helper;
+                    maxClauseSize = Math.max(maxClauseSize, helper.size());
                     counter++;
                     helper = new ArrayList<>();
                 }
             }
-
-
-
         }
 
         if (counter != numOfClauses)
@@ -71,7 +70,7 @@ public class ReadCNF {
 
         reader.close();
         readFile.close();
-        return clauses;
+        return new Object[]{clauses, maxClauseSize};
     }
 }
 

@@ -1,4 +1,4 @@
-package array;
+package sat.array;
 
 
 import java.io.File;
