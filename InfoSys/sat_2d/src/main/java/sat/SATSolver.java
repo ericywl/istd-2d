@@ -90,7 +90,7 @@ public class SATSolver {
         if (solutionEnv == null) {
             tempEnv = env.putFalse(var);
             tempLiteral = tempLiteral.getNegation();
-            tempClauses = substitute(tempClauses, tempLiteral);
+            tempClauses = substitute(clauses, tempLiteral);
             return solve(tempClauses, tempEnv);
         }
 

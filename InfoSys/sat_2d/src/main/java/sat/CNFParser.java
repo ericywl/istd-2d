@@ -1,4 +1,4 @@
-package sat.twoSat;
+package sat;
 
 
 import java.io.File;
@@ -31,7 +31,7 @@ public class CNFParser {
 
         int numOfVars = Integer.parseInt(headers[2]);
         int numOfClauses = Integer.parseInt(headers[3]);
-        int[][] clauses = new int[numOfClauses][2];
+        int[][] clauses = new int[numOfClauses][3];
         int counter = 0;
 
         outerloop:
@@ -53,8 +53,8 @@ public class CNFParser {
                     int literal = Integer.parseInt(param);
                     clauses[counter][innerCounter] = literal;
                     innerCounter++;
-                    if (innerCounter > 2)
-                        throw new IllegalArgumentException("File contains more than 2 literals per clause.");
+                    if (innerCounter > 3)
+                        throw new IllegalArgumentException("File contains more than 3 literals per clause.");
                 } else {
                     innerCounter = 0;
                     counter++;

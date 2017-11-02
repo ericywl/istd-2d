@@ -104,7 +104,7 @@ public class Graph {
         return true;
     }
 
-    // used to get the truth values
+    // truth values getter
     public Map<Integer, Integer> getAssignments() {
         return this.assignments;
     }

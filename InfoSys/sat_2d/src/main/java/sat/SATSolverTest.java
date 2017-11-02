@@ -12,11 +12,10 @@ import java.util.Map;
 import sat.env.*;
 import sat.formula.*;
 import sat.twoSat.BooleanAssignment;
-import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
 
 public class SATSolverTest {
-    private static String readFile = "largeUnsat.cnf";
+    private static String readFile = "testcase.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {

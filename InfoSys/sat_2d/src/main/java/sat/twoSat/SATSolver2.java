@@ -93,7 +93,7 @@ public class SATSolver2 {
     }
 
     // reduce literal by binding it to TRUE
-    private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClauses) {
+    private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClausesMap) {
         int index = Math.abs(literal);
         int assignment = literal < 0 ? -1 : 1;
         int trueMapPosition = literal < 0 ? -index : index;
@@ -103,9 +103,9 @@ public class SATSolver2 {
         this.assignments.put(index, assignment);
 
         Set<Integer> trueClauses
-                = literalClauses.getOrDefault(trueMapPosition, new HashSet<Integer>());
+                = literalClausesMap.getOrDefault(trueMapPosition, new HashSet<Integer>());
         Set<Integer> falseClauses
-                = literalClauses.getOrDefault(falseMapPosition, new HashSet<Integer>());
+                = literalClausesMap.getOrDefault(falseMapPosition, new HashSet<Integer>());
 
         // remove clause with literal from formula because its TRUE
         for (int clauseIndex : trueClauses) {
