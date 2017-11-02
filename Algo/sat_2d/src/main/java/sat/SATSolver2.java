@@ -44,12 +44,12 @@ public class SATSolver2 {
 
     // combination of unit propagation and pure literal removal
     private void preProcess(Map<Integer, Set<Integer>> literalClausesMap) {
-        boolean found = removePureLiterals(literalClausesMap);
+        // boolean found = removePureLiterals(literalClausesMap);
 
-        while (found) {
-            found = removePureLiterals(literalClausesMap);
+        // while (found) {
+            // found = removePureLiterals(literalClausesMap);
             unitPropagation(literalClausesMap);
-        }
+        //}
     }
 
     // apply unit propagation
@@ -93,6 +93,7 @@ public class SATSolver2 {
         return clause[1];
     }
 
+    // check if there's any empty clause
     private boolean hasEmptyClause(int[][] clauses) {
         for (int i = 0; i < clauses.length; i++) {
             boolean emptyClause = true;
@@ -110,6 +111,7 @@ public class SATSolver2 {
         return false;
     }
 
+    // check if formula is empty
     private boolean noClauses(boolean[] cRem) {
         for (boolean removed : cRem) {
             if (!removed) return false;
@@ -118,40 +120,42 @@ public class SATSolver2 {
         return true;
     }
 
-    // reduce literal by binding it to true
+    // reduce literal by binding it to TRUE
     private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClauses) {
         int index = Math.abs(literal);
         int assignment = literal < 0 ? -1 : 1;
         int trueMapPosition = literal < 0 ? -index : index;
         int falseMapPosition = literal < 0 ? index : -index;
 
+        // put the assignment to the bindings map
         this.assignments.put(index, assignment);
-        this.literalOccurrences.put(literal, 0);
 
         Set<Integer> trueClauses
                 = literalClauses.getOrDefault(trueMapPosition, new HashSet<>());
         Set<Integer> falseClauses
                 = literalClauses.getOrDefault(falseMapPosition, new HashSet<>());
 
+        // remove clause with literal from formula because its TRUE
         for (int clauseIndex : trueClauses) {
             this.trueClause[clauseIndex] = true;
             for (int currLit : tempClauses[clauseIndex]) {
                 if (currLit == 0) continue;
 
-                int currLitOccur = this.literalOccurrences.get(currLit);
+                int currLitOccur = this.literalOccurrences.getOrDefault(currLit, 0);
                 if (currLitOccur != 0) {
                     this.literalOccurrences.put(currLit, currLitOccur - 1);
                 }
             }
         }
 
+        // remove literal from clauses that contains it because its FALSE
         for (int clauseIndex : falseClauses) {
             for (int j = 0; j < 2; j++) {
                 if (tempClauses[clauseIndex][j] == -literal) {
                     tempClauses[clauseIndex][j] = 0;
                     clauseSize[clauseIndex]--;
 
-                    int negLitOccur = this.literalOccurrences.get(-index);
+                    int negLitOccur = this.literalOccurrences.getOrDefault(-index, 0);
                     if (negLitOccur != 0)
                         this.literalOccurrences.put(-index, negLitOccur - 1);
                 }
