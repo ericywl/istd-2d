@@ -4,6 +4,7 @@ package sat.twoSat;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class CNFParser {
@@ -33,11 +34,16 @@ public class CNFParser {
         int[][] clauses = new int[numOfClauses][2];
         int counter = 0;
 
+        outerloop:
         while (reader.hasNextLine()) {
             line = reader.nextLine().trim();
 
-            if (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
-                line = reader.nextLine();
+            while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
+                try {
+                    line = reader.nextLine();
+                } catch (NoSuchElementException ex) {
+                    break outerloop;
+                }
             }
 
             params = line.split(" ");

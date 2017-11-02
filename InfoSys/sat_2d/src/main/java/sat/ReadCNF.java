@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import sat.formula.Clause;
@@ -40,11 +41,16 @@ public class ReadCNF {
         if (!headers[1].equals("cnf"))
             throw new IllegalArgumentException("Missing file format declaration.");
 
+        outerloop:
         while (reader.hasNextLine()) {
             line = reader.nextLine().trim();
 
-            if (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
-                line = reader.nextLine();
+            while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
+                try {
+                    line = reader.nextLine();
+                } catch (NoSuchElementException ex) {
+                    break outerloop;
+                }
             }
 
             formula = addToFormula(line, formula);

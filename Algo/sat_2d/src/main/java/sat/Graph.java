@@ -9,28 +9,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-public class GraphTest {
+public class Graph {
     private Map<Integer, Integer> indices, lowlinks;
     private Map<Integer, Set<Integer>> graph;
     private Map<Integer, Integer> assignments;
     private Stack<Integer> stack = new Stack<>();
     private List<Set<Integer>> scComponents = new ArrayList<>();
     private int index = 0;
-    private int[][] clauses;
 
-    public GraphTest(int[][] clauses, Map<Integer, Integer> assignments) {
+    public Graph(int[][] clauses, Map<Integer, Integer> assignments) {
         indices = new HashMap<>();
         lowlinks = new HashMap<>();
         graph = new HashMap<>();
 
         this.assignments = assignments;
-        this.clauses = clauses;
 
+        //generate digraph
         for (int[] clause : clauses) {
-            System.out.println(Arrays.toString(clause));
-        }
-
-        for (int[] clause : this.clauses) {
             addClause(clause);
         }
 
@@ -53,6 +48,8 @@ public class GraphTest {
         graph.get(start).add(end);
     }
 
+    // Tarjan's SCC algorithm
+    // https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
     private void tarjanAlgorithm(int node) {
         this.indices.put(node, this.index);
         this.lowlinks.put(node, this.index);
@@ -63,18 +60,21 @@ public class GraphTest {
         Set<Integer> successors = graph.get(node);
         if (successors != null) {
             for (int successor : successors) {
+                // unvisited successor
                 if (this.lowlinks.get(successor) == null) {
                     tarjanAlgorithm(successor);
                     this.lowlinks.put(node, Math.min(lowlinks.get(node), lowlinks.get(successor)));
+
+                // successor in current SCC
                 } else if (this.stack.contains(successor)) {
                     this.lowlinks.put(node, Math.min(lowlinks.get(node), indices.get(successor)));
                 }
             }
         }
 
-        // node is root
+        // node is root, generate SCC
         if (lowlinks.get(node).equals(indices.get(node))) {
-            Set<Integer> currentSCC = new HashSet<>();
+            Set<Integer> currentSCC = new HashSet<Integer>();
             int successor;
 
             while (true) {
@@ -87,12 +87,10 @@ public class GraphTest {
         }
     }
 
+    // solve by simultaneously assigning and checking satisfiability
     public boolean solve() {
-        System.out.println(scComponents);
         for (Set<Integer> component : scComponents) {
-            System.out.println(component);
             for (int literal : component) {
-                System.out.println(literal);
                 if (component.contains(-literal))
                     return false;
 
@@ -105,6 +103,7 @@ public class GraphTest {
         return true;
     }
 
+    // used to get the truth values
     public Map<Integer, Integer> getAssignments() {
         return this.assignments;
     }

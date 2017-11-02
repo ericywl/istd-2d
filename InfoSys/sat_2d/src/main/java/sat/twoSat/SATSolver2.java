@@ -1,49 +1,56 @@
 package sat.twoSat;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SATSolver2 {
-    private int numOfVars;
-
-    private int[] clauseSize;
     private int[][] tempClauses;
 
-    private boolean[] clauseRemoved;
+    private int[] clauseSize;
+    private boolean[] trueClause;
     private Map<Integer, Integer> assignments = new HashMap<>();
     private Map<Integer, Integer> literalOccurrences = new HashMap<>();
-    private Map<Integer, List<Integer>> literalClauses;
 
     public SATSolver2(int[][] clauses, int numOfVars) {
         this.tempClauses = clauses;
-        this.numOfVars = numOfVars;
-        this.literalClauses = findLiteralClauses(this.tempClauses, this.numOfVars);
-        preProcess();
+
+        Map<Integer, Set<Integer>> literalClausesMap
+                = findLiteralClauses(clauses);
+
+        unitPropagation(literalClausesMap);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<Integer, Integer> solve() {
-        if (this.hasEmptyClause(tempClauses)) {
+        // empty clause -> not satisfiable
+        if (this.hasEmptyClause(tempClauses)) return null;
+
+            // empty list of clauses -> trivially satisfiable
+        else if (this.noClauses(trueClause))
+            return this.assignments;
+
+            // proceed to use SCC to solve
+        else {
+            Graph g = new Graph(tempClauses, this.assignments);
+            if (g.solve()) return g.getAssignments();
+
             return null;
-        } else if (this.noClauses(clauseRemoved)) {
-            return assignments;
-        } else {
-            Graph graph = new Graph(numOfVars, tempClauses, clauseRemoved);
-            return graph.solve(assignments);
         }
     }
 
-    private void preProcess() {
+    // apply unit propagation
+    private void unitPropagation(Map<Integer, Set<Integer>> literalClausesMap) {
         boolean unitClauseFound = true;
         while (unitClauseFound) {
             unitClauseFound = false;
             for (int i = 0; i < tempClauses.length; i++) {
                 if (clauseSize[i] == 1) {
                     int literal = getLiteral(tempClauses[i]);
-                    if (literal != 0 && !clauseRemoved[i]) {
-                        reduceLiteral(literal);
+                    if (literal != 0 && !trueClause[i]) {
+                        reduceLiteral(literal, literalClausesMap);
                         unitClauseFound = true;
                     }
                 }
@@ -51,29 +58,18 @@ public class SATSolver2 {
         }
     }
 
+    // get non-zero literal
     private int getLiteral(int[] clause) {
-        for (int literal : clause) {
-            if (literal != 0) {
-                return literal;
-            }
-        }
+        if (clause[0] != 0) return clause[0];
 
-        return 0;
+        return clause[1];
     }
 
-    private int getClauseSize(int[] clause) {
-        int size = 0;
-        for (int lit : clause) {
-            if (lit != 0) size++;
-        }
-
-        return size;
-    }
-
+    // check if there's any empty clause
     private boolean hasEmptyClause(int[][] clauses) {
         for (int i = 0; i < clauses.length; i++) {
             boolean emptyClause = true;
-            if (!clauseRemoved[i]) {
+            if (!trueClause[i]) {
                 for (int literal : clauses[i]) {
                     if (literal != 0) {
                         emptyClause = false;
@@ -82,12 +78,12 @@ public class SATSolver2 {
 
                 if (emptyClause) return true;
             }
-
         }
 
         return false;
     }
 
+    // check if formula is empty
     private boolean noClauses(boolean[] cRem) {
         for (boolean removed : cRem) {
             if (!removed) return false;
@@ -96,58 +92,62 @@ public class SATSolver2 {
         return true;
     }
 
-    private void reduceLiteral(int literal) {
+    // reduce literal by binding it to TRUE
+    private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClauses) {
         int index = Math.abs(literal);
         int assignment = literal < 0 ? -1 : 1;
         int trueMapPosition = literal < 0 ? -index : index;
         int falseMapPosition = literal < 0 ? index : -index;
 
+        // put the assignment to the bindings map
         this.assignments.put(index, assignment);
-        this.literalOccurrences.put(literal, 0);
 
-        List<Integer> trueClauses =
-                literalClauses.getOrDefault(trueMapPosition, new ArrayList<Integer>());
-        List<Integer> falseClauses =
-                literalClauses.getOrDefault(falseMapPosition, new ArrayList<Integer>());
+        Set<Integer> trueClauses
+                = literalClauses.getOrDefault(trueMapPosition, new HashSet<Integer>());
+        Set<Integer> falseClauses
+                = literalClauses.getOrDefault(falseMapPosition, new HashSet<Integer>());
 
-        for (int clause : trueClauses) {
-            this.clauseRemoved[clause] = true;
-            for (int currLit : tempClauses[clause]) {
+        // remove clause with literal from formula because its TRUE
+        for (int clauseIndex : trueClauses) {
+            this.trueClause[clauseIndex] = true;
+            for (int currLit : tempClauses[clauseIndex]) {
                 if (currLit == 0) continue;
 
-                int currLitOccur = this.literalOccurrences.get(currLit);
+                int currLitOccur = this.literalOccurrences.getOrDefault(currLit, 0);
                 if (currLitOccur != 0) {
                     this.literalOccurrences.put(currLit, currLitOccur - 1);
                 }
             }
         }
 
-        for (int clause : falseClauses) {
-            for (int j = 0, len = tempClauses[clause].length; j < len; j++) {
-                if (tempClauses[clause][j] == -literal) {
-                    tempClauses[clause][j] = 0;
-                    clauseSize[clause]--;
-                    int negLitIndex = -index;
-                    int negLitOccur = this.literalOccurrences.get(negLitIndex);
+        // remove literal from clauses that contains it because its FALSE
+        for (int clauseIndex : falseClauses) {
+            for (int j = 0; j < 2; j++) {
+                if (tempClauses[clauseIndex][j] == -literal) {
+                    tempClauses[clauseIndex][j] = 0;
+                    clauseSize[clauseIndex]--;
+
+                    int negLitOccur = this.literalOccurrences.getOrDefault(-literal, 0);
                     if (negLitOccur != 0)
-                        this.literalOccurrences.put(negLitIndex, negLitOccur - 1);
+                        this.literalOccurrences.put(-literal, negLitOccur - 1);
                 }
             }
         }
     }
 
-    private Map<Integer, List<Integer>> findLiteralClauses(int[][] clauses, int num) {
+    // map literals to the clauses that they are in
+    private Map<Integer, Set<Integer>> findLiteralClauses(int[][] clauses) {
         int len = clauses.length;
-        this.clauseRemoved = new boolean[len];
+        this.trueClause = new boolean[len];
         this.clauseSize = new int[len];
-        Map<Integer, List<Integer>> output = new HashMap<>();
+        Map<Integer, Set<Integer>> output = new HashMap<>();
 
         for (int i = 0; i < len; i++) {
             for (int literal : clauses[i]) {
                 if (literal == 0) continue;
 
                 if (!output.containsKey(literal)) {
-                    output.put(literal, new ArrayList<Integer>());
+                    output.put(literal, new HashSet<Integer>());
                 }
 
                 output.get(literal).add(i);
@@ -159,5 +159,15 @@ public class SATSolver2 {
         }
 
         return output;
+    }
+
+    // get size of clause
+    private int getClauseSize(int[] clause) {
+        int size = 0;
+        for (int lit : clause) {
+            if (lit != 0) size++;
+        }
+
+        return size;
     }
 }

@@ -16,7 +16,7 @@ import sat.twoSat.CNFParser;
 import sat.twoSat.SATSolver2;
 
 public class SATSolverTest {
-    private static String readFile = "testcase.cnf";
+    private static String readFile = "largeSat.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class SATSolverTest {
             Object[] parsed = ReadCNF.readCNF(readFile);
             Formula formula = (Formula) parsed[0];
             int maxClauseSize = (int) parsed[1];
-            if (maxClauseSize < 2) {
+            if (maxClauseSize < 3) {
                 run2SAT();
                 return;
             }

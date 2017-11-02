@@ -36,10 +36,10 @@ public class SATSolver2 {
 
         // proceed to use SCC to solve
         else {
-            GraphTest g = new GraphTest(tempClauses, this.assignments);
-            g.solve();
+            Graph g = new Graph(tempClauses, this.assignments);
+            if (g.solve()) return g.getAssignments();
 
-            return g.getAssignments();
+            return null;
         }
     }
 
