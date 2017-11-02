@@ -12,13 +12,11 @@ public class SATSolver2Test {
 
         try {
             System.out.println("Reading " + readFile + "...\n");
-            Object[] parsed = CNFParser.readCNF(readFile);
-            int[][] clauses = (int[][]) parsed[0];
-            int numOfVars = (int) parsed[1];
+            int[][] clauses = CNFParser.readCNF(readFile);
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
-            SATSolver2 sat2 = new SATSolver2(clauses, numOfVars);
+            SATSolver2 sat2 = new SATSolver2(clauses);
             Map<Integer, Integer> env = sat2.solve();
             long time = System.nanoTime();
             long timeTaken = time - started;

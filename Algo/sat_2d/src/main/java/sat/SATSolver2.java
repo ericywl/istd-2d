@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class SATSolver2 {
-    private int numOfVars;
     private int[][] tempClauses;
 
     private int[] clauseSize;
@@ -15,9 +14,8 @@ public class SATSolver2 {
     private Map<Integer, Integer> assignments = new HashMap<>();
     private Map<Integer, Integer> literalOccurrences = new HashMap<>();
 
-    public SATSolver2(int[][] clauses, int numOfVars) {
+    public SATSolver2(int[][] clauses) {
         this.tempClauses = clauses;
-        this.numOfVars = numOfVars;
 
         Map<Integer, Set<Integer>> literalClausesMap
                 = findLiteralClauses(clauses);

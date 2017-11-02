@@ -24,11 +24,12 @@ public class Graph {
 
         this.assignments = assignments;
 
-        //generate digraph
+        // generate digraph
         for (int[] clause : clauses) {
             addClause(clause);
         }
 
+        // run Tarjan's algorithm on all nodes
         for (int node : graph.keySet()) {
             if (!lowlinks.containsKey(node)) {
                 tarjanAlgorithm(node);

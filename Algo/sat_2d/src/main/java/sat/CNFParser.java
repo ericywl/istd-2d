@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class CNFParser {
-    public static Object[] readCNF(String fileName)
+    public static int[][] readCNF(String fileName)
             throws IllegalArgumentException, IOException {
         if (!fileName.substring(fileName.length() - 4).equals(".cnf")) {
             throw new IllegalArgumentException("Invalid file format.");
@@ -67,6 +67,6 @@ public class CNFParser {
 
         reader.close();
         readFile.close();
-        return new Object[]{clauses, numOfVars};
+        return clauses;
     }
 }

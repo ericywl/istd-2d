@@ -14,7 +14,7 @@ public class SATSolver2 {
     private Map<Integer, Integer> assignments = new HashMap<>();
     private Map<Integer, Integer> literalOccurrences = new HashMap<>();
 
-    public SATSolver2(int[][] clauses, int numOfVars) {
+    public SATSolver2(int[][] clauses) {
         this.tempClauses = clauses;
 
         Map<Integer, Set<Integer>> literalClausesMap
