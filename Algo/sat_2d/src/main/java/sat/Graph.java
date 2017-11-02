@@ -10,40 +10,46 @@ public class Graph {
     private int numOfVars;
     private int numOfVertices;
 
-    // for Tarjan's algorithm
-    private Map<Integer, Set<Integer>> adj;
-    private Map<Integer, Integer> indices, lowlink;
+    // implication graph
+    private Set<Integer>[] adj;
+    private Stack<Integer> stack = new Stack<>();
+    private Integer[] indices, lowlink;
     private int index = 0;
 
-    // SCC graph related
-    private Map<Integer, Integer> sccSearchSpace;
+    // SCC graph
+    private int[] sccSearchSpace;
     private int sccSize = 0;
 
+    @SuppressWarnings("unchecked")
     public Graph(int numOfVars, int[][] clauses, boolean[] clauseRemoved) {
         this.numOfVars = numOfVars;
         this.numOfVertices = 2 * numOfVars + 1;
 
-        this.adj = new HashMap<>();
-        this.sccSearchSpace = new HashMap<>();
-        this.indices = new HashMap<>();
-        this.lowlink = new HashMap<>();
+        // implication graph components
+        this.adj = (Set<Integer>[]) new HashSet[numOfVertices];
+        this.indices = new Integer[numOfVertices];
+        this.lowlink = new Integer[numOfVertices];
+
+        // SCC graph components
+        this.sccSearchSpace = new int[numOfVertices];
+
+        for (int i = 0; i < this.numOfVertices; i++) {
+            this.adj[i] = new HashSet<>();
+        }
 
         for (int j = 0; j < clauses.length; j++) {
             if (!clauseRemoved[j])
                 addClause(clauses[j]);
         }
-
-        System.out.println(adj);
     }
 
     // solve by assigning truth values after SCC
     public Map<Integer, Integer> solve(Map<Integer, Integer> assignments, Set<Integer>[] scc) {
-        Stack<Integer> stack = new Stack<>();
-        Map<Integer, Set<Integer>> sccEdges = executeTarjan(scc, stack);
+        Map<Integer, Set<Integer>> sccEdges = executeTarjan(scc);
 
         if (!evalSat(scc)) return null;
-
         Map<Integer, Integer> result = new HashMap<>();
+
         for (int i = 0; i < this.sccSize; i++) {
             Set<Integer> components = scc[i];
             result = assignVar(i, components, assignments, sccEdges, scc);
@@ -64,10 +70,10 @@ public class Graph {
         return true;
     }
 
-    private Map<Integer, Set<Integer>> executeTarjan(Set<Integer>[] scc, Stack<Integer> stack) {
-        for (int v = 1; v < this.numOfVertices; v++) {
-            if (this.indices.get(v) == null)
-                tarjanAlgo(v, scc, stack);
+    private Map<Integer, Set<Integer>> executeTarjan(Set<Integer>[] scc) {
+        for (int i = 1; i < this.numOfVertices; i++) {
+            if (this.indices[i] == null)
+                tarjanAlgo(i, scc);
         }
 
         return getSCCEdges(scc);
@@ -76,33 +82,35 @@ public class Graph {
     // Tarjan's SCC algorithm
     // https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
     // https://www.programming-algorithms.net/article/44220/Tarjan%27s-algorithm
-    private void tarjanAlgo(int node, Set<Integer>[] scc, Stack<Integer> stack) {
-        this.indices.put(node, this.index);
-        this.lowlink.put(node, this.index);
+    private void tarjanAlgo(int node, Set<Integer>[] scc) {
+        this.indices[node] = this.index;
+        this.lowlink[node] = this.index;
         this.index++;
-        stack.push(node);
+        this.stack.push(node);
 
-        for (int neighbor : this.adj.getOrDefault(node, new HashSet<>())) {
+        for (int neighbor : this.adj[node]) {
+            neighbor = simpleHash(neighbor);
+
             // if node not yet discovered
-            if (this.indices.get(neighbor) == null) {
-                tarjanAlgo(neighbor, scc, stack);
-                this.lowlink.put(node, Math.min(lowlink.get(node), lowlink.get(neighbor)));
-            // if component not closed
-            } else if (stack.contains(neighbor)) {
-                this.lowlink.put(node, Math.min(lowlink.get(node), indices.get(neighbor)));
+            if (this.indices[neighbor] == null) {
+                tarjanAlgo(neighbor, scc);
+                this.lowlink[node] = Math.min(lowlink[node], lowlink[neighbor]);
+                // if component not closed
+            } else if (this.stack.contains(neighbor)) {
+                this.lowlink[node] = Math.min(lowlink[node], indices[neighbor]);
             }
         }
 
         // inside root of the component
-        if (this.lowlink.get(node).equals(this.indices.get(node))) {
+        if (this.lowlink[node].equals(this.indices[node])) {
             Set<Integer> component = new HashSet<>();
             int poppedNode;
 
             do {
                 // add node to component
-                poppedNode = stack.pop();
-                this.sccSearchSpace.put(poppedNode, this.sccSize);
-                component.add(poppedNode);
+                poppedNode = this.stack.pop();
+                this.sccSearchSpace[poppedNode] = this.sccSize;
+                component.add(simpleHash(poppedNode));
             } while (poppedNode != node);
 
             if (component.size() != 0) {
@@ -112,44 +120,40 @@ public class Graph {
         }
     }
 
-    // assign variables in each strongly-connected component
     private Map<Integer, Integer> assignVar(int sccCompIndex, Set<Integer> components,
                                             Map<Integer, Integer> assignments,
                                             Map<Integer, Set<Integer>> sccEdges,
                                             Set<Integer>[] scc) {
         for (int component : components) {
             int k = Math.abs(component);
-            if (assignments.get(k) == null) {
-                int assignment = component < 0 ? 1 : -1;
-                assignments.put(k, assignment);
+            if (assignments.getOrDefault(k, 0) == 0) {
+                int value = component < 0 ? 1 : -1;
+                assignments.put(k, value);
             }
         }
 
         Set<Integer> edgeList = sccEdges.get(sccCompIndex);
         if (edgeList.size() != 0) {
             for (int edge : edgeList) {
-                assignments = assignVar(edge, scc[edge],assignments, sccEdges, scc);
+                assignVar(edge, scc[edge], assignments, sccEdges, scc);
             }
         }
 
         return assignments;
     }
 
-    // calculate map of edges in SCC graph
+    // calculate adj in SCC graph
     private Map<Integer, Set<Integer>> getSCCEdges(Set<Integer>[] scc) {
         Map<Integer, Set<Integer>> output = new HashMap<>();
 
         for (int i = 0; i < this.sccSize; i++) {
             Set<Integer> edgeList = new HashSet<>();
-            for (int node : scc[i]) {
-                for (int neighbor : this.adj.getOrDefault(node, new HashSet<>())) {
-                    int edge = this.sccSearchSpace.get(neighbor);
-
-                    if (!edgeList.contains(edge) && edge != i) {
-                        edgeList.add(edge);
+            for (int j : scc[i])
+                for (int k : this.adj[simpleHash(j)])
+                    if (!edgeList.contains(this.sccSearchSpace[simpleHash(k)])
+                            && this.sccSearchSpace[simpleHash(k)] != i) {
+                        edgeList.add(this.sccSearchSpace[simpleHash(k)]);
                     }
-                }
-            }
 
             output.put(i, edgeList);
         }
@@ -159,15 +163,25 @@ public class Graph {
 
     private void addClause(int[] clause) {
         if (clause.length == 2) {
-            addEdge(-clause[0], clause[1]);
-            addEdge(-clause[1], clause[0]);
+            addEdge(negateLiteral(clause[0]), clause[1]);
+            addEdge(negateLiteral(clause[1]), clause[0]);
         }
     }
 
     private void addEdge(int start, int end) {
-        this.adj.putIfAbsent(start, new HashSet<>());
+        if (!this.adj[start].contains(end))
+            this.adj[start].add(end);
+    }
 
-        if (!this.adj.get(start).contains(end))
-            this.adj.get(start).add(end);
+    private int negateLiteral(int literal) {
+        if (literal < 0) return -literal;
+        else return literal + this.numOfVars;
+    }
+
+    // simple hashing
+    private int simpleHash(int i) {
+        if (i < 0) return this.numOfVars - i;
+        else if (i > this.numOfVars) return -(i - this.numOfVars);
+        else return i;
     }
 }

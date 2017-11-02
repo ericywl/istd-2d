@@ -26,6 +26,8 @@ public class SATSolver2Test {
 
             if (env != null) {
                 System.out.println("SATISFIABLE");
+                BooleanAssignment.print(env);
+
                 System.out.println("Writing to " + writeFile + "...");
                 BooleanAssignment.writeAssignments(env, writeFile);
             } else System.out.println("NOT SATISFIABLE");

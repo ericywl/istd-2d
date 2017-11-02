@@ -44,12 +44,12 @@ public class SATSolver2 {
 
     // combination of unit propagation and pure literal removal
     private void preProcess(Map<Integer, Set<Integer>> literalClausesMap) {
-        // boolean found = removePureLiterals(literalClausesMap);
+        boolean found = removePureLiterals(literalClausesMap);
 
-        // while (found) {
-            // found = removePureLiterals(literalClausesMap);
+        while (found) {
+            found = removePureLiterals(literalClausesMap);
             unitPropagation(literalClausesMap);
-        //}
+        }
     }
 
     // apply unit propagation

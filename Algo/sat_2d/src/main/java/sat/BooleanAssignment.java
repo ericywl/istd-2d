@@ -35,4 +35,12 @@ public class BooleanAssignment {
         writeFile.write(assigString);
         writeFile.close();
     }
+
+    public static void print(Map<Integer, Integer> env) {
+        for (int literal : env.keySet()) {
+            System.out.print(env.get(literal) < 0 ? "0 " : "1 ");
+        }
+
+        System.out.println("\n");
+    }
 }
