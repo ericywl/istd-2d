@@ -1,11 +1,38 @@
-InfoSys
-========
-Simple DPLL-Algorithm SAT Solver (recursive)
+INSTRUCTIONS FOR EACH SUBJECT
 
-CompStruct
+ALGO
+=====
+The report for the algorithm is in Algo, named Algo_2d_report.
+To run the 2-SAT Solver, follow the steps below.
+
+1. Put the CNF files to be tested in  Algo/sat_2d/sampleCNF
+2. Use a Java IDE to open the Algo folder as a project
+3. Open SATSolver2Test.java
+4. Change the STRING fileName to the CNF file's name with .cnf extension
+5. Run the program
+
+If the problem is satisfiable, the program prints the boolean assignment on the console,
+and also writes it to Algo/sat_2d/sampleCNF/<fileName>Bool.txt
+
+
+
+COMPSTRUCT
 ===========
-Adder Optimization
+The bkAdder.jsim file contains the netlist for the circuit.
+The test.bc file contains the boolean circuit and is used to generate the CNF file.
+The test.cnf file is for testing the logic of our 8th bit sum output via SAT Solver.
 
-Algo
-======
-2SAT Solver Algorithm
+
+
+INFOSYS
+========
+To run the SAT Solver, follow the steps below.
+
+1. Put the CNF files to be tested in InfoSys/sat_2d/sampleCNF
+2. Use a Java IDE to open the InfoSys folder as a project
+3. Open SATSolverTest.java
+4. Change the STRING fileName to the CNF file's name with .cnf extension
+5. Run the program
+
+If the problem is satisfiable, 
+the boolean assignment is written in InfoSys/sat_2d/sampleCNF/<fileName>Bool.txt
