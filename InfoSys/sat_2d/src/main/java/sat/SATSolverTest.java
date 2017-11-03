@@ -16,8 +16,6 @@ public class SATSolverTest {
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
-        readFile = args[0];
-
         try {
             Object[] parsed = ReadCNF.readCNF(readFile);
             List<Integer>[] clauses = (List<Integer>[]) parsed[0];
@@ -42,13 +40,7 @@ public class SATSolverTest {
             long timeTaken = time - started;
             System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
 
-            if (env != null) {
-                System.out.println("SATISFIABLE\n");
-                System.out.println("Writing to " + writeFile + "...");
-                WriteENV.writeENV(env, writeFile);
-            } else System.out.println("NOT SATISFIABLE\n");
-
-            System.out.println("DONE");
+            result(env, false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -65,13 +57,7 @@ public class SATSolverTest {
         long timeTaken = time - started;
         System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
 
-        if (env != null) {
-            System.out.println("SATISFIABLE\n");
-            System.out.println("Writing to " + writeFile + "...");
-            BooleanAssignment.writeAssignments(env, writeFile);
-        } else System.out.println("NOT SATISFIABLE\n");
-
-        System.out.println("DONE");
+        result(env, true);
     }
 
     private static void run3SAT(int numOfVars) throws IOException {
@@ -85,10 +71,20 @@ public class SATSolverTest {
         long timeTaken = time - started;
         System.out.println("Time: " + timeTaken / 1000000.0 + "ms\n");
 
+        result(env, false);
+    }
+
+    private static <E> void result(Map<Integer, E> env, boolean n) throws IOException {
         if (env != null) {
             System.out.println("SATISFIABLE\n");
             System.out.println("Writing to " + writeFile + "...");
-            WriteENV.writeENV(env, writeFile);
+
+            if (n) {
+                BooleanAssignment.writeAssignments((Map<Integer, Integer>) env, writeFile);
+            } else {
+                WriteENV.writeENV(env, writeFile);
+            }
+
         } else System.out.println("NOT SATISFIABLE\n");
 
         System.out.println("DONE");
