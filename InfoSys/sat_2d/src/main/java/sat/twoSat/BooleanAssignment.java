@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class BooleanAssignment {
-    // for printing on console
+    // converting to readable format
     private static String convert(Map<Integer, Integer> env) {
         StringBuilder output = new StringBuilder();
         String current;

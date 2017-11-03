@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class BooleanAssignment {
+    // converting to readable format
     private static String convert(Map<Integer, Integer> env) {
         StringBuilder output = new StringBuilder();
         String current;
@@ -26,6 +27,7 @@ public class BooleanAssignment {
         return output.toString();
     }
 
+    // for writing to <fileName>Bool.txt
     public static void writeAssignments(Map<Integer, Integer> env, String fileName)
             throws IOException {
         String currPath = new File("").getAbsolutePath();
@@ -36,6 +38,7 @@ public class BooleanAssignment {
         writeFile.close();
     }
 
+    // for printing to console
     public static void print(Map<Integer, Integer> env) {
         for (int literal : env.keySet()) {
             System.out.print(env.get(literal) < 0 ? "0 " : "1 ");

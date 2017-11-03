@@ -18,21 +18,22 @@ public class SATSolver2 {
         this.tempClauses = clauses;
 
         Map<Integer, Set<Integer>> literalClausesMap
-                = findLiteralClauses(clauses);
+                = findLiteralClausesMap(clauses);
 
+        // unit propagation is applied to make sure that the clause is strictly 2-SAT
         unitPropagation(literalClausesMap);
     }
 
     @SuppressWarnings("unchecked")
     public Map<Integer, Integer> solve() {
         // empty clause -> not satisfiable
-        if (this.hasEmptyClause(tempClauses)) return null;
+        if (hasEmptyClause(this.tempClauses)) return null;
 
-        // empty list of clauses -> trivially satisfiable
-        else if (this.noClauses(trueClause))
+            // empty list of clauses -> trivially satisfiable
+        else if (noClauses(this.trueClause))
             return this.assignments;
 
-        // proceed to use SCC to solve
+            // proceed to use strongly-connected components to solve
         else {
             Graph g = new Graph(tempClauses, this.assignments);
             if (g.solve()) return g.getAssignments();
@@ -93,7 +94,7 @@ public class SATSolver2 {
     }
 
     // reduce literal by binding it to TRUE
-    private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClauses) {
+    private void reduceLiteral(int literal, Map<Integer, Set<Integer>> literalClausesMap) {
         int index = Math.abs(literal);
         int assignment = literal < 0 ? -1 : 1;
         int trueMapPosition = literal < 0 ? -index : index;
@@ -103,11 +104,11 @@ public class SATSolver2 {
         this.assignments.put(index, assignment);
 
         Set<Integer> trueClauses
-                = literalClauses.getOrDefault(trueMapPosition, new HashSet<>());
+                = literalClausesMap.getOrDefault(trueMapPosition, new HashSet<Integer>());
         Set<Integer> falseClauses
-                = literalClauses.getOrDefault(falseMapPosition, new HashSet<>());
+                = literalClausesMap.getOrDefault(falseMapPosition, new HashSet<Integer>());
 
-        // remove clause with literal from formula because its TRUE
+        // remove clause with literal from formula because its set to TRUE
         for (int clauseIndex : trueClauses) {
             this.trueClause[clauseIndex] = true;
             for (int currLit : tempClauses[clauseIndex]) {
@@ -120,7 +121,7 @@ public class SATSolver2 {
             }
         }
 
-        // remove literal from clauses that contains it because its FALSE
+        // remove literal from clauses that contains it because its set to FALSE
         for (int clauseIndex : falseClauses) {
             for (int j = 0; j < 2; j++) {
                 if (tempClauses[clauseIndex][j] == -literal) {
@@ -135,8 +136,8 @@ public class SATSolver2 {
         }
     }
 
-    // map literals to the clauses that they are in
-    private Map<Integer, Set<Integer>> findLiteralClauses(int[][] clauses) {
+    // map literals to the index of the clauses that they are in
+    private Map<Integer, Set<Integer>> findLiteralClausesMap(int[][] clauses) {
         int len = clauses.length;
         this.trueClause = new boolean[len];
         this.clauseSize = new int[len];
@@ -147,7 +148,7 @@ public class SATSolver2 {
                 if (literal == 0) continue;
 
                 if (!output.containsKey(literal)) {
-                    output.put(literal, new HashSet<>());
+                    output.put(literal, new HashSet<Integer>());
                 }
 
                 output.get(literal).add(i);

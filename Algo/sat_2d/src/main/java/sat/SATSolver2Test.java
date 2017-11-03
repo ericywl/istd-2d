@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class SATSolver2Test {
     public static void main(String[] args) {
+        // change this readFile
         String readFile = "testcase.cnf";
         String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
@@ -29,7 +30,6 @@ public class SATSolver2Test {
                 System.out.println("Writing to " + writeFile + "...");
                 BooleanAssignment.writeAssignments(env, writeFile);
             } else System.out.println("NOT SATISFIABLE");
-
 
             System.out.println("DONE");
 
