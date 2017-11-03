@@ -26,10 +26,10 @@ public class SATSolver2 {
     @SuppressWarnings("unchecked")
     public Map<Integer, Integer> solve() {
         // empty clause -> not satisfiable
-        if (this.hasEmptyClause(tempClauses)) return null;
+        if (hasEmptyClause(this.tempClauses)) return null;
 
             // empty list of clauses -> trivially satisfiable
-        else if (this.noClauses(trueClause))
+        else if (noClauses(this.trueClause))
             return this.assignments;
 
             // proceed to use SCC to solve
