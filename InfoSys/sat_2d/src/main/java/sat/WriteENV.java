@@ -12,6 +12,8 @@ public class WriteENV {
     public static <T> void writeENV(Map<Integer, T> env, String fileName) throws IOException {
         String envString = env.toString();
         envString = envString.substring(1, envString.length() - 1);
+        envString = envString.replace("false", "FALSE");
+        envString = envString.replace("true", "TRUE");
         envString = envString.replace("=", ":");
         envString = envString.replace(", ", "\n");
 

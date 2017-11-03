@@ -12,7 +12,7 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
-    private static String readFile = "s8Sat.cnf";
+    private static String readFile = "sat1.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class SATSolverTest {
                 return;
             }
 
-            SATSolver sat = new SATSolver();
+            SATSolver sat = new SATSolver(numOfVars);
 
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
@@ -76,7 +76,7 @@ public class SATSolverTest {
     private static void run3SAT(int numOfVars) throws IOException {
         int[][] clauses = ReadCNFArray.readCNF(readFile);
 
-        SATSolverArray sat3 = new SATSolverArray();
+        SATSolverArray sat3 = new SATSolverArray(numOfVars);
 
         System.out.println("SAT solver starts!!!");
         long started = System.nanoTime();

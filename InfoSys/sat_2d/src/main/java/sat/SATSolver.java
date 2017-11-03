@@ -6,11 +6,21 @@ import java.util.Map;
 
 public class SATSolver {
     private SATClass sat = new SATClass();
+    private int numOfVars;
+
+    public SATSolver(int numOfVars) {
+        this.numOfVars = numOfVars;
+    }
 
     public Map<Integer, Boolean> solve(List<Integer>[] clauses) {
         if (!isSolvable(clauses))
             return null;
 
+        for (int i = 1; i <= numOfVars; i++) {
+            if (!sat.getAssignments().containsKey(i)) {
+                sat.assignTrue(i);
+            }
+        }
 
         return sat.getAssignments();
     }

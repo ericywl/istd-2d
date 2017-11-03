@@ -18,7 +18,7 @@ public class SATClass {
 
     public void assignFalse(int literal) {
         boolean assignment = literal < 0;
-        this.assignments.put(literal, assignment);
+        this.assignments.put(Math.abs(literal), assignment);
     }
 
     public Map<Integer, Boolean> getAssignments() {

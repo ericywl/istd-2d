@@ -5,9 +5,20 @@ import java.util.Map;
 
 public class SATSolverArray {
     private SATClassArray sat = new SATClassArray();
+    private int numOfVars;
+
+    public SATSolverArray(int numOfVars) {
+        this.numOfVars = numOfVars;
+    }
 
     public Map<Integer, Boolean> solve(int[][] clauses) {
         if (!isSolvable(clauses)) return null;
+
+        for (int i = 1; i <= numOfVars; i++) {
+            if (!sat.getAssignments().containsKey(i)) {
+                sat.assignTrue(i);
+            }
+        }
 
         return sat.getAssignments();
     }
@@ -42,7 +53,7 @@ public class SATSolverArray {
             return solvable;
         }
 
-        // if not unit clause, try assigning true then false
+        // if not unit clause, try assigning the literal to true then false
         int[][] reducedClauses = sat.reduceLiteral(literal, clauses);
         boolean solvable = isSolvable(reducedClauses);
         if (solvable) {

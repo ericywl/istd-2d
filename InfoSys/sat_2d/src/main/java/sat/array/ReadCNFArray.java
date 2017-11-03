@@ -24,7 +24,7 @@ public class ReadCNFArray {
         while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty())
             line = reader.nextLine().trim();
 
-        headers = line.split(" ");
+        headers = line.split("\\s+");
         if (!headers[0].equals("p")) throw new IllegalArgumentException("Missing problem line.");
         if (!headers[1].equals("cnf"))
             throw new IllegalArgumentException("Missing file format declaration.");
@@ -47,10 +47,12 @@ public class ReadCNFArray {
                 }
             }
 
-            params = line.split(" ");
+            params = line.split("\\s+");
             int innerCounter = 0;
             for (String param : params) {
-                if (!param.equals("0")) {
+                if (param.equals("")) {
+                    // do nothing
+                } else if (!param.equals("0")) {
                     int literal = Integer.parseInt(param);
                     clauses[counter][innerCounter] = literal;
                     innerCounter++;
