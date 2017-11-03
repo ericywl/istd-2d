@@ -12,7 +12,7 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
-    private static String readFile = "unsat2.cnf";
+    private static String readFile = "largeSat.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
@@ -32,10 +32,9 @@ public class SATSolverTest {
                 return;
             }
 
-            SATSolver sat = new SATSolver(numOfVars);
-
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
+            SATSolver sat = new SATSolver(numOfVars);
             Map<Integer, Boolean> env = sat.solve(clauses);
             long time = System.nanoTime();
             long timeTaken = time - started;
@@ -55,10 +54,10 @@ public class SATSolverTest {
 
     private static void run2SAT() throws IOException {
         int[][] clauses = CNFParser.readCNF(readFile);
-        SATSolver2 sat2 = new SATSolver2(clauses);
 
         System.out.println("SAT solver starts!!!");
         long started = System.nanoTime();
+        SATSolver2 sat2 = new SATSolver2(clauses);
         Map<Integer, Integer> env = sat2.solve();
         long time = System.nanoTime();
         long timeTaken = time - started;
@@ -76,10 +75,9 @@ public class SATSolverTest {
     private static void run3SAT(int numOfVars) throws IOException {
         int[][] clauses = ReadCNFArray.readCNF(readFile);
 
-        SATSolverArray sat3 = new SATSolverArray(numOfVars);
-
         System.out.println("SAT solver starts!!!");
         long started = System.nanoTime();
+        SATSolverArray sat3 = new SATSolverArray(numOfVars);
         Map<Integer, Boolean> env = sat3.solve(clauses);
         long time = System.nanoTime();
         long timeTaken = time - started;

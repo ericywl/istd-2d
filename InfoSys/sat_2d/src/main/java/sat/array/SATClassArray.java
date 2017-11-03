@@ -25,7 +25,7 @@ public class SATClassArray {
 
     @SuppressWarnings("unchecked")
     public int[][] reduceLiteral(int literal, int[][] clauses) {
-        Set<Integer> literalClauses = findLiteralClauses(clauses, literal);
+        Set<Integer> literalClauses = findLiteralClauses(literal, clauses);
         int len = clauses.length;
 
         int[][] firstPass = new int[len][3];
@@ -54,7 +54,7 @@ public class SATClassArray {
     }
 
     // find index of clauses that the literal is in
-    private Set<Integer> findLiteralClauses(int[][] clauses, int target) {
+    private Set<Integer> findLiteralClauses(int target, int[][] clauses) {
         int len = clauses.length;
         Set<Integer> output = new HashSet<>();
 
