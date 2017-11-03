@@ -18,7 +18,7 @@ public class SATSolver2 {
         this.tempClauses = clauses;
 
         Map<Integer, Set<Integer>> literalClausesMap
-                = findLiteralClauses(clauses);
+                = findLiteralClausesMap(clauses);
 
         unitPropagation(literalClausesMap);
     }
@@ -136,7 +136,7 @@ public class SATSolver2 {
     }
 
     // map literals to the clauses that they are in
-    private Map<Integer, Set<Integer>> findLiteralClauses(int[][] clauses) {
+    private Map<Integer, Set<Integer>> findLiteralClausesMap(int[][] clauses) {
         int len = clauses.length;
         this.trueClause = new boolean[len];
         this.clauseSize = new int[len];
