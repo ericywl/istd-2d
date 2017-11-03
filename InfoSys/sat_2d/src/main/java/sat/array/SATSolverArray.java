@@ -11,20 +11,30 @@ public class SATSolverArray {
         this.numOfVars = numOfVars;
     }
 
+    // solve the SAT problem and return assignments
     public Map<Integer, Boolean> solve(int[][] clauses) {
         if (!isSolvable(clauses)) return null;
 
+
+
+        // assigns variables that aren't assigned to TRUE
         for (int i = 1; i <= numOfVars; i++) {
             if (!sat.getAssignments().containsKey(i)) {
                 sat.assignTrue(i);
             }
         }
 
+        /*
+        this works because in isSolvable() all necessary assignments to reach
+        satisfiable conclusion are assigned, leaving those unnecessary ones unassigned
+        */
+
         return sat.getAssignments();
     }
 
+    // check if the SAT problem is solvable before assigning truth values
     public boolean isSolvable(int[][] clauses) {
-        // trivially satisfiable if clauses is empty
+        // empty list of clauses -> trivially satisfiable
         if (clauses.length == 0) return true;
 
         int[] smallestClause = null;
@@ -32,7 +42,7 @@ public class SATSolverArray {
         for (int[] clause : clauses) {
             int clauseSize = getClauseSize(clause);
 
-            // not satisfiable if clause is empty
+            // empty clause -> not satisfiable
             if (clauseSize == 0) return false;
 
             // get the smaller clause of the two
@@ -80,6 +90,7 @@ public class SATSolverArray {
         return size;
     }
 
+    // get first literal in clause
     private int getLiteral(int[] clause) {
         for (int lit : clause)
             if (lit != 0)

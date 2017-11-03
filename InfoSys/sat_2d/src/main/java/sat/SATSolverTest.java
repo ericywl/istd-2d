@@ -12,6 +12,7 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
+    // change this readFile
     private static String readFile = "largeSat.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
@@ -22,16 +23,19 @@ public class SATSolverTest {
             int maxClauseSize = (int) parsed[1];
             int numOfVars = (int) parsed[2];
 
+            // if the maximum clause size is less than 3, run 2-SAT
             if (maxClauseSize < 3) {
                 run2SAT();
                 return;
             }
 
+            // if more equals 3, run 3-SAT
             if (maxClauseSize == 3) {
                 run3SAT(numOfVars);
                 return;
             }
 
+            // else run k-SAT
             System.out.println("SAT solver starts!!!");
             long started = System.nanoTime();
             SATSolver sat = new SATSolver(numOfVars);

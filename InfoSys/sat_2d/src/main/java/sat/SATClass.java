@@ -11,18 +11,16 @@ import java.util.Set;
 public class SATClass {
     private Map<Integer, Boolean> assignments = new HashMap<>();
 
+    // assign the variable such that the literal is TRUE
     public void assignTrue(int literal) {
         boolean assignment = literal > 0;
         this.assignments.put(Math.abs(literal), assignment);
     }
 
+    // assign the variable such that the literal is FALSE
     public void assignFalse(int literal) {
         boolean assignment = literal < 0;
         this.assignments.put(Math.abs(literal), assignment);
-    }
-
-    public Map<Integer, Boolean> getAssignments() {
-        return assignments;
     }
 
     @SuppressWarnings("unchecked")
@@ -30,6 +28,7 @@ public class SATClass {
         Set<Integer> literalClauses = findLiteralClauses(clauses, literal);
         int len = clauses.length;
 
+        // the first pass removes the literal from the formula because its set to FALSE
         List<Integer> helper = new ArrayList<>();
         List<Integer>[] firstPass = (List<Integer>[]) new ArrayList[len];
         for (int i = 0; i < len; i++) {
@@ -42,6 +41,7 @@ public class SATClass {
             helper = new ArrayList<>();
         }
 
+        // the second pass removes the clauses that contains the literal because its set to TRUE
         List<Integer>[] secondPass = (List<Integer>[]) new ArrayList[len - literalClauses.size()];
         for (int i = 0, x = 0; i < len; i++) {
             if (!literalClauses.contains(i)) {
@@ -52,6 +52,10 @@ public class SATClass {
         }
 
         return secondPass;
+    }
+
+    public Map<Integer, Boolean> getAssignments() {
+        return assignments;
     }
 
     // find index of clauses that the literal is in

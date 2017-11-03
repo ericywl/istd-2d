@@ -20,6 +20,7 @@ public class SATSolver2 {
         Map<Integer, Set<Integer>> literalClausesMap
                 = findLiteralClausesMap(clauses);
 
+        // unit propagation is applied to make sure that the clause is strictly 2-SAT
         unitPropagation(literalClausesMap);
     }
 
@@ -28,11 +29,11 @@ public class SATSolver2 {
         // empty clause -> not satisfiable
         if (hasEmptyClause(this.tempClauses)) return null;
 
-            // empty list of clauses -> trivially satisfiable
+        // empty list of clauses -> trivially satisfiable
         else if (noClauses(this.trueClause))
             return this.assignments;
 
-            // proceed to use SCC to solve
+        // proceed to use strongly-connected components to solve
         else {
             Graph g = new Graph(tempClauses, this.assignments);
             if (g.solve()) return g.getAssignments();
@@ -107,7 +108,7 @@ public class SATSolver2 {
         Set<Integer> falseClauses
                 = literalClausesMap.getOrDefault(falseMapPosition, new HashSet<Integer>());
 
-        // remove clause with literal from formula because its TRUE
+        // remove clause with literal from formula because its set to TRUE
         for (int clauseIndex : trueClauses) {
             this.trueClause[clauseIndex] = true;
             for (int currLit : tempClauses[clauseIndex]) {
@@ -120,7 +121,7 @@ public class SATSolver2 {
             }
         }
 
-        // remove literal from clauses that contains it because its FALSE
+        // remove literal from clauses that contains it because its set to FALSE
         for (int clauseIndex : falseClauses) {
             for (int j = 0; j < 2; j++) {
                 if (tempClauses[clauseIndex][j] == -literal) {
@@ -135,7 +136,7 @@ public class SATSolver2 {
         }
     }
 
-    // map literals to the clauses that they are in
+    // map literals to the index of the clauses that they are in
     private Map<Integer, Set<Integer>> findLiteralClausesMap(int[][] clauses) {
         int len = clauses.length;
         this.trueClause = new boolean[len];

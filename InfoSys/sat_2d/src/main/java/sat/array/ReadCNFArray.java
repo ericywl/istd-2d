@@ -20,10 +20,12 @@ public class ReadCNFArray {
         String[] headers;
         String[] params;
 
+        // skip all comment lines in the front
         String line = reader.nextLine().trim();
         while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty())
             line = reader.nextLine().trim();
 
+        // parse the line that starts with p to get number of variables and clauses
         headers = line.split("\\s+");
         if (!headers[0].equals("p")) throw new IllegalArgumentException("Missing problem line.");
         if (!headers[1].equals("cnf"))
@@ -35,10 +37,12 @@ public class ReadCNFArray {
         int counter = 0;
         int maxClauseSize = 0;
 
+        // proceed to CNF block
         outerloop:
         while (reader.hasNextLine()) {
             line = reader.nextLine().trim();
 
+            // check for comment or empty lines inside the CNF block
             while (line.startsWith("c") || line.matches("\\s+") || line.isEmpty()) {
                 try {
                     line = reader.nextLine();
@@ -47,6 +51,8 @@ public class ReadCNFArray {
                 }
             }
 
+            // parse the split string to get the literals
+            // the parser will write to the same clause until 0 is reached
             params = line.split("\\s+");
             int innerCounter = 0;
             for (String param : params) {

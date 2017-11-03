@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class BooleanAssignment {
+    // for printing on console
     private static String convert(Map<Integer, Integer> env) {
         StringBuilder output = new StringBuilder();
         String current;
@@ -26,12 +27,14 @@ public class BooleanAssignment {
         return output.toString();
     }
 
+    // for writing to <fileName>Bool.txt
     public static void writeAssignments(Map<Integer, Integer> env, String fileName)
             throws IOException {
         String currPath = new File("").getAbsolutePath();
         FileWriter writeFile = new FileWriter(currPath + "/sat_2d/sampleCNF/" + fileName);
 
         String assigString = convert(env);
+        assigString = assigString.replace("=", ":");
         writeFile.write(assigString);
         writeFile.close();
     }

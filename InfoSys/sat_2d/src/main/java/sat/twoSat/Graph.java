@@ -23,11 +23,12 @@ public class Graph {
 
         this.assignments = assignments;
 
-        //generate digraph
+        // generate digraph
         for (int[] clause : clauses) {
             addClause(clause);
         }
 
+        // run tarjanAlgorithm on all non-lowlink nodes
         for (int node : graph.keySet()) {
             if (!lowlinks.containsKey(node)) {
                 tarjanAlgorithm(node);
@@ -35,6 +36,7 @@ public class Graph {
         }
     }
 
+    // add clause to digraph
     private void addClause(int[] clause) {
         if (clause.length == 2) {
             addEdge(-clause[0], clause[1]);
@@ -42,6 +44,7 @@ public class Graph {
         }
     }
 
+    // add edge to digraph
     private void addEdge(int start, int end) {
         graph.putIfAbsent(start, new HashSet<Integer>());
         graph.get(start).add(end);
@@ -64,7 +67,7 @@ public class Graph {
                     tarjanAlgorithm(successor);
                     this.lowlinks.put(node, Math.min(lowlinks.get(node), lowlinks.get(successor)));
 
-                    // successor in current SCC
+                // successor in current SCC
                 } else if (this.stack.contains(successor)) {
                     this.lowlinks.put(node, Math.min(lowlinks.get(node), indices.get(successor)));
                 }
@@ -102,7 +105,6 @@ public class Graph {
         return true;
     }
 
-    // used to get the truth values
     public Map<Integer, Integer> getAssignments() {
         return this.assignments;
     }

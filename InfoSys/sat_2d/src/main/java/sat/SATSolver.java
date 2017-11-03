@@ -12,6 +12,7 @@ public class SATSolver {
         this.numOfVars = numOfVars;
     }
 
+    // solve the SAT problem and return assignments
     public Map<Integer, Boolean> solve(List<Integer>[] clauses) {
         if (!isSolvable(clauses))
             return null;
@@ -25,8 +26,9 @@ public class SATSolver {
         return sat.getAssignments();
     }
 
+    // check if the SAT problem is solvable before assigning truth values
     private boolean isSolvable(List<Integer>[] clauses) {
-        // trivially satisfiable if clauses is empty
+        // empty list of clauses -> trivially satisfiable
         if (clauses.length == 0) return true;
 
         List<Integer> smallestClause = null;
@@ -34,7 +36,7 @@ public class SATSolver {
         for (List<Integer> clause : clauses) {
             int clauseSize = clause.size();
 
-            // not satisfiable if clause is empty
+            // empty clause -> not satisfiable
             if (clauseSize == 0) return false;
 
             // get the smaller clause of the two
