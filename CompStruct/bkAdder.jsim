@@ -1,0 +1,345 @@
+.include "../nominal.jsim"
+.include "../stdcell.jsim"
+.include "../2dcheckoff_2p4ns.jsim"
+
+.subckt adder32 op0 a[32:1] bold[32:1] s[32:1] z v n
+X1 s[32:17] s[16:1] Ba[15:0] nor2
+X2 Ba[15:8] Ba[7:0] C[7:0] nand2
+X3 C[7:4] C[3:0] D[3:0] nor2
+X4 D[3:2] D[1:0] E[1:0] nand2
+X5 E1 E0 z nor2
+
+Xidv1 s[32] sprime inverter
+Xidv2 a[32] b[32] sprime term1 and3
+Xidv3 a[32] b[32] sprime term2 nor3
+Xidv5 term1 term2 v or2
+
+.connect s[32] n
+
+Xsomething op0 g0c0 buffer_8
+
+.connect p0c0 0
+
+Xxor2 g0c0#32 bold[32:1] b[32:1] xor2
+
+* Creating all the propogate and generate nodes
+
+Xp1c1 a1 b1 p1c1 xor2
+Xng1c1 a1 b1 ng1c1 nand2
+Xg1c1 ng1c1 g1c1 inverter
+Xp2c2 a2 b2 p2c2 xor2
+Xng2c2 a2 b2 ng2c2 nand2
+Xg2c2 ng2c2 g2c2 inverter
+Xp3c3 a3 b3 p3c3 xor2
+Xng3c3 a3 b3 ng3c3 nand2
+Xp4c4 a4 b4 p4c4 xor2
+Xng4c4 a4 b4 ng4c4 nand2
+Xg4c4 ng4c4 g4c4 inverter
+Xp5c5 a5 b5 p5c5 xor2
+Xng5c5 a5 b5 ng5c5 nand2
+Xp6c6 a6 b6 p6c6 xor2
+Xng6c6 a6 b6 ng6c6 nand2
+Xg6c6 ng6c6 g6c6 inverter
+Xp7c7 a7 b7 p7c7 xor2
+Xng7c7 a7 b7 ng7c7 nand2
+Xp8c8 a8 b8 p8c8 xor2
+Xng8c8 a8 b8 ng8c8 nand2
+Xg8c8 ng8c8 g8c8 inverter
+Xp9c9 a9 b9 p9c9 xor2
+Xng9c9 a9 b9 ng9c9 nand2
+Xp10c10 a10 b10 p10c10 xor2
+Xng10c10 a10 b10 ng10c10 nand2
+Xg10c10 ng10c10 g10c10 inverter
+Xp11c11 a11 b11 p11c11 xor2
+Xng11c11 a11 b11 ng11c11 nand2
+Xp12c12 a12 b12 p12c12 xor2
+Xng12c12 a12 b12 ng12c12 nand2
+Xg12c12 ng12c12 g12c12 inverter
+Xp13c13 a13 b13 p13c13 xor2
+Xng13c13 a13 b13 ng13c13 nand2
+Xp14c14 a14 b14 p14c14 xor2
+Xng14c14 a14 b14 ng14c14 nand2
+Xg14c14 ng14c14 g14c14 inverter
+Xp15c15 a15 b15 p15c15 xor2
+Xng15c15 a15 b15 ng15c15 nand2
+Xp16c16 a16 b16 p16c16 xor2
+Xng16c16 a16 b16 ng16c16 nand2
+Xg16c16 ng16c16 g16c16 inverter
+Xp17c17 a17 b17 p17c17 xor2
+Xng17c17 a17 b17 ng17c17 nand2
+Xp18c18 a18 b18 p18c18 xor2
+Xng18c18 a18 b18 ng18c18 nand2
+Xg18c18 ng18c18 g18c18 inverter
+Xp19c19 a19 b19 p19c19 xor2
+Xng19c19 a19 b19 ng19c19 nand2
+Xp20c20 a20 b20 p20c20 xor2
+Xng20c20 a20 b20 ng20c20 nand2
+Xg20c20 ng20c20 g20c20 inverter
+Xp21c21 a21 b21 p21c21 xor2
+Xng21c21 a21 b21 ng21c21 nand2
+Xp22c22 a22 b22 p22c22 xor2
+Xng22c22 a22 b22 ng22c22 nand2
+Xg22c22 ng22c22 g22c22 inverter
+Xp23c23 a23 b23 p23c23 xor2
+Xng23c23 a23 b23 ng23c23 nand2
+Xp24c24 a24 b24 p24c24 xor2
+Xng24c24 a24 b24 ng24c24 nand2
+Xg24c24 ng24c24 g24c24 inverter
+Xp25c25 a25 b25 p25c25 xor2
+Xng25c25 a25 b25 ng25c25 nand2
+Xp26c26 a26 b26 p26c26 xor2
+Xng26c26 a26 b26 ng26c26 nand2
+Xg26c26 ng26c26 g26c26 inverter
+Xp27c27 a27 b27 p27c27 xor2
+Xng27c27 a27 b27 ng27c27 nand2
+Xp28c28 a28 b28 p28c28 xor2
+Xng28c28 a28 b28 ng28c28 nand2
+Xg28c28 ng28c28 g28c28 inverter
+Xp29c29 a29 b29 p29c29 xor2
+Xng29c29 a29 b29 ng29c29 nand2
+Xp30c30 a30 b30 p30c30 xor2
+Xng30c30 a30 b30 ng30c30 nand2
+Xg30c30 ng30c30 g30c30 inverter
+Xp31c31 a31 b31 p31c31 xor2
+Xng31c31 a31 b31 ng31c31 nand2
+Xp32c32 a32 b32 p32c32 xor2
+
+*1st layer
+*Xweird g0c0 p1c1 g1c1 ng1c0 aoi21
+*Xweird2 ng1c0 g1c0 inverter
+Xnp1c1andg0c0 p1c1 g0c0 np1c1andg0c0 nand2
+Xg1c0 np1c1andg0c0 ng1c1 g1c0 nand2
+Xnp3c3andg2c2 p3c3 g2c2 np3c3andg2c2 nand2
+Xg3c2 np3c3andg2c2 ng3c3 g3c2 nand2
+Xnp3c2 p3c3 p2c2 np3c2 nand2
+Xp3c2 np3c2 p3c2 inverter
+Xnp5c5andg4c4 p5c5 g4c4 np5c5andg4c4 nand2
+Xg5c4 np5c5andg4c4 ng5c5 g5c4 nand2
+Xnp5c4 p5c5 p4c4 np5c4 nand2
+Xp5c4 np5c4 p5c4 inverter
+Xnp7c7andg6c6 p7c7 g6c6 np7c7andg6c6 nand2
+Xg7c6 np7c7andg6c6 ng7c7 g7c6 nand2
+Xnp7c6 p7c7 p6c6 np7c6 nand2
+Xp7c6 np7c6 p7c6 inverter
+Xnp9c9andg8c8 p9c9 g8c8 np9c9andg8c8 nand2
+Xg9c8 np9c9andg8c8 ng9c9 g9c8 nand2
+Xnp9c8 p9c9 p8c8 np9c8 nand2
+Xp9c8 np9c8 p9c8 inverter
+Xnp11c11andg10c10 p11c11 g10c10 np11c11andg10c10 nand2
+Xg11c10 np11c11andg10c10 ng11c11 g11c10 nand2
+Xnp11c10 p11c11 p10c10 np11c10 nand2
+Xp11c10 np11c10 p11c10 inverter
+Xnp13c13andg12c12 p13c13 g12c12 np13c13andg12c12 nand2
+Xg13c12 np13c13andg12c12 ng13c13 g13c12 nand2
+Xnp13c12 p13c13 p12c12 np13c12 nand2
+Xp13c12 np13c12 p13c12 inverter
+Xnp15c15andg14c14 p15c15 g14c14 np15c15andg14c14 nand2
+Xg15c14 np15c15andg14c14 ng15c15 g15c14 nand2
+Xnp15c14 p15c15 p14c14 np15c14 nand2
+Xp15c14 np15c14 p15c14 inverter
+Xnp17c17andg16c16 p17c17 g16c16 np17c17andg16c16 nand2
+Xg17c16 np17c17andg16c16 ng17c17 g17c16 nand2
+Xnp17c16 p17c17 p16c16 np17c16 nand2
+Xp17c16 np17c16 p17c16 inverter
+Xnp19c19andg18c18 p19c19 g18c18 np19c19andg18c18 nand2
+Xg19c18 np19c19andg18c18 ng19c19 g19c18 nand2
+Xnp19c18 p19c19 p18c18 np19c18 nand2
+Xp19c18 np19c18 p19c18 inverter
+Xnp21c21andg20c20 p21c21 g20c20 np21c21andg20c20 nand2
+Xg21c20 np21c21andg20c20 ng21c21 g21c20 nand2
+Xnp21c20 p21c21 p20c20 np21c20 nand2
+Xp21c20 np21c20 p21c20 inverter
+Xnp23c23andg22c22 p23c23 g22c22 np23c23andg22c22 nand2
+Xg23c22 np23c23andg22c22 ng23c23 g23c22 nand2
+Xnp23c22 p23c23 p22c22 np23c22 nand2
+Xp23c22 np23c22 p23c22 inverter
+Xnp25c25andg24c24 p25c25 g24c24 np25c25andg24c24 nand2
+Xg25c24 np25c25andg24c24 ng25c25 g25c24 nand2
+Xnp25c24 p25c25 p24c24 np25c24 nand2
+Xp25c24 np25c24 p25c24 inverter
+Xnp27c27andg26c26 p27c27 g26c26 np27c27andg26c26 nand2
+Xg27c26 np27c27andg26c26 ng27c27 g27c26 nand2
+Xnp27c26 p27c27 p26c26 np27c26 nand2
+Xp27c26 np27c26 p27c26 inverter
+Xnp29c29andg28c28 p29c29 g28c28 np29c29andg28c28 nand2
+Xg29c28 np29c29andg28c28 ng29c29 g29c28 nand2
+Xnp29c28 p29c29 p28c28 np29c28 nand2
+Xp29c28 np29c28 p29c28 inverter
+Xnp31c31andg30c30 p31c31 g30c30 np31c31andg30c30 nand2
+Xg31c30 np31c31andg30c30 ng31c31 g31c30 nand2
+Xnp31c30 p31c31 p30c30 np31c30 nand2
+Xp31c30 np31c30 p31c30 inverter
+
+*2nd layer
+Xng3c2 g3c2 ng3c2 inverter
+Xnp3c2andg1c0 p3c2 g1c0 np3c2andg1c0 nand2
+Xg3c0 np3c2andg1c0 ng3c2 g3c0 nand2
+Xng7c6 g7c6 ng7c6 inverter
+Xnp7c6andg5c4 p7c6 g5c4 np7c6andg5c4 nand2
+Xg7c4 np7c6andg5c4 ng7c6 g7c4 nand2
+Xnp7c4 p7c6 p5c4 np7c4 nand2
+Xp7c4 np7c4 p7c4 inverter
+Xng11c10 g11c10 ng11c10 inverter
+Xnp11c10andg9c8 p11c10 g9c8 np11c10andg9c8 nand2
+Xg11c8 np11c10andg9c8 ng11c10 g11c8 nand2
+Xnp11c8 np11c10 np9c8 p11c8 nor2
+Xng15c14 g15c14 ng15c14 inverter
+Xnp15c14andg13c12 p15c14 g13c12 np15c14andg13c12 nand2
+Xg15c12 np15c14andg13c12 ng15c14 g15c12 nand2
+Xnp15c12 np15c14 np13c12 p15c12 nor2
+Xng19c18 g19c18 ng19c18 inverter
+Xnp19c18andg17c16 p19c18 g17c16 np19c18andg17c16 nand2
+Xg19c16 np19c18andg17c16 ng19c18 g19c16 nand2
+Xnp19c16 np19c18 np17c16 p19c16 nor2
+Xng23c22 g23c22 ng23c22 inverter
+Xnp23c22andg21c20 p23c22 g21c20 np23c22andg21c20 nand2
+Xg23c20 np23c22andg21c20 ng23c22 g23c20 nand2
+Xnp23c20 np23c22 np21c20 p23c20 nor2
+Xng27c26 g27c26 ng27c26 inverter
+Xnp27c26andg25c24 p27c26 g25c24 np27c26andg25c24 nand2
+Xg27c24 np27c26andg25c24 ng27c26 g27c24 nand2
+Xnp27c24 np27c26 np25c24 p27c24 nor2
+Xng31c30 g31c30 ng31c30 inverter
+Xnp31c30andg29c28 p31c30 g29c28 np31c30andg29c28 nand2
+Xg31c28 np31c30andg29c28 ng31c30 g31c28 nand2
+Xnp31c28 np31c30 np29c28 p31c28 nor2
+
+*3rd layer
+Xng7c4 g7c4 ng7c4 inverter
+Xnp7c4andg3c0 p7c4 g3c0 np7c4andg3c0 nand2
+Xg7c0 np7c4andg3c0 ng7c4 g7c0 nand2
+Xng15c12 g15c12 ng15c12 inverter
+Xnp15c12andg11c8 p15c12 g11c8 np15c12andg11c8 nand2
+Xg15c8 np15c12andg11c8 ng15c12 g15c8 nand2
+Xnp15c8 p15c12 p11c8 np15c8 nand2
+Xp15c8 np15c8 p15c8 inverter
+Xng23c20 g23c20 ng23c20 inverter
+Xnp23c20andg19c16 p23c20 g19c16 np23c20andg19c16 nand2
+Xg23c16 np23c20andg19c16 ng23c20 g23c16 nand2
+Xnp23c16 p23c20 p19c16 np23c16 nand2
+Xp23c16 np23c16 p23c16 inverter
+Xng31c28 g31c28 ng31c28 inverter
+Xnp31c28andg27c24 p31c28 g27c24 np31c28andg27c24 nand2
+Xg31c24 np31c28andg27c24 ng31c28 g31c24 nand2
+Xnp31c24 p31c28 p27c24 np31c24 nand2
+Xp31c24 np31c24 p31c24 inverter
+
+*4th layer
+Xng15c8 g15c8 ng15c8 inverter
+Xnp15c8andg7c0 p15c8 g7c0 np15c8andg7c0 nand2
+Xg15c0 np15c8andg7c0 ng15c8 g15c0 nand2
+Xng31c24 g31c24 ng31c24 inverter
+Xnp31c24andg23c16 p31c24 g23c16 np31c24andg23c16 nand2
+Xg31c16 np31c24andg23c16 ng31c24 g31c16 nand2
+Xnp31c16 np31c24 np23c16 p31c16 nor2
+
+*5th layer
+Xng31c16 g31c16 ng31c16 inverter
+Xnp31c16andg15c0 p31c16 g15c0 np31c16andg15c0 nand2
+Xg31c0 np31c16andg15c0 ng31c16 g31c0 nand2
+
+*6th layer
+Xng23c16 g23c16 ng23c16 inverter
+Xnp23c16andg15c0 p23c16 g15c0 np23c16andg15c0 nand2
+Xg23c0 np23c16andg15c0 ng23c16 g23c0 nand2
+
+*7th layer
+Xng11c8 g11c8 ng11c8 inverter
+Xnp11c8andg7c0 p11c8 g7c0 np11c8andg7c0 nand2
+Xg11c0 np11c8andg7c0 ng11c8 g11c0 nand2
+Xng19c16 g19c16 ng19c16 inverter
+Xnp19c16andg15c0 p19c16 g15c0 np19c16andg15c0 nand2
+Xg19c0 np19c16andg15c0 ng19c16 g19c0 nand2
+Xng27c24 g27c24 ng27c24 inverter
+Xnp27c24andg23c0 p27c24 g23c0 np27c24andg23c0 nand2
+Xg27c0 np27c24andg23c0 ng27c24 g27c0 nand2
+
+*8th layer
+Xng5c4 g5c4 ng5c4 inverter
+Xnp5c4andg3c0 p5c4 g3c0 np5c4andg3c0 nand2
+Xg5c0 np5c4andg3c0 ng5c4 g5c0 nand2
+Xng9c8 g9c8 ng9c8 inverter
+Xnp9c8andg7c0 p9c8 g7c0 np9c8andg7c0 nand2
+Xg9c0 np9c8andg7c0 ng9c8 g9c0 nand2
+Xng13c12 g13c12 ng13c12 inverter
+Xnp13c12andg11c0 p13c12 g11c0 np13c12andg11c0 nand2
+Xg13c0 np13c12andg11c0 ng13c12 g13c0 nand2
+Xng17c16 g17c16 ng17c16 inverter
+Xnp17c16andg15c0 p17c16 g15c0 np17c16andg15c0 nand2
+Xg17c0 np17c16andg15c0 ng17c16 g17c0 nand2
+Xng21c20 g21c20 ng21c20 inverter
+Xnp21c20andg19c0 p21c20 g19c0 np21c20andg19c0 nand2
+Xg21c0 np21c20andg19c0 ng21c20 g21c0 nand2
+Xng25c24 g25c24 ng25c24 inverter
+Xnp25c24andg23c0 p25c24 g23c0 np25c24andg23c0 nand2
+Xg25c0 np25c24andg23c0 ng25c24 g25c0 nand2
+Xng29c28 g29c28 ng29c28 inverter
+Xnp29c28andg27c0 p29c28 g27c0 np29c28andg27c0 nand2
+Xg29c0 np29c28andg27c0 ng29c28 g29c0 nand2
+
+*9th layer
+Xnp2c2andg1c0 p2c2 g1c0 np2c2andg1c0 nand2
+Xg2c0 np2c2andg1c0 ng2c2 g2c0 nand2
+Xnp4c4andg3c0 p4c4 g3c0 np4c4andg3c0 nand2
+Xg4c0 np4c4andg3c0 ng4c4 g4c0 nand2
+Xnp6c6andg5c0 p6c6 g5c0 np6c6andg5c0 nand2
+Xg6c0 np6c6andg5c0 ng6c6 g6c0 nand2
+Xnp8c8andg7c0 p8c8 g7c0 np8c8andg7c0 nand2
+Xg8c0 np8c8andg7c0 ng8c8 g8c0 nand2
+Xnp10c10andg9c0 p10c10 g9c0 np10c10andg9c0 nand2
+Xg10c0 np10c10andg9c0 ng10c10 g10c0 nand2
+Xnp12c12andg11c0 p12c12 g11c0 np12c12andg11c0 nand2
+Xg12c0 np12c12andg11c0 ng12c12 g12c0 nand2
+Xnp14c14andg13c0 p14c14 g13c0 np14c14andg13c0 nand2
+Xg14c0 np14c14andg13c0 ng14c14 g14c0 nand2
+Xnp16c16andg15c0 p16c16 g15c0 np16c16andg15c0 nand2
+Xg16c0 np16c16andg15c0 ng16c16 g16c0 nand2
+Xnp18c18andg17c0 p18c18 g17c0 np18c18andg17c0 nand2
+Xg18c0 np18c18andg17c0 ng18c18 g18c0 nand2
+Xnp20c20andg19c0 p20c20 g19c0 np20c20andg19c0 nand2
+Xg20c0 np20c20andg19c0 ng20c20 g20c0 nand2
+Xnp22c22andg21c0 p22c22 g21c0 np22c22andg21c0 nand2
+Xg22c0 np22c22andg21c0 ng22c22 g22c0 nand2
+Xnp24c24andg23c0 p24c24 g23c0 np24c24andg23c0 nand2
+Xg24c0 np24c24andg23c0 ng24c24 g24c0 nand2
+Xnp26c26andg25c0 p26c26 g25c0 np26c26andg25c0 nand2
+Xg26c0 np26c26andg25c0 ng26c26 g26c0 nand2
+Xnp28c28andg27c0 p28c28 g27c0 np28c28andg27c0 nand2
+Xg28c0 np28c28andg27c0 ng28c28 g28c0 nand2
+Xnp30c30andg29c0 p30c30 g29c0 np30c30andg29c0 nand2
+Xg30c0 np30c30andg29c0 ng30c30 g30c0 nand2
+
+*Last layer ouput 
+Xs1 p1c1 g0c0 s1 xor2
+Xs2 p2c2 g1c0 s2 xor2
+Xs3 p3c3 g2c0 s3 xor2
+Xs4 p4c4 g3c0 s4 xor2
+Xs5 p5c5 g4c0 s5 xor2
+Xs6 p6c6 g5c0 s6 xor2
+Xs7 p7c7 g6c0 s7 xor2
+Xs8 p8c8 g7c0 s8 xor2
+Xs9 p9c9 g8c0 s9 xor2
+Xs10 p10c10 g9c0 s10 xor2
+Xs11 p11c11 g10c0 s11 xor2
+Xs12 p12c12 g11c0 s12 xor2
+Xs13 p13c13 g12c0 s13 xor2
+Xs14 p14c14 g13c0 s14 xor2
+Xs15 p15c15 g14c0 s15 xor2
+Xs16 p16c16 g15c0 s16 xor2
+Xs17 p17c17 g16c0 s17 xor2
+Xs18 p18c18 g17c0 s18 xor2
+Xs19 p19c19 g18c0 s19 xor2
+Xs20 p20c20 g19c0 s20 xor2
+Xs21 p21c21 g20c0 s21 xor2
+Xs22 p22c22 g21c0 s22 xor2
+Xs23 p23c23 g22c0 s23 xor2
+Xs24 p24c24 g23c0 s24 xor2
+Xs25 p25c25 g24c0 s25 xor2
+Xs26 p26c26 g25c0 s26 xor2
+Xs27 p27c27 g26c0 s27 xor2
+Xs28 p28c28 g27c0 s28 xor2
+Xs29 p29c29 g28c0 s29 xor2
+Xs30 p30c30 g29c0 s30 xor2
+Xs31 p31c31 g30c0 s31 xor2
+Xs32 p32c32 g31c0 s32 xor2
+.ends

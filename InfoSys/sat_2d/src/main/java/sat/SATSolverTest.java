@@ -12,10 +12,12 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
-    private static String readFile = "unsat3Large.cnf";
+    private static String readFile;
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
+        readFile = args[0];
+
         try {
             Object[] parsed = ReadCNF.readCNF(readFile);
             List<Integer>[] clauses = (List<Integer>[]) parsed[0];
