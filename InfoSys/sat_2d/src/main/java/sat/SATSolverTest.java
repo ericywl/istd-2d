@@ -12,7 +12,7 @@ import sat.twoSat.SATSolver2;
 
 @SuppressWarnings("unchecked")
 public class SATSolverTest {
-    private static String readFile = "sat1.cnf";
+    private static String readFile = "unsat2.cnf";
     private static String writeFile = readFile.substring(0, readFile.length() - 4) + "Bool.txt";
 
     public static void main(String[] args) {
