@@ -2,7 +2,7 @@ INSTRUCTIONS FOR EACH SUBJECT
 
 ALGO
 =====
-The report for the algorithm is in Algo, named Algo_2d_report. <br/>
+The report for the algorithm is in the Algo folder, named Algo_2d_report. <br/>
 To run the 2-SAT Solver, follow the steps below.
 ```
 1. Put the CNF files to be tested in Algo/sat_2d/sampleCNF
