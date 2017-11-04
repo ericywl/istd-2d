@@ -5,7 +5,7 @@ ALGO
 The report for the algorithm is in Algo, named Algo_2d_report.
 To run the 2-SAT Solver, follow the steps below.
 ```
-1. Put the CNF files to be tested in  Algo/sat_2d/sampleCNF
+1. Put the CNF files to be tested in Algo/sat_2d/sampleCNF
 2. Use a Java IDE to open the Algo folder as a project
 3. Open SATSolver2Test.java under Algo/sat_2d/src/main/java/sat
 4. Change the STRING fileName to the CNF file's name with .cnf extension
