@@ -11,8 +11,8 @@ To run the 2-SAT Solver, follow the steps below.
 4. Change the STRING fileName to the CNF file's name with .cnf extension
 5. Run the program
 
-If the problem is satisfiable, the program will print the boolean assignment on the console
-and also writes it to Algo/sat_2d/sampleCNF/<fileName>Bool.txt
+If the problem is satisfiable, <br/>
+the program will print the boolean assignment on the consoleand also writes it to Algo/sat_2d/sampleCNF/<fileName>Bool.txt
 
 
 COMPSTRUCT
@@ -32,5 +32,5 @@ To run the SAT Solver, follow the steps below.
 4. Change the STRING fileName to the CNF file's name with .cnf extension
 5. Run the program
 
-If the problem is satisfiable, 
+If the problem is satisfiable, <br/>
 the boolean assignment is written in InfoSys/sat_2d/sampleCNF/<fileName>Bool.txt
