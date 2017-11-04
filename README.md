@@ -17,10 +17,8 @@ and also writes it to Algo/sat_2d/sampleCNF/<fileName>Bool.txt
 
 COMPSTRUCT
 ===========
-The bkAdder.jsim file contains the netlist for the circuit.
-
-The test.bc file contains the boolean circuit and is used to generate the CNF file.
-
+The bkAdder.jsim file contains the netlist for the circuit. <br/>
+The test.bc file contains the boolean circuit and is used to generate the CNF file. <br/>
 The test.cnf file is for testing the logic of our 8th bit sum output via SAT Solver.
 
 
