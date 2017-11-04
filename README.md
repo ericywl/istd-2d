@@ -7,7 +7,7 @@ To run the 2-SAT Solver, follow the steps below.
 
 1. Put the CNF files to be tested in  Algo/sat_2d/sampleCNF
 2. Use a Java IDE to open the Algo folder as a project
-3. Open SATSolver2Test.java under Algo/sat_2d/main/java/sat
+3. Open SATSolver2Test.java under Algo/sat_2d/src/main/java/sat
 4. Change the STRING fileName to the CNF file's name with .cnf extension
 5. Run the program
 
@@ -28,7 +28,7 @@ To run the SAT Solver, follow the steps below.
 
 1. Put the CNF files to be tested in InfoSys/sat_2d/sampleCNF
 2. Use a Java IDE to open the InfoSys folder as a project
-3. Open SATSolverTest.java under InfoSys/sat_2d/main/java/sat
+3. Open SATSolverTest.java under InfoSys/sat_2d/src/main/java/sat
 4. Change the STRING fileName to the CNF file's name with .cnf extension
 5. Run the program
 
